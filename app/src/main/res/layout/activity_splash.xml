@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.androidmarket.pdfcreator.activities.SplashActivity">
+
+    <ImageView
+        android:id="@+id/title"
+        android:layout_width="322dp"
+        android:layout_height="287dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="170dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/splash_logo" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="92dp"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/title"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="#00A9FF"
+            android:fontFamily="@font/metropolis_bold"
+            android:textSize="26sp"
+            android:text="@string/smart_pdf_preview"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:fontFamily="@font/metropolis_bold"
+            android:textSize="18sp"
+            android:text="@string/seamless_pdf_conversion_made"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:fontFamily="@font/metropolis_bold"
+            android:textSize="18sp"
+            android:text="@string/simple_and_fast"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/continueBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="52dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:src="@drawable/continue1" />
+
+
+</RelativeLayout>

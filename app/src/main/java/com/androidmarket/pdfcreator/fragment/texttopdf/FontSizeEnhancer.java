@@ -35,7 +35,7 @@ public class FontSizeEnhancer implements Enhancer {
                 String.format(mActivity.getString(R.string.edit_font_size),
                         mPreferences.getFontSize()));
         mEnhancementOptionsEntity = new EnhancementOptionsEntity(
-                mActivity.getResources().getDrawable(R.drawable.ic_font_black_24dp),
+                mActivity.getResources().getDrawable(R.drawable.font_size),
                 mBuilder.getFontSizeTitle());
         mView = view;
     }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gr_img_pdf"
+    android:background="@color/dark_blue"
     tools:context=".fragment.texttopdf.TextToPdfFragment">
 
     <androidx.core.widget.NestedScrollView
@@ -23,24 +23,23 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp">
+                android:layout_height="170dp">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/shape_bg" />
+                    android:src="@drawable/design_upper" />
 
 
                 <ImageView
                     android:id="@+id/ivBack"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="15dp"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_back" />
+                    android:src="@drawable/back" />
 
 
 
@@ -48,6 +47,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="40dp"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="5dp"
                     android:gravity="start"
@@ -57,22 +58,21 @@
                         android:id="@+id/bing"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_b"
-                        android:text="Text to PDF"
+                        android:fontFamily="@font/metropolis_extrabold"
+                        android:text="@string/text_to_pdf"
                         android:textAllCaps="false"
                         android:textColor="#FFF"
-                        android:textSize="25.0sp" />
+                        android:textSize="27.0sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:fontFamily="@font/roboto_reg"
-                        android:letterSpacing="0.1"
-                        android:text="Create PDF from Text File"
-                        android:textAllCaps="true"
+                        android:fontFamily="@font/metropolis_medium"
+                        android:letterSpacing="0.050"
+                        android:text="@string/create_pdf_from_text_file"
                         android:textColor="#FFF"
-                        android:textSize="12.0sp" />
+                        android:textSize="14.0sp" />
 
                 </LinearLayout>
 
@@ -99,7 +99,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:layout_marginBottom="7.5dp"
-                        app:cardBackgroundColor="@color/color_qr_pdf"
+                        app:cardBackgroundColor="@color/select_images"
                         app:cardCornerRadius="15dp"
                         app:cardElevation="0dp">
 
@@ -108,7 +108,14 @@
                             android:layout_height="match_parent"
                             android:adjustViewBounds="true"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/shape_bg" />
+                            android:src="@drawable/design2" />
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/design" />
 
 
                         <RelativeLayout
@@ -127,23 +134,22 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_b"
+                                    android:fontFamily="@font/metropolis_bold"
                                     android:text="@string/select_text_file"
+                                    android:letterSpacing="0.050"
                                     android:textAllCaps="false"
                                     android:textColor="#FFF"
-                                    android:textSize="22.0sp" />
+                                    android:textSize="20.0sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@id/bing"
                                     android:layout_marginTop="5dp"
-                                    android:fontFamily="@font/roboto_reg"
-                                    android:letterSpacing="0.1"
-                                    android:text="Choose text file to create PDF"
-                                    android:textAllCaps="true"
+                                    android:fontFamily="@font/metropolis_medium"
+                                    android:letterSpacing="0.050"
+                                    android:text="@string/choose_text_file_to_create_pdf"
                                     android:textColor="#FFF"
-                                    android:textSize="11.0sp" />
+                                    android:textSize="14.0sp" />
 
                             </LinearLayout>
 
@@ -153,7 +159,7 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="20dp"
-                                android:src="@drawable/select_img" />
+                                android:src="@drawable/select_text_file" />
 
                         </RelativeLayout>
 
@@ -167,7 +173,7 @@
                         android:layout_height="100dp"
                         android:layout_marginTop="7.5dp"
                         android:layout_marginBottom="7.5dp"
-                        app:cardBackgroundColor="@color/color_image_pdf"
+                        app:cardBackgroundColor="@color/create_pdf"
                         app:cardCornerRadius="15dp"
                         app:cardElevation="0dp">
 
@@ -176,7 +182,14 @@
                             android:layout_height="match_parent"
                             android:adjustViewBounds="true"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/shape_bg" />
+                            android:src="@drawable/design2" />
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/design" />
 
 
                         <RelativeLayout
@@ -195,22 +208,22 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_b"
+                                    android:fontFamily="@font/metropolis_bold"
                                     android:text="@string/create_pdf"
+                                    android:letterSpacing="0.050"
                                     android:textAllCaps="false"
                                     android:textColor="#FFF"
-                                    android:textSize="22.0sp" />
+                                    android:textSize="20.0sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="5dp"
-                                    android:fontFamily="@font/roboto_reg"
-                                    android:letterSpacing="0.1"
-                                    android:text="Create PDF from selected text file"
-                                    android:textAllCaps="true"
+                                    android:fontFamily="@font/metropolis_medium"
+                                    android:letterSpacing="0.050"
+                                    android:text="@string/create_pdf_from_selected_text_file"
                                     android:textColor="#FFF"
-                                    android:textSize="11.0sp" />
+                                    android:textSize="14.0sp" />
 
                             </LinearLayout>
 
@@ -221,7 +234,7 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="20dp"
-                                android:src="@drawable/create_img" />
+                                android:src="@drawable/create_img1" />
                         </RelativeLayout>
 
 
@@ -236,8 +249,7 @@
                     android:layout_gravity="bottom"
                     android:gravity="bottom|center"
                     android:orientation="vertical"
-                    android:paddingHorizontal="10dp"
-                    tools:targetApi="lollipop">
+                    android:paddingHorizontal="10dp">
 
 
                     <View

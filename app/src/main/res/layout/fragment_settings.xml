@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gr_img_pdf"
+    android:background="@color/dark_blue"
     android:orientation="vertical"
     tools:context="SET">
 
@@ -21,27 +21,29 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp">
+                android:layout_height="170dp">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/shape_bg" />
+                    android:src="@drawable/design_upper" />
 
                 <ImageView
                     android:id="@+id/ivBack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="15dp"
-                    android:src="@drawable/ic_back" />
+                    android:src="@drawable/back" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="40dp"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="5dp"
                     android:gravity="start"
@@ -51,23 +53,22 @@
                         android:id="@+id/title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_b"
+                        android:fontFamily="@font/metropolis_extrabold"
                         android:textAllCaps="false"
                         android:textColor="#FFF"
                         android:text="Settings"
-                        android:textSize="25.0sp" />
+                        android:textSize="27.0sp" />
 
                     <TextView
                         android:id="@+id/titleTwo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:fontFamily="@font/roboto_reg"
-                        android:letterSpacing="0.1"
+                        android:fontFamily="@font/metropolis_medium"
+                        android:letterSpacing="0.050"
                         android:text="Set PDF Settings"
-                        android:textAllCaps="true"
                         android:textColor="#FFF"
-                        android:textSize="12.0sp" />
+                        android:textSize="14.0sp" />
 
 
                 </LinearLayout>

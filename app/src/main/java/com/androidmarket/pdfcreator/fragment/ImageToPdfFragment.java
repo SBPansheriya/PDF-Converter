@@ -2,6 +2,7 @@ package com.androidmarket.pdfcreator.fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,17 +16,21 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Editable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -61,6 +66,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import androidmarket.R;
+
 import com.androidmarket.pdfcreator.activities.ActivityCropImage;
 import com.androidmarket.pdfcreator.activities.ActivityRearrangeImages;
 import com.androidmarket.pdfcreator.adapter.AdapterEnhancementOptions;
@@ -175,7 +181,6 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         AdsUtility.loadNativeAd(getActivity(), nativeAdFrameOne);
 
 
-
         // Check for the images received
         checkForImagesInBundle();
 
@@ -203,9 +208,6 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
 
         return root;
     }
-
-
-
 
 
     /**
@@ -279,8 +281,9 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
 
     /**
      * Saves the PDF
+     *
      * @param isGrayScale if the images should be converted to grayscale before
-     * @param filename the filename to save to
+     * @param filename    the filename to save to
      */
     private void save(boolean isGrayScale, String filename) {
         mPdfOptions.setImagesUri(mImagesUri);
@@ -560,49 +563,104 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     }
 
     private void passwordProtectPDF() {
-        final MaterialDialog dialog = new MaterialDialog.Builder(mActivity)
-                .title(R.string.set_password)
-                .customView(R.layout.custom_dialog, true)
-                .positiveText(android.R.string.ok)
-                .negativeText(android.R.string.cancel)
-                .neutralText(R.string.remove_dialog)
-                .build();
+//        final MaterialDialog dialog = new MaterialDialog.Builder(mActivity)
+//                .title(R.string.set_password)
+//                .customView(R.layout.custom_dialog, true)
+//                .positiveText(android.R.string.ok)
+//                .negativeText(android.R.string.cancel)
+//                .neutralText(R.string.remove_dialog)
+//                .build();
+//
+//        final View positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
+//        final View neutralAction = dialog.getActionButton(DialogAction.NEUTRAL);
+//        final EditText passwordInput = dialog.getCustomView().findViewById(R.id.password);
+//        passwordInput.setText(mPdfOptions.getPassword());
+//        passwordInput.addTextChangedListener(
+//                new DefaultTextWatcher() {
+//                    @Override
+//                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                        positiveAction.setEnabled(s.toString().trim().length() > 0);
+//                    }
+//                });
+//
+//        positiveAction.setOnClickListener(v -> {
+//            if (StringUtils.getInstance().isEmpty(passwordInput.getText())) {
+//                Toast.makeText(getActivity(), R.string.snackbar_password_cannot_be_blank, Toast.LENGTH_SHORT).show();
+//            } else {
+//                mPdfOptions.setPassword(passwordInput.getText().toString());
+//                mPdfOptions.setPasswordProtected(true);
+//                showEnhancementOptions();
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        if (StringUtils.getInstance().isNotEmpty(mPdfOptions.getPassword())) {
+//            neutralAction.setOnClickListener(v -> {
+//                mPdfOptions.setPassword(null);
+//                mPdfOptions.setPasswordProtected(false);
+//                showEnhancementOptions();
+//                dialog.dismiss();
+//                Toast.makeText(getActivity(), R.string.password_remove, Toast.LENGTH_SHORT).show();
+//
+//            });
+//        }
+//        dialog.show();
+//        positiveAction.setEnabled(false);
 
-        final View positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
-        final View neutralAction = dialog.getActionButton(DialogAction.NEUTRAL);
-        final EditText passwordInput = dialog.getCustomView().findViewById(R.id.password);
-        passwordInput.setText(mPdfOptions.getPassword());
-        passwordInput.addTextChangedListener(
+        Dialog dialog1 = new Dialog(getContext());
+        if (dialog1.getWindow() != null) {
+            dialog1.getWindow().setGravity(Gravity.CENTER);
+            dialog1.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog1.setCancelable(false);
+        }
+        dialog1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog1.setContentView(R.layout.set_password_dialog);
+        dialog1.setCancelable(false);
+        dialog1.show();
+
+        Button cancel = dialog1.findViewById(R.id.canceldialog);
+        Button ok = dialog1.findViewById(R.id.okdialog);
+        Button remove = dialog1.findViewById(R.id.remove_dialog);
+        EditText passwordinput = dialog1.findViewById(R.id.add_pdfName);
+
+        passwordinput.setText(mPdfOptions.getPassword());
+        passwordinput.addTextChangedListener(
                 new DefaultTextWatcher() {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        positiveAction.setEnabled(s.toString().trim().length() > 0);
+                        ok.setEnabled(s.toString().trim().length() > 0);
                     }
                 });
 
-        positiveAction.setOnClickListener(v -> {
-            if (StringUtils.getInstance().isEmpty(passwordInput.getText())) {
-                Toast.makeText(getActivity(), R.string.snackbar_password_cannot_be_blank, Toast.LENGTH_SHORT).show();
-            } else {
-                mPdfOptions.setPassword(passwordInput.getText().toString());
-                mPdfOptions.setPasswordProtected(true);
-                showEnhancementOptions();
-                dialog.dismiss();
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog1.dismiss();
             }
         });
 
-        if (StringUtils.getInstance().isNotEmpty(mPdfOptions.getPassword())) {
-            neutralAction.setOnClickListener(v -> {
-                mPdfOptions.setPassword(null);
-                mPdfOptions.setPasswordProtected(false);
-                showEnhancementOptions();
-                dialog.dismiss();
-                Toast.makeText(getActivity(), R.string.password_remove, Toast.LENGTH_SHORT).show();
+        remove.setOnClickListener(v -> {
+            mPdfOptions.setPassword(null);
+            mPdfOptions.setPasswordProtected(false);
+            showEnhancementOptions();
+            dialog1.dismiss();
+            Toast.makeText(getActivity(), R.string.password_remove, Toast.LENGTH_SHORT).show();
 
-            });
-        }
-        dialog.show();
-        positiveAction.setEnabled(false);
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (StringUtils.getInstance().isEmpty(passwordinput.getText())) {
+                    Toast.makeText(getActivity(), R.string.snackbar_password_cannot_be_blank, Toast.LENGTH_SHORT).show();
+                } else {
+                    mPdfOptions.setPassword(passwordinput.getText().toString());
+                    mPdfOptions.setPasswordProtected(true);
+                    showEnhancementOptions();
+                    dialog1.dismiss();
+                }
+            }
+        });
     }
 
     private void addWatermark() {
@@ -800,7 +858,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         ImageUtils.getInstance().mImageScaleType = mSharedPreferences.getString(DEFAULT_IMAGE_SCALE_TYPE_TEXT,
                 IMAGE_SCALE_TYPE_ASPECT_RATIO);
         mPdfOptions.setMargins(0, 0, 0, 0);
-        mPageNumStyle = mSharedPreferences.getString (Constants.PREF_PAGE_STYLE, null);
+        mPageNumStyle = mSharedPreferences.getString(Constants.PREF_PAGE_STYLE, null);
         mPageColor = mSharedPreferences.getInt(Constants.DEFAULT_PAGE_COLOR_ITP,
                 DEFAULT_PAGE_COLOR);
     }
@@ -832,22 +890,22 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     private void addPageNumbers() {
 
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        mPageNumStyle = mSharedPreferences.getString (Constants.PREF_PAGE_STYLE, null);
-        mChoseId = mSharedPreferences.getInt (Constants.PREF_PAGE_STYLE_ID, -1);
+        mPageNumStyle = mSharedPreferences.getString(Constants.PREF_PAGE_STYLE, null);
+        mChoseId = mSharedPreferences.getInt(Constants.PREF_PAGE_STYLE_ID, -1);
 
-        RelativeLayout dialogLayout = (RelativeLayout) getLayoutInflater ()
-                .inflate (R.layout.add_pgnum_dialog, null);
+        RelativeLayout dialogLayout = (RelativeLayout) getLayoutInflater()
+                .inflate(R.layout.add_pgnum_dialog, null);
 
         RadioButton rbOpt1 = dialogLayout.findViewById(R.id.page_num_opt1);
         RadioButton rbOpt2 = dialogLayout.findViewById(R.id.page_num_opt2);
         RadioButton rbOpt3 = dialogLayout.findViewById(R.id.page_num_opt3);
         RadioGroup rg = dialogLayout.findViewById(R.id.radioGroup);
-        CheckBox cbDefault = dialogLayout.findViewById (R.id.set_as_default);
+        CheckBox cbDefault = dialogLayout.findViewById(R.id.set_as_default);
 
         if (mChoseId > 0) {
-            cbDefault.setChecked (true);
-            rg.clearCheck ();
-            rg.check (mChoseId);
+            cbDefault.setChecked(true);
+            rg.clearCheck();
+            rg.check(mChoseId);
         }
 
         MaterialDialog materialDialog = new MaterialDialog.Builder(mActivity)
@@ -858,16 +916,16 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                 .neutralText(R.string.remove_dialog)
                 .onPositive(((dialog, which) -> {
 
-                    int checkedRadioButtonId = rg.getCheckedRadioButtonId ();
+                    int checkedRadioButtonId = rg.getCheckedRadioButtonId();
                     mChoseId = checkedRadioButtonId;
-                    if (checkedRadioButtonId == rbOpt1.getId ()) {
+                    if (checkedRadioButtonId == rbOpt1.getId()) {
                         mPageNumStyle = Constants.PG_NUM_STYLE_PAGE_X_OF_N;
-                    } else if (checkedRadioButtonId == rbOpt2.getId ()) {
+                    } else if (checkedRadioButtonId == rbOpt2.getId()) {
                         mPageNumStyle = Constants.PG_NUM_STYLE_X_OF_N;
-                    } else if (checkedRadioButtonId == rbOpt3.getId ()) {
+                    } else if (checkedRadioButtonId == rbOpt3.getId()) {
                         mPageNumStyle = Constants.PG_NUM_STYLE_X;
                     }
-                    if (cbDefault.isChecked ()) {
+                    if (cbDefault.isChecked()) {
                         SharedPreferencesUtil.getInstance().setDefaultPageNumStyle(editor, mPageNumStyle, mChoseId);
                     } else {
                         SharedPreferencesUtil.getInstance().clearDefaultPageNumStyle(editor);

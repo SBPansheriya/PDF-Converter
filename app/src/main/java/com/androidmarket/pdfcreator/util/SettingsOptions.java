@@ -21,18 +21,18 @@ public class SettingsOptions {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         options.add(new EnhancementOptionsEntity(
-                context, R.drawable.ic_compress_image,
+                context, R.drawable.image_compression,
                 String.format(context.getString(R.string.image_compression_value_default),
                         sharedPreferences.getInt(DEFAULT_COMPRESSION, 30))));
 
         options.add(new EnhancementOptionsEntity(
-                context, R.drawable.ic_page_size_24dp,
+                context, R.drawable.set_page_size,
                 String.format(context.getString(R.string.page_size_value_def),
                         sharedPreferences.getString(Constants.DEFAULT_PAGE_SIZE_TEXT,
                                 Constants.DEFAULT_PAGE_SIZE))));
 
         options.add(new EnhancementOptionsEntity(
-                context, R.drawable.ic_font_black_24dp,
+                context, R.drawable.font_size,
                 String.format(context.getString(R.string.font_size_value_def),
                         sharedPreferences.getInt(Constants.DEFAULT_FONT_SIZE_TEXT,
                                 Constants.DEFAULT_FONT_SIZE))));
@@ -42,24 +42,24 @@ public class SettingsOptions {
                         Constants.DEFAULT_FONT_FAMILY));
 
         options.add(new EnhancementOptionsEntity(
-                context, R.drawable.ic_font_family_24dp,
+                context, R.drawable.font_family,
                 String.format(context.getString(R.string.font_family_value_def),
                         fontFamily.name())));
 
         options.add(new EnhancementOptionsEntity(
-                context, R.drawable.baseline_settings_brightness_24,
+                context, R.drawable.theme_default_value,
                 String.format(context.getString(R.string.theme_value_def),
                         sharedPreferences.getString(Constants.DEFAULT_THEME_TEXT,
                                 Constants.DEFAULT_THEME))));
 
         options.add(new EnhancementOptionsEntity(context,
-                R.drawable.ic_aspect_ratio_black_24dp, R.string.image_scale_type));
+                R.drawable.set_image_scale_type, R.string.image_scale_type));
 
         options.add(new EnhancementOptionsEntity(context,
-                R.drawable.ic_lock_black_24dp, R.string.change_master_pwd));
+                R.drawable.password_protect_pdf, R.string.change_master_pwd));
 
         options.add(new EnhancementOptionsEntity(context,
-                R.drawable.ic_format_list_numbered_black_24dp, R.string.show_pg_num));
+                R.drawable.show_page_numbers, R.string.show_pg_num));
 
         return options;
     }

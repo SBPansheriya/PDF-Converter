@@ -30,13 +30,13 @@ public class AdapterHistory extends RecyclerView.Adapter<AdapterHistory.ViewHist
         this.mActivity = mActivity;
         this.mOnClickListener = mOnClickListener;
         mIconsOperationList = new HashMap<>();
-        mIconsOperationList.put(mActivity.getString(R.string.printed), R.drawable.ic_print_black_24dp);
-        mIconsOperationList.put(mActivity.getString(R.string.created), R.drawable.ic_insert_drive_file_black_24dp);
-        mIconsOperationList.put(mActivity.getString(R.string.deleted), R.drawable.baseline_delete_24);
-        mIconsOperationList.put(mActivity.getString(R.string.renamed), R.drawable.ic_create_black_24dp);
-        mIconsOperationList.put(mActivity.getString(R.string.rotated), R.drawable.baseline_crop_rotate_24);
-        mIconsOperationList.put(mActivity.getString(R.string.encrypted), R.drawable.ic_lock_black_24dp);
-        mIconsOperationList.put(mActivity.getString(R.string.decrypted), R.drawable.ic_lock_open_black_24dp);
+        mIconsOperationList.put(mActivity.getString(R.string.printed), R.drawable.printed);
+        mIconsOperationList.put(mActivity.getString(R.string.created), R.drawable.created);
+        mIconsOperationList.put(mActivity.getString(R.string.deleted), R.drawable.deleted);
+        mIconsOperationList.put(mActivity.getString(R.string.renamed), R.drawable.rename);
+        mIconsOperationList.put(mActivity.getString(R.string.rotated), R.drawable.rotated);
+        mIconsOperationList.put(mActivity.getString(R.string.encrypted), R.drawable.lock);
+        mIconsOperationList.put(mActivity.getString(R.string.decrypted), R.drawable.unlock);
     }
 
     @NonNull

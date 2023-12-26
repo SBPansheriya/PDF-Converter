@@ -20,7 +20,7 @@ public class PageSizeEnhancer implements Enhancer {
     PageSizeEnhancer(@NonNull final Context context) {
         mPageSizeUtils = new PageSizeUtils(context);
         mEnhancementOptionsEntity = new EnhancementOptionsEntity(
-                context, R.drawable.ic_page_size_24dp, R.string.set_page_size_text);
+                context, R.drawable.set_page_size, R.string.set_page_size_text);
 
         PageSizeUtils.mPageSize = new TextToPdfPreferences(context).getPageSize();
     }

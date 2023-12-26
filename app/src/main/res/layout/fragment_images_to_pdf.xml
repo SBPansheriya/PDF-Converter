@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gr_img_pdf"
+    android:background="@color/dark_blue"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
     tools:ignore="Overdraw">
@@ -24,29 +24,30 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp">
+                android:layout_height="170dp">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/shape_bg" />
+                    android:src="@drawable/design_upper" />
 
                 <ImageView
                     android:id="@+id/ivBack"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="15dp"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_back" />
+                    android:src="@drawable/back" />
 
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="40dp"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="5dp"
                     android:gravity="start"
@@ -56,23 +57,22 @@
                         android:id="@+id/bing"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_b"
-                        android:text="Images to PDF"
+                        android:fontFamily="@font/metropolis_extrabold"
+                        android:text="@string/images_to_pdf"
                         android:textAllCaps="false"
                         android:textColor="#FFF"
-                        android:textSize="25.0sp" />
+                        android:textSize="27.0sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/bing"
                         android:layout_marginTop="5dp"
-                        android:fontFamily="@font/roboto_reg"
-                        android:letterSpacing="0.1"
-                        android:text="Create PDF from Images"
-                        android:textAllCaps="true"
+                        android:fontFamily="@font/metropolis_medium"
+                        android:letterSpacing="0.050"
+                        android:text="@string/create_pdf_from_images"
                         android:textColor="#FFF"
-                        android:textSize="12.0sp" />
+                        android:textSize="14.0sp" />
 
                 </LinearLayout>
 
@@ -99,9 +99,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:layout_marginBottom="7.5dp"
-                        app:cardBackgroundColor="#FF9B6A"
+                        app:cardBackgroundColor="@color/select_images"
                         app:cardCornerRadius="15dp"
                         app:cardElevation="0dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/design2" />
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -165,9 +172,16 @@
                         android:layout_height="100dp"
                         android:layout_marginTop="7.5dp"
                         android:layout_marginBottom="7.5dp"
-                        app:cardBackgroundColor="#FF6F72"
+                        app:cardBackgroundColor="@color/create_pdf"
                         app:cardCornerRadius="15dp"
                         app:cardElevation="0dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/design2" />
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -228,14 +242,21 @@
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/pdfOpen"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:layout_marginTop="7.5dp"
                         android:layout_marginBottom="7.5dp"
-                        app:cardBackgroundColor="#8FC6C3"
+                        app:cardBackgroundColor="@color/open_pdf"
                         app:cardCornerRadius="15dp"
                         app:cardElevation="0dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/design2" />
 
                         <ImageView
                             android:layout_width="match_parent"

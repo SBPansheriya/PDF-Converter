@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -40,7 +41,6 @@ import java.util.Collection;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import androidmarket.R;
-import com.androidmarket.pdfcreator.custom.MyCardView;
 import com.androidmarket.pdfcreator.db.DatabaseHelper;
 import com.androidmarket.pdfcreator.interfaces.OnPDFCreatedInterface;
 import com.androidmarket.pdfcreator.pdfModel.ImageToPDFOptions;
@@ -79,11 +79,12 @@ public class QrBarcodeScanFragment extends Fragment implements View.OnClickListe
     private FileUtils mFileUtils;
     private Font.FontFamily mFontFamily;
     private int mFontColor;
+    ImageView option_image,option_image1;
 
     @BindView(R.id.scan_qrcode)
-    MyCardView scanQrcode;
+    CardView scanQrcode;
     @BindView(R.id.scan_barcode)
-    MyCardView scanBarcode;
+    CardView scanBarcode;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -99,6 +100,17 @@ public class QrBarcodeScanFragment extends Fragment implements View.OnClickListe
         ButterKnife.bind(this, rootview);
         scanQrcode.setOnClickListener(this);
         scanBarcode.setOnClickListener(this);
+
+        // { new added line
+
+        option_image = rootview.findViewById(R.id.option_image);
+        option_image1 = rootview.findViewById(R.id.option_image1);
+
+        option_image.setImageResource(R.drawable.scan_qr_code);
+        option_image1.setImageResource(R.drawable.scan_barcode);
+
+        // }
+
         mFontFamily = Font.FontFamily.valueOf(mSharedPreferences.getString(Constants.DEFAULT_FONT_FAMILY_TEXT,
                 Constants.DEFAULT_FONT_FAMILY));
         mFontColor = mSharedPreferences.getInt(Constants.DEFAULT_FONT_COLOR_TEXT,

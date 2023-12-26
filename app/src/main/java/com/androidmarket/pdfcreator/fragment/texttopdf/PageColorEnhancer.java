@@ -32,7 +32,7 @@ public class PageColorEnhancer implements Enhancer {
         mPreferences = new TextToPdfPreferences(activity);
         mBuilder = builder;
         mEnhancementOptionsEntity = new EnhancementOptionsEntity(
-                mActivity, R.drawable.ic_page_color, R.string.page_color);
+                mActivity, R.drawable.page_color_texttopdf, R.string.page_color);
     }
 
     @Override

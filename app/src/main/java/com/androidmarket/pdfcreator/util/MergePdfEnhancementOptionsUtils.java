@@ -20,7 +20,7 @@ public class MergePdfEnhancementOptionsUtils {
         ArrayList<EnhancementOptionsEntity> options = new ArrayList<>();
 
         options.add(new EnhancementOptionsEntity(
-                context, R.drawable.baseline_enhanced_encryption_24, R.string.set_password));
+                context, R.drawable.password_protect_pdf, R.string.set_password));
         return options;
     }
 }

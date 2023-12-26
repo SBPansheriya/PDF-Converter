@@ -26,6 +26,12 @@
     <color name="color_qr_pdf">#A58FFD</color>
     <color name="color_excel_pdf">#6298EC</color>
 
+    // New Colors
+    <color name="select_images">#FF9B6A</color>
+    <color name="create_pdf">#FF6F72</color>
+    <color name="open_pdf">#8FC6C3</color>
+    <color name="blue">#36BDFB</color>
+    <color name="dark_blue">#00A9FF</color>
 
     <!-- DOTS COLOR -->
 

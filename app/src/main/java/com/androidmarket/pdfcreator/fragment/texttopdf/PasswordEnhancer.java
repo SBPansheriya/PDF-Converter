@@ -33,7 +33,7 @@ public class PasswordEnhancer implements Enhancer {
         mBuilder = builder;
         mBuilder.setPasswordProtected(false);
         mEnhancementOptionsEntity = new EnhancementOptionsEntity(
-                mActivity, R.drawable.baseline_enhanced_encryption_24, R.string.set_password);
+                mActivity, R.drawable.password_protect_pdf, R.string.set_password);
         mView = view;
     }
 

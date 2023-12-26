@@ -8,8 +8,8 @@
         android:type="linear" />
 
     <corners
-        android:topLeftRadius="15dp"
-        android:topRightRadius="15dp"
+        android:topLeftRadius="25dp"
+        android:topRightRadius="25dp"
         />
 
 

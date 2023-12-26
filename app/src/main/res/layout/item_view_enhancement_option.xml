@@ -10,9 +10,9 @@
         android:id="@+id/container_card_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
+        android:layout_marginVertical="5dp"
         app:cardCornerRadius="15dp"
-        app:cardBackgroundColor="@color/color_excel_pdf"
+        app:cardBackgroundColor="@color/blue"
         app:cardElevation="0dp">
 
         <ImageView
@@ -20,7 +20,14 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/shape_bg" />
+            android:src="@drawable/design2" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/design" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -43,11 +50,11 @@
                     android:id="@+id/option_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_b"
-                    tools:text="@string/password_protect_pdf_text"
+                    android:fontFamily="@font/metropolis_medium"
+                    android:text="Password Protect PDF"
                     android:textAllCaps="false"
                     android:textColor="#FFF"
-                    android:textSize="18.0sp" />
+                    android:textSize="20.0sp" />
 
             </LinearLayout>
 
@@ -59,7 +66,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="20dp"
                 android:contentDescription="@string/app_name"
-                tools:srcCompat="@drawable/baseline_enhanced_encryption_24" />
+                tools:srcCompat="@drawable/password_protect_pdf" />
 
 
         </RelativeLayout>

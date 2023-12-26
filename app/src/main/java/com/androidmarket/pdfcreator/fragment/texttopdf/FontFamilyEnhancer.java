@@ -34,7 +34,7 @@ public class FontFamilyEnhancer implements Enhancer {
         mPreferences = new TextToPdfPreferences(activity);
         mBuilder = builder;
         mEnhancementOptionsEntity = new EnhancementOptionsEntity(
-                mActivity, R.drawable.ic_font_family_24dp,
+                mActivity, R.drawable.font_family,
                 String.format(mActivity.getString(R.string.default_font_family_text),
                         mBuilder.getFontFamily().name()));
         mView = view;

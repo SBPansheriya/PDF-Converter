@@ -32,7 +32,7 @@ public class FontColorEnhancer implements Enhancer {
         mPreferences = new TextToPdfPreferences(activity);
         mBuilder = builder;
         mEnhancementOptionsEntity =  new EnhancementOptionsEntity(
-                mActivity, R.drawable.ic_color, R.string.font_color);
+                mActivity, R.drawable.font_color, R.string.font_color);
     }
 
     @Override

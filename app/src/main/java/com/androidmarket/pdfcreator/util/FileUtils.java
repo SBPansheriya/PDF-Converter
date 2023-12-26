@@ -1,6 +1,7 @@
 package com.androidmarket.pdfcreator.util;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,14 @@ import android.preference.PreferenceManager;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
 import android.provider.MediaStore;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.core.content.FileProvider;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -22,6 +31,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import androidmarket.R;
+
 import com.androidmarket.pdfcreator.db.DatabaseHelper;
 import com.androidmarket.pdfcreator.util.lambda.Consumer;
 
@@ -108,7 +118,6 @@ public class FileUtils {
      * opens a file in appropriate application
      *
      * @param path - path of the file to be opened
-     *
      */
     public void openFile(String path, FileType fileType) {
         if (path == null) {
@@ -363,28 +372,74 @@ public class FileUtils {
      * Opens a Dialog to select a filename.
      * If the file under that name already exists, an overwrite dialog gets opened.
      * If the overwrite is cancelled, this first dialog gets opened again.
+     *
      * @param preFillName a prefill Name for the file
-     * @param ext the file extension
-     * @param saveMethod the method that should be called when a filename is chosen
+     * @param ext         the file extension
+     * @param saveMethod  the method that should be called when a filename is chosen
      */
     public void openSaveDialog(String preFillName, String ext, Consumer<String> saveMethod) {
 
-        MaterialDialog.Builder builder = DialogUtils.getInstance().createCustomDialog(mContext,
-                R.string.creating_pdf, R.string.enter_file_name);
-        builder.input(mContext.getString(R.string.example), preFillName, (dialog, input) -> {
-            if (StringUtils.getInstance().isEmpty(input)) {
-                StringUtils.getInstance().showSnackbar(mContext, R.string.snackbar_name_not_blank);
-            } else {
-                final String filename = input.toString();
-                if (!isFileExist(filename + ext)) {
-                    saveMethod.accept(filename);
+//        MaterialDialog.Builder builder = DialogUtils.getInstance().createCustomDialog(mContext,
+//                R.string.creating_pdf, R.string.enter_file_name);
+//        builder.input(mContext.getString(R.string.example), preFillName, (dialog, input) -> {
+//            if (StringUtils.getInstance().isEmpty(input)) {
+//                StringUtils.getInstance().showSnackbar(mContext, R.string.snackbar_name_not_blank);
+//            } else {
+//                final String filename = input.toString();
+//                if (!isFileExist(filename + ext)) {
+//                    saveMethod.accept(filename);
+//                } else {
+//                    MaterialDialog.Builder builder2 = DialogUtils.getInstance().createOverwriteDialog(mContext);
+//                    builder2.onPositive((dialog2, which) -> saveMethod.accept(filename))
+//                            .onNegative((dialog1, which) ->
+//                                    openSaveDialog(preFillName, ext, saveMethod)).show();
+//                }
+//            }
+//        }).show();
+
+        Dialog dialog = new Dialog(mContext);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.create_pdf_dialog);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        EditText editText = dialog.findViewById(R.id.add_pdfName);
+
+        editText.setText(preFillName);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String filename = editText.getText().toString();
+                if (StringUtils.getInstance().isEmpty(filename)) {
+                    StringUtils.getInstance().showSnackbar(mContext, R.string.snackbar_name_not_blank);
+                    dialog.dismiss();
                 } else {
-                    MaterialDialog.Builder builder2 = DialogUtils.getInstance().createOverwriteDialog(mContext);
-                    builder2.onPositive((dialog2, which) -> saveMethod.accept(filename))
-                            .onNegative((dialog1, which) ->
-                                    openSaveDialog(preFillName, ext, saveMethod)).show();
+                    if (!isFileExist(filename + ext)) {
+                        saveMethod.accept(filename);
+                    } else {
+                        MaterialDialog.Builder builder2 = DialogUtils.getInstance().createOverwriteDialog(mContext);
+                        builder2.onPositive((dialog2, which) -> saveMethod.accept(filename))
+                                .onNegative((dialog1, which) ->
+                                        openSaveDialog(preFillName, ext, saveMethod)).show();
+                    }
+                    dialog.dismiss();
                 }
             }
-        }).show();
+        });
     }
 }

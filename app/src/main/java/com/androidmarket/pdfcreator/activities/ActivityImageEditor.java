@@ -84,6 +84,7 @@ public class ActivityImageEditor extends AppCompatActivity implements OnFilterIt
     private boolean mDoodleSelected = false;
 
     private PhotoEditor mPhotoEditor;
+    ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,15 @@ public class ActivityImageEditor extends AppCompatActivity implements OnFilterIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_editor);
         ButterKnife.bind(this);
+
+        back = findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         initValues();
         if (getSupportActionBar() != null) {
@@ -158,7 +168,7 @@ public class ActivityImageEditor extends AppCompatActivity implements OnFilterIt
 
         mCurrentImage = count % mDisplaySize;
         photoEditorView.getSource().setImageBitmap(BitmapFactory.decodeFile(mImagePaths.get(mCurrentImage)));
-        imageCount.setText(String.format(getString(R.string.showing_image), mCurrentImage + 1, mDisplaySize));
+        imageCount.setText(String.format(getString(R.string.showing_image_1_d_of_2_d), mCurrentImage + 1, mDisplaySize));
     }
 
     @OnClick(R.id.savecurrent)

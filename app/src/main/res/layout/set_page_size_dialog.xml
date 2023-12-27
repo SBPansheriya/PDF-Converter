@@ -121,6 +121,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:buttonTint="@color/black"
         android:fontFamily="@font/metropolis_semibold"
         android:text="@string/set_as_default" />
 </LinearLayout>

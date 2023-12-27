@@ -46,7 +46,7 @@ public class ImageEnhancementOptionsUtils {
                         pdfOptions.getQualityString())));
 
         options.add(new EnhancementOptionsEntity(
-                context, R.drawable.filter_images, R.string.filter_images_Text));
+                context, R.drawable.filter_images, "Filter Images"));
 
         options.add(new EnhancementOptionsEntity(
                 context, R.drawable.set_page_size, R.string.set_page_size_text));

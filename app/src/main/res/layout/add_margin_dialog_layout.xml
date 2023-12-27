@@ -5,7 +5,7 @@
     android:id="@+id/dialog_linear"
     android:layout_width="330dp"
     android:layout_marginHorizontal="10dp"
-    android:layout_height="235dp">
+    android:layout_height="430dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
                     android:id="@+id/image"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/compress_img"/>
+                    android:src="@drawable/add_margin_img"/>
 
                 <TextView
                     android:id="@+id/txt"
@@ -38,49 +38,86 @@
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/metropolis_bold"
                     android:textColor="@color/blue"
-                    android:text="@string/image_compression"
+                    android:text="@string/add_margins"
                     android:textSize="18sp"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_gravity="center"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginHorizontal="10dp"
-                    android:textSize="15sp"
-                    android:fontFamily="@font/metropolis_semibold"
+                    android:text="@string/top"
+                    android:fontFamily="@font/metropolis_bold"
                     android:textColor="@color/black"
-                    android:text="@string/change_image_compression_of_image"/>
+                    android:textSize="20sp" />
 
                 <EditText
-                    android:id="@+id/quality"
+                    android:id="@+id/topMarginEditText"
                     android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:layout_marginHorizontal="10dp"
+                    android:layout_height="40dp"
                     android:paddingStart="10dp"
-                    android:fontFamily="@font/metropolis_medium"
-                    android:hint="@string/enter_compression_of_image"
-                    android:layout_marginTop="5dp"
-                    android:maxLines="1"
-                    android:textSize="14sp"
-                    android:inputType="text"
-                    android:background="@drawable/create_pdf_dialog_border" />
-            </LinearLayout>
+                    android:layout_marginVertical="5dp"
+                    android:background="@drawable/create_pdf_dialog_border"
+                    android:inputType="number" />
 
-            <CheckBox
-                android:id="@+id/cbSetDefault"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/black"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/metropolis_semibold"
-                android:text="@string/set_as_default" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bottom"
+                    android:fontFamily="@font/metropolis_bold"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/bottomMarginEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingStart="10dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="@drawable/create_pdf_dialog_border"
+                    android:inputType="number" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/right"
+                    android:fontFamily="@font/metropolis_bold"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/rightMarginEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingStart="10dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="@drawable/create_pdf_dialog_border"
+                    android:inputType="number" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/left"
+                    android:fontFamily="@font/metropolis_bold"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/leftMarginEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:paddingStart="10dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="@drawable/create_pdf_dialog_border"
+                    android:inputType="number" />
+            </LinearLayout>
 
 
             <LinearLayout

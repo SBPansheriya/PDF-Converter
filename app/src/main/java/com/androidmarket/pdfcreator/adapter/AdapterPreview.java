@@ -62,7 +62,7 @@ public class AdapterPreview extends PagerAdapter {
     @SuppressLint("StringFormatInvalid")
     @Override
     public CharSequence getPageTitle(int position) {
-        return String.format(mContext.getResources().getString(R.string.showing_image),
+        return String.format(mContext.getResources().getString(R.string.showing_image_1_d_of_2_d),
                 position + 1, mPreviewItems.size());
     }
 

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:picker="http://schemas.android.com/tools"
+    android:id="@+id/dialog_linear"
+    android:layout_width="330dp"
+    android:layout_height="500dp"
+    android:layout_marginHorizontal="10dp"
+    android:orientation="horizontal">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/add_watermark_img" />
+
+                <TextView
+                    android:id="@+id/txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/metropolis_bold"
+                    android:text="@string/add_watermark"
+                    android:textColor="@color/blue"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/metropolis_semibold"
+                            android:text="@string/enter_watermark_text"
+                            android:textSize="15sp" />
+
+                        <EditText
+                            android:id="@+id/watermarkText"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginVertical="5dp"
+                            android:fontFamily="@font/metropolis_medium"
+                            android:background="@drawable/create_pdf_dialog_border"
+                            android:inputType="text"
+                            android:textColor="#80000000"
+                            android:paddingStart="10dp" />
+
+                        <!--                <com.google.android.material.textfield.TextInputLayout-->
+                        <!--                    android:layout_width="match_parent"-->
+                        <!--                    android:layout_height="wrap_content">-->
+
+                        <!--                    <com.google.android.material.textfield.TextInputEditText-->
+                        <!--                        android:id="@+id/watermarkText"-->
+                        <!--                        android:layout_width="match_parent"-->
+                        <!--                        android:layout_height="wrap_content"-->
+                        <!--                        android:inputType="text"-->
+                        <!--                        android:padding="5dp" />-->
+                        <!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/metropolis_semibold"
+                            android:text="@string/enter_watermark_angle"
+                            android:textSize="15sp" />
+
+                        <EditText
+                            android:id="@+id/watermarkAngle"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginVertical="5dp"
+                            android:fontFamily="@font/metropolis_medium"
+                            android:background="@drawable/create_pdf_dialog_border"
+                            android:inputType="number"
+                            android:textColor="#80000000"
+                            android:paddingStart="10dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/metropolis_semibold"
+                            android:text="@string/choose_watermark_color"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                    <!--color picker-->
+                    <com.github.danielnilsson9.colorpickerview.view.ColorPickerView
+                        android:id="@+id/watermarkColor"
+                        android:layout_width="match_parent"
+                        android:layout_height="350dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginBottom="10dp"
+                        picker:alphaChannelVisible="true" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/metropolis_semibold"
+                            android:text="@string/enter_watermark_font_size"
+                            android:textSize="15sp" />
+
+                        <EditText
+                            android:id="@+id/watermarkFontSize"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginVertical="5dp"
+                            android:fontFamily="@font/metropolis_medium"
+                            android:background="@drawable/create_pdf_dialog_border"
+                            android:inputType="number"
+                            android:textColor="#80000000"
+                            android:paddingStart="10dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/metropolis_semibold"
+                            android:text="@string/choose_watermark_font_family"
+                            android:textSize="15sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/create_pdf_dialog_border"
+                            android:layout_marginVertical="5dp"
+                            android:orientation="horizontal">
+
+                            <Spinner
+                                android:id="@+id/watermarkFontFamily"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:fontFamily="@font/metropolis_semibold"
+                                android:spinnerMode="dropdown" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/metropolis_semibold"
+                            android:text="@string/choose_watermark_style"
+                            android:textSize="15sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginVertical="5dp"
+                            android:background="@drawable/create_pdf_dialog_border"
+                            android:orientation="horizontal">
+                            <Spinner
+                                android:id="@+id/watermarkStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:ems="10"
+                                android:fontFamily="@font/metropolis_semibold"
+                                android:spinnerMode="dropdown" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_weight="1">
+
+                            <Button
+                                android:id="@+id/remove_dialog"
+                                android:layout_width="65dp"
+                                android:layout_height="35dp"
+                                android:background="@drawable/create_pdf_dialog_border"
+                                android:backgroundTint="#E7EAEE"
+                                android:fontFamily="@font/metropolis_medium"
+                                android:text="@string/remove"
+                                android:textAllCaps="false"
+                                android:textColor="#80000000"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/canceldialog"
+                                android:layout_width="65dp"
+                                android:layout_height="35dp"
+                                android:background="@drawable/create_pdf_dialog_border"
+                                android:backgroundTint="#E7EAEE"
+                                android:fontFamily="@font/metropolis_medium"
+                                android:text="@string/cancel"
+                                android:textAllCaps="false"
+                                android:textColor="#80000000"
+                                android:textSize="13sp" />
+
+                            <View
+                                android:layout_width="10dp"
+                                android:layout_height="0dp" />
+
+                            <Button
+                                android:id="@+id/okdialog"
+                                android:layout_width="45dp"
+                                android:layout_height="35dp"
+                                android:background="@drawable/create_pdf_dialog_border"
+                                android:backgroundTint="#00A9FF"
+                                android:fontFamily="@font/metropolis_medium"
+                                android:text="Ok"
+                                android:textAllCaps="false"
+                                android:textColor="@color/white"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

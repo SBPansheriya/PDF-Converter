@@ -5,7 +5,7 @@
     android:id="@+id/dialog_linear"
     android:layout_width="330dp"
     android:layout_marginHorizontal="10dp"
-    android:layout_height="160dp">
+    android:layout_height="180dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -49,10 +49,10 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginHorizontal="10dp"
                 android:textColor="#80001E2F"
+                android:textSize="15sp"
+                android:letterSpacing="0.015"
                 android:fontFamily="@font/metropolis_medium"
-                android:text="There already exists a file with the same name. do you want to overwrite? "/>
-
-
+                android:text="@string/there_already_exists_a_file_with_the_same_name_do_you_want_to_overwrite"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -73,7 +73,7 @@
                     android:textColor="#80000000"
                     android:backgroundTint="#E7EAEE"
                     android:textAllCaps="false"
-                    android:textSize="13dp"
+                    android:textSize="13sp"
                     android:src="@drawable/cancel"/>
 
                 <View
@@ -90,7 +90,7 @@
                     android:textColor="@color/white"
                     android:backgroundTint="#00A9FF"
                     android:textAllCaps="false"
-                    android:textSize="13dp"
+                    android:textSize="13sp"
                     android:src="@drawable/cancel"/>
             </LinearLayout>
         </LinearLayout>

@@ -34,14 +34,14 @@
             android:textSize="18sp" />
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/heading"
-        android:layout_width="match_parent"
-        android:layout_height="21dp"
-        android:layout_below="@+id/app_bar"
-        android:backgroundTint="@color/dark_blue"
-        android:layout_marginHorizontal="50dp"
-        android:background="@drawable/cornered_edges"/>
+    <!--    <TextView-->
+    <!--        android:id="@+id/heading"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="21dp"-->
+    <!--        android:layout_below="@+id/app_bar"-->
+    <!--        android:backgroundTint="@color/dark_blue"-->
+    <!--        android:layout_marginHorizontal="50dp"-->
+    <!--        android:background="@drawable/cornered_edges"/>-->
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"
@@ -49,16 +49,19 @@
         android:layout_height="match_parent"
         android:layout_above="@id/view"
         android:layout_below="@+id/app_bar"
+        android:layout_marginTop="-6dp"
+        android:layout_marginBottom="6dp"
+        android:fitsSystemWindows="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-<!--        <androidx.viewpager.widget.PagerTabStrip-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="top"-->
-<!--            android:background="@color/dark_blue"-->
-
-<!--            android:paddingTop="5dp"-->
-<!--            android:paddingBottom="5dp" />-->
+        <androidx.viewpager.widget.PagerTabStrip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
 
     </androidx.viewpager.widget.ViewPager>
 
@@ -74,21 +77,30 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/recyclerView"
-        android:fontFamily="@font/metropolis_bold"
+        android:layout_above="@id/title"
+        android:fontFamily="@font/metropolis_extrabold"
         android:gravity="center"
         android:paddingTop="3dp"
         android:text="@string/image_rearranging_options"
         android:textSize="14dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+
+    <LinearLayout
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/info"
-        android:orientation="horizontal"
-        tools:itemCount="2"
-        tools:listitem="@layout/item_preview_image_options" />
+        android:layout_marginTop="10dp"
+        android:gravity="center">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_preview_image_options" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/info"
@@ -97,7 +109,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:background="@color/colorAccent"
+        android:background="@color/dark_blue"
         android:gravity="center"
         android:text="@string/swipe_to_view_next"
         android:textColor="@color/white" />

@@ -1,6 +1,7 @@
 package com.androidmarket.pdfcreator.fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -157,6 +158,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         mActivity = (Activity) context;
     }
 
+    @SuppressLint("StringFormatInvalid")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -204,8 +206,6 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                 getActivity().finish();
             }
         });
-
-
         return root;
     }
 
@@ -510,30 +510,76 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     }
 
     private void addBorder() {
-        DialogUtils.getInstance().createCustomDialogWithoutContent(mActivity, R.string.border)
-                .customView(R.layout.dialog_border_image, true)
-                .onPositive((dialog1, which) -> {
-                    View view = dialog1.getCustomView();
-                    final EditText input = view.findViewById(R.id.border_width);
-                    int value = 0;
-                    try {
-                        value = Integer.parseInt(String.valueOf(input.getText()));
-                        if (value > 200 || value < 0) {
-                            Toast.makeText(getActivity(), R.string.invalid_entry, Toast.LENGTH_SHORT).show();
-                        } else {
-                            mPdfOptions.setBorderWidth(value);
-                            showEnhancementOptions();
-                        }
-                    } catch (NumberFormatException e) {
+//        DialogUtils.getInstance().createCustomDialogWithoutContent(mActivity, R.string.border)
+//                .customView(R.layout.dialog_border_image, true)
+//                .onPositive((dialog1, which) -> {
+//                    View view = dialog1.getCustomView();
+//                    final EditText input = view.findViewById(R.id.border_width);
+//                    int value = 0;
+//                    try {
+//                        value = Integer.parseInt(String.valueOf(input.getText()));
+//                        if (value > 200 || value < 0) {
+//                            Toast.makeText(getActivity(), R.string.invalid_entry, Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            mPdfOptions.setBorderWidth(value);
+//                            showEnhancementOptions();
+//                        }
+//                    } catch (NumberFormatException e) {
+//                        Toast.makeText(getActivity(), R.string.invalid_entry, Toast.LENGTH_SHORT).show();
+//                    }
+//                    final CheckBox cbSetDefault = view.findViewById(R.id.cbSetDefault);
+//                    if (cbSetDefault.isChecked()) {
+//                        SharedPreferences.Editor editor = mSharedPreferences.edit();
+//                        editor.putInt(DEFAULT_IMAGE_BORDER_TEXT, value);
+//                        editor.apply();
+//                    }
+//                }).build().show();
+        Dialog dialog = new Dialog(getContext());
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.border_width_dialog_layout);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        final EditText input = dialog.findViewById(R.id.number);
+        CheckBox cbSetDefault = dialog.findViewById(R.id.cbSetDefault);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int value = 0;
+                try {
+                    value = Integer.parseInt(String.valueOf(input.getText()));
+                    if (value > 200 || value < 0) {
                         Toast.makeText(getActivity(), R.string.invalid_entry, Toast.LENGTH_SHORT).show();
+                    } else {
+                        mPdfOptions.setBorderWidth(value);
+                        showEnhancementOptions();
                     }
-                    final CheckBox cbSetDefault = view.findViewById(R.id.cbSetDefault);
-                    if (cbSetDefault.isChecked()) {
-                        SharedPreferences.Editor editor = mSharedPreferences.edit();
-                        editor.putInt(DEFAULT_IMAGE_BORDER_TEXT, value);
-                        editor.apply();
-                    }
-                }).build().show();
+                } catch (NumberFormatException e) {
+                    Toast.makeText(getActivity(), R.string.invalid_entry, Toast.LENGTH_SHORT).show();
+                }
+                if (cbSetDefault.isChecked()) {
+                    SharedPreferences.Editor editor = mSharedPreferences.edit();
+                    editor.putInt(DEFAULT_IMAGE_BORDER_TEXT, value);
+                    editor.apply();
+                }
+                dialog.dismiss();
+            }
+        });
     }
 
     private void compressImage() {
@@ -712,25 +758,128 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     }
 
     private void addWatermark() {
-        final MaterialDialog dialog = new MaterialDialog.Builder(mActivity)
-                .title(R.string.add_watermark)
-                .customView(R.layout.add_watermark_dialog, true)
-                .positiveText(android.R.string.ok)
-                .negativeText(android.R.string.cancel)
-                .neutralText(R.string.remove_dialog)
-                .build();
+//        final MaterialDialog dialog = new MaterialDialog.Builder(mActivity)
+//                .title(R.string.add_watermark)
+//                .customView(R.layout.add_watermark_dialog, true)
+//                .positiveText(android.R.string.ok)
+//                .negativeText(android.R.string.cancel)
+//                .neutralText(R.string.remove_dialog)
+//                .build();
+//
+//        final View positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
+//        final View neutralAction = dialog.getActionButton(DialogAction.NEUTRAL);
+//
+//        final Watermark watermark = new Watermark();
+//
+//        final EditText watermarkTextInput = dialog.getCustomView().findViewById(R.id.watermarkText);
+//        final EditText angleInput = dialog.getCustomView().findViewById(R.id.watermarkAngle);
+//        final ColorPickerView colorPickerInput = dialog.getCustomView().findViewById(R.id.watermarkColor);
+//        final EditText fontSizeInput = dialog.getCustomView().findViewById(R.id.watermarkFontSize);
+//        final Spinner fontFamilyInput = dialog.getCustomView().findViewById(R.id.watermarkFontFamily);
+//        final Spinner styleInput = dialog.getCustomView().findViewById(R.id.watermarkStyle);
+//
+//        ArrayAdapter<Font.FontFamily> fontFamilyAdapter = new ArrayAdapter<>(mActivity,
+//                android.R.layout.simple_spinner_dropdown_item, Font.FontFamily.values());
+//        fontFamilyInput.setAdapter(fontFamilyAdapter);
+//
+//        ArrayAdapter<String> styleAdapter = new ArrayAdapter<>(mActivity, android.R.layout.simple_spinner_dropdown_item,
+//                mActivity.getResources().getStringArray(R.array.fontStyles));
+//        styleInput.setAdapter(styleAdapter);
+//
+//
+//        if (mPdfOptions.isWatermarkAdded()) {
+//            watermarkTextInput.setText(mPdfOptions.getWatermark().getWatermarkText());
+//            angleInput.setText(String.valueOf(mPdfOptions.getWatermark().getRotationAngle()));
+//            fontSizeInput.setText(String.valueOf(mPdfOptions.getWatermark().getTextSize()));
+//            BaseColor color = this.mPdfOptions.getWatermark().getTextColor();
+//            //color.getRGB() returns an ARGB color
+//            colorPickerInput.setColor(color.getRGB());
+//
+//            fontFamilyInput.setSelection(fontFamilyAdapter.getPosition(mPdfOptions.getWatermark().getFontFamily()));
+//            styleInput.setSelection(styleAdapter.getPosition(
+//                    getStyleNameFromFont(mPdfOptions.getWatermark().getFontStyle())));
+//        } else {
+//            angleInput.setText("0");
+//            fontSizeInput.setText("50");
+//        }
+//        watermarkTextInput.addTextChangedListener(
+//                new DefaultTextWatcher() {
+//                    @Override
+//                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                        positiveAction.setEnabled(s.toString().trim().length() > 0);
+//                    }
+//
+//                    @Override
+//                    public void afterTextChanged(Editable input) {
+//                        if (StringUtils.getInstance().isEmpty(input)) {
+//                            Toast.makeText(getActivity(), R.string.snackbar_watermark_cannot_be_blank, Toast.LENGTH_SHORT).show();
+//
+//
+//                        } else {
+//                            watermark.setWatermarkText(input.toString());
+//                            showEnhancementOptions();
+//                        }
+//                    }
+//                });
+//
+//        neutralAction.setEnabled(this.mPdfOptions.isWatermarkAdded());
+//        positiveAction.setEnabled(this.mPdfOptions.isWatermarkAdded());
+//
+//        neutralAction.setOnClickListener(v -> {
+//            mPdfOptions.setWatermarkAdded(false);
+//            showEnhancementOptions();
+//            dialog.dismiss();
+//            Toast.makeText(getActivity(), R.string.watermark_remove, Toast.LENGTH_SHORT).show();
+//
+//        });
+//
+//        positiveAction.setOnClickListener(v -> {
+//            watermark.setWatermarkText(watermarkTextInput.getText().toString());
+//            watermark.setFontFamily(((Font.FontFamily) fontFamilyInput.getSelectedItem()));
+//            watermark.setFontStyle(getStyleValueFromName(((String) styleInput.getSelectedItem())));
+//
+//            watermark.setRotationAngle(StringUtils.getInstance().parseIntOrDefault(angleInput.getText(), 0));
+//
+//            watermark.setTextSize(StringUtils.getInstance().parseIntOrDefault(fontSizeInput.getText(), 50));
+//
+//            watermark.setTextColor((new BaseColor(
+//                    Color.red(colorPickerInput.getColor()),
+//                    Color.green(colorPickerInput.getColor()),
+//                    Color.blue(colorPickerInput.getColor()),
+//                    Color.alpha(colorPickerInput.getColor())
+//            )));
+//            mPdfOptions.setWatermark(watermark);
+//            mPdfOptions.setWatermarkAdded(true);
+//            showEnhancementOptions();
+//            dialog.dismiss();
+//            Toast.makeText(getActivity(), R.string.watermark_added, Toast.LENGTH_SHORT).show();
+//
+//        });
+//
+//        dialog.show();
 
-        final View positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
-        final View neutralAction = dialog.getActionButton(DialogAction.NEUTRAL);
+        Dialog dialog1 = new Dialog(getContext());
+        if (dialog1.getWindow() != null) {
+            dialog1.getWindow().setGravity(Gravity.CENTER);
+            dialog1.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog1.setCancelable(false);
+        }
+        dialog1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog1.setContentView(R.layout.add_water_mark_dialog_layout);
+        dialog1.setCancelable(false);
+        dialog1.show();
+
+        Button cancel = dialog1.findViewById(R.id.canceldialog);
+        Button ok = dialog1.findViewById(R.id.okdialog);
+        Button remove = dialog1.findViewById(R.id.remove_dialog);
+        final EditText watermarkTextInput = dialog1.findViewById(R.id.watermarkText);
+        final EditText angleInput = dialog1.findViewById(R.id.watermarkAngle);
+        final ColorPickerView colorPickerInput = dialog1.findViewById(R.id.watermarkColor);
+        final EditText fontSizeInput = dialog1.findViewById(R.id.watermarkFontSize);
+        final Spinner fontFamilyInput = dialog1.findViewById(R.id.watermarkFontFamily);
+        final Spinner styleInput = dialog1.findViewById(R.id.watermarkStyle);
 
         final Watermark watermark = new Watermark();
-
-        final EditText watermarkTextInput = dialog.getCustomView().findViewById(R.id.watermarkText);
-        final EditText angleInput = dialog.getCustomView().findViewById(R.id.watermarkAngle);
-        final ColorPickerView colorPickerInput = dialog.getCustomView().findViewById(R.id.watermarkColor);
-        final EditText fontSizeInput = dialog.getCustomView().findViewById(R.id.watermarkFontSize);
-        final Spinner fontFamilyInput = dialog.getCustomView().findViewById(R.id.watermarkFontFamily);
-        final Spinner styleInput = dialog.getCustomView().findViewById(R.id.watermarkStyle);
 
         ArrayAdapter<Font.FontFamily> fontFamilyAdapter = new ArrayAdapter<>(mActivity,
                 android.R.layout.simple_spinner_dropdown_item, Font.FontFamily.values());
@@ -756,18 +905,18 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
             angleInput.setText("0");
             fontSizeInput.setText("50");
         }
+
         watermarkTextInput.addTextChangedListener(
                 new DefaultTextWatcher() {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        positiveAction.setEnabled(s.toString().trim().length() > 0);
+                        ok.setEnabled(s.toString().trim().length() > 0);
                     }
 
                     @Override
                     public void afterTextChanged(Editable input) {
                         if (StringUtils.getInstance().isEmpty(input)) {
                             Toast.makeText(getActivity(), R.string.snackbar_watermark_cannot_be_blank, Toast.LENGTH_SHORT).show();
-
 
                         } else {
                             watermark.setWatermarkText(input.toString());
@@ -776,41 +925,50 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                     }
                 });
 
-        neutralAction.setEnabled(this.mPdfOptions.isWatermarkAdded());
-        positiveAction.setEnabled(this.mPdfOptions.isWatermarkAdded());
+        remove.setEnabled(this.mPdfOptions.isWatermarkAdded());
+        ok.setEnabled(this.mPdfOptions.isWatermarkAdded());
 
-        neutralAction.setOnClickListener(v -> {
-            mPdfOptions.setWatermarkAdded(false);
-            showEnhancementOptions();
-            dialog.dismiss();
-            Toast.makeText(getActivity(), R.string.watermark_remove, Toast.LENGTH_SHORT).show();
-
+        remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPdfOptions.setWatermarkAdded(false);
+                showEnhancementOptions();
+                dialog1.dismiss();
+                Toast.makeText(getActivity(), R.string.watermark_remove, Toast.LENGTH_SHORT).show();
+            }
         });
 
-        positiveAction.setOnClickListener(v -> {
-            watermark.setWatermarkText(watermarkTextInput.getText().toString());
-            watermark.setFontFamily(((Font.FontFamily) fontFamilyInput.getSelectedItem()));
-            watermark.setFontStyle(getStyleValueFromName(((String) styleInput.getSelectedItem())));
-
-            watermark.setRotationAngle(StringUtils.getInstance().parseIntOrDefault(angleInput.getText(), 0));
-
-            watermark.setTextSize(StringUtils.getInstance().parseIntOrDefault(fontSizeInput.getText(), 50));
-
-            watermark.setTextColor((new BaseColor(
-                    Color.red(colorPickerInput.getColor()),
-                    Color.green(colorPickerInput.getColor()),
-                    Color.blue(colorPickerInput.getColor()),
-                    Color.alpha(colorPickerInput.getColor())
-            )));
-            mPdfOptions.setWatermark(watermark);
-            mPdfOptions.setWatermarkAdded(true);
-            showEnhancementOptions();
-            dialog.dismiss();
-            Toast.makeText(getActivity(), R.string.watermark_added, Toast.LENGTH_SHORT).show();
-
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog1.dismiss();
+            }
         });
 
-        dialog.show();
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                watermark.setWatermarkText(watermarkTextInput.getText().toString());
+                watermark.setFontFamily(((Font.FontFamily) fontFamilyInput.getSelectedItem()));
+                watermark.setFontStyle(getStyleValueFromName(((String) styleInput.getSelectedItem())));
+
+                watermark.setRotationAngle(StringUtils.getInstance().parseIntOrDefault(angleInput.getText(), 0));
+
+                watermark.setTextSize(StringUtils.getInstance().parseIntOrDefault(fontSizeInput.getText(), 50));
+
+                watermark.setTextColor((new BaseColor(
+                        Color.red(colorPickerInput.getColor()),
+                        Color.green(colorPickerInput.getColor()),
+                        Color.blue(colorPickerInput.getColor()),
+                        Color.alpha(colorPickerInput.getColor())
+                )));
+                mPdfOptions.setWatermark(watermark);
+                mPdfOptions.setWatermarkAdded(true);
+                showEnhancementOptions();
+                Toast.makeText(getActivity(), R.string.watermark_added, Toast.LENGTH_SHORT).show();
+                dialog1.dismiss();
+            }
+        });
     }
 
     private void setPageColor() {
@@ -912,28 +1070,65 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     }
 
     private void addMargins() {
-        MaterialDialog materialDialog = new MaterialDialog.Builder(mActivity)
-                .title(R.string.add_margins)
-                .customView(R.layout.add_margins_dialog, false)
-                .positiveText(R.string.ok)
-                .negativeText(R.string.cancel)
-                .onPositive(((dialog, which) -> {
-                    View view = dialog.getCustomView();
-                    EditText top = view.findViewById(R.id.topMarginEditText);
-                    EditText bottom = view.findViewById(R.id.bottomMarginEditText);
-                    EditText right = view.findViewById(R.id.rightMarginEditText);
-                    EditText left = view.findViewById(R.id.leftMarginEditText);
+//        MaterialDialog materialDialog = new MaterialDialog.Builder(mActivity)
+//                .title(R.string.add_margins)
+//                .customView(R.layout.add_margins_dialog, false)
+//                .positiveText(R.string.ok)
+//                .negativeText(R.string.cancel)
+//                .onPositive(((dialog, which) -> {
+//                    View view = dialog.getCustomView();
+//                    EditText top = view.findViewById(R.id.topMarginEditText);
+//                    EditText bottom = view.findViewById(R.id.bottomMarginEditText);
+//                    EditText right = view.findViewById(R.id.rightMarginEditText);
+//                    EditText left = view.findViewById(R.id.leftMarginEditText);
+//
+//                    mMarginTop = StringUtils.getInstance().parseIntOrDefault(top.getText(), 0);
+//                    mMarginBottom = StringUtils.getInstance().parseIntOrDefault(bottom.getText(), 0);
+//                    mMarginRight = StringUtils.getInstance().parseIntOrDefault(right.getText(), 0);
+//                    mMarginLeft = StringUtils.getInstance().parseIntOrDefault(left.getText(), 0);
+//
+//                    mPdfOptions.setMargins(mMarginTop, mMarginBottom, mMarginRight, mMarginLeft);
+//                })).build();
+//        materialDialog.show();
 
-                    mMarginTop = StringUtils.getInstance().parseIntOrDefault(top.getText(), 0);
-                    mMarginBottom = StringUtils.getInstance().parseIntOrDefault(bottom.getText(), 0);
-                    mMarginRight = StringUtils.getInstance().parseIntOrDefault(right.getText(), 0);
-                    mMarginLeft = StringUtils.getInstance().parseIntOrDefault(left.getText(), 0);
+        Dialog dialog = new Dialog(getContext());
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.add_margin_dialog_layout);
+        dialog.setCancelable(false);
+        dialog.show();
 
-                    mPdfOptions.setMargins(mMarginTop, mMarginBottom, mMarginRight, mMarginLeft);
-                })).build();
-        materialDialog.show();
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        EditText top = dialog.findViewById(R.id.topMarginEditText);
+        EditText bottom = dialog.findViewById(R.id.bottomMarginEditText);
+        EditText right = dialog.findViewById(R.id.rightMarginEditText);
+        EditText left = dialog.findViewById(R.id.leftMarginEditText);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMarginTop = StringUtils.getInstance().parseIntOrDefault(top.getText(), 0);
+                mMarginBottom = StringUtils.getInstance().parseIntOrDefault(bottom.getText(), 0);
+                mMarginRight = StringUtils.getInstance().parseIntOrDefault(right.getText(), 0);
+                mMarginLeft = StringUtils.getInstance().parseIntOrDefault(left.getText(), 0);
+
+                mPdfOptions.setMargins(mMarginTop, mMarginBottom, mMarginRight, mMarginLeft);
+                dialog.dismiss();
+            }
+        });
     }
-
 
     private void addPageNumbers() {
 
@@ -941,14 +1136,67 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         mPageNumStyle = mSharedPreferences.getString(Constants.PREF_PAGE_STYLE, null);
         mChoseId = mSharedPreferences.getInt(Constants.PREF_PAGE_STYLE_ID, -1);
 
-        RelativeLayout dialogLayout = (RelativeLayout) getLayoutInflater()
-                .inflate(R.layout.add_pgnum_dialog, null);
+//        RelativeLayout dialogLayout = (RelativeLayout) getLayoutInflater()
+//                .inflate(R.layout.add_pgnum_dialog, null);
+//
+//        RadioButton rbOpt1 = dialogLayout.findViewById(R.id.page_num_opt1);
+//        RadioButton rbOpt2 = dialogLayout.findViewById(R.id.page_num_opt2);
+//        RadioButton rbOpt3 = dialogLayout.findViewById(R.id.page_num_opt3);
+//        RadioGroup rg = dialogLayout.findViewById(R.id.radioGroup);
+//        CheckBox cbDefault = dialogLayout.findViewById(R.id.set_as_default);
+//
+//        if (mChoseId > 0) {
+//            cbDefault.setChecked(true);
+//            rg.clearCheck();
+//            rg.check(mChoseId);
+//        }
+//
+//        MaterialDialog materialDialog = new MaterialDialog.Builder(mActivity)
+//                .title(R.string.choose_page_number_style)
+//                .customView(dialogLayout, false)
+//                .positiveText(R.string.ok)
+//                .negativeText(R.string.cancel)
+//                .neutralText(R.string.remove_dialog)
+//                .onPositive(((dialog, which) -> {
+//
+//                    int checkedRadioButtonId = rg.getCheckedRadioButtonId();
+//                    mChoseId = checkedRadioButtonId;
+//                    if (checkedRadioButtonId == rbOpt1.getId()) {
+//                        mPageNumStyle = Constants.PG_NUM_STYLE_PAGE_X_OF_N;
+//                    } else if (checkedRadioButtonId == rbOpt2.getId()) {
+//                        mPageNumStyle = Constants.PG_NUM_STYLE_X_OF_N;
+//                    } else if (checkedRadioButtonId == rbOpt3.getId()) {
+//                        mPageNumStyle = Constants.PG_NUM_STYLE_X;
+//                    }
+//                    if (cbDefault.isChecked()) {
+//                        SharedPreferencesUtil.getInstance().setDefaultPageNumStyle(editor, mPageNumStyle, mChoseId);
+//                    } else {
+//                        SharedPreferencesUtil.getInstance().clearDefaultPageNumStyle(editor);
+//                    }
+//                }))
+//                .onNeutral((((dialog, which) -> mPageNumStyle = null)))
+//                .build();
+//        materialDialog.show();
 
-        RadioButton rbOpt1 = dialogLayout.findViewById(R.id.page_num_opt1);
-        RadioButton rbOpt2 = dialogLayout.findViewById(R.id.page_num_opt2);
-        RadioButton rbOpt3 = dialogLayout.findViewById(R.id.page_num_opt3);
-        RadioGroup rg = dialogLayout.findViewById(R.id.radioGroup);
-        CheckBox cbDefault = dialogLayout.findViewById(R.id.set_as_default);
+        Dialog dialog = new Dialog(getContext());
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.add_pgnum_dialog_layout);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        Button remove = dialog.findViewById(R.id.remove_dialog);
+        CheckBox cbDefault = dialog.findViewById(R.id.set_as_default);
+        RadioButton rbOpt1 = dialog.findViewById(R.id.page_num_opt1);
+        RadioButton rbOpt2 = dialog.findViewById(R.id.page_num_opt2);
+        RadioButton rbOpt3 = dialog.findViewById(R.id.page_num_opt3);
+        RadioGroup rg = dialog.findViewById(R.id.radioGroup);
 
         if (mChoseId > 0) {
             cbDefault.setChecked(true);
@@ -956,31 +1204,39 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
             rg.check(mChoseId);
         }
 
-        MaterialDialog materialDialog = new MaterialDialog.Builder(mActivity)
-                .title(R.string.choose_page_number_style)
-                .customView(dialogLayout, false)
-                .positiveText(R.string.ok)
-                .negativeText(R.string.cancel)
-                .neutralText(R.string.remove_dialog)
-                .onPositive(((dialog, which) -> {
+        remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rg.clearCheck();
+            }
+        });
 
-                    int checkedRadioButtonId = rg.getCheckedRadioButtonId();
-                    mChoseId = checkedRadioButtonId;
-                    if (checkedRadioButtonId == rbOpt1.getId()) {
-                        mPageNumStyle = Constants.PG_NUM_STYLE_PAGE_X_OF_N;
-                    } else if (checkedRadioButtonId == rbOpt2.getId()) {
-                        mPageNumStyle = Constants.PG_NUM_STYLE_X_OF_N;
-                    } else if (checkedRadioButtonId == rbOpt3.getId()) {
-                        mPageNumStyle = Constants.PG_NUM_STYLE_X;
-                    }
-                    if (cbDefault.isChecked()) {
-                        SharedPreferencesUtil.getInstance().setDefaultPageNumStyle(editor, mPageNumStyle, mChoseId);
-                    } else {
-                        SharedPreferencesUtil.getInstance().clearDefaultPageNumStyle(editor);
-                    }
-                }))
-                .onNeutral((((dialog, which) -> mPageNumStyle = null)))
-                .build();
-        materialDialog.show();
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int checkedRadioButtonId = rg.getCheckedRadioButtonId();
+                mChoseId = checkedRadioButtonId;
+                if (checkedRadioButtonId == rbOpt1.getId()) {
+                    mPageNumStyle = Constants.PG_NUM_STYLE_PAGE_X_OF_N;
+                } else if (checkedRadioButtonId == rbOpt2.getId()) {
+                    mPageNumStyle = Constants.PG_NUM_STYLE_X_OF_N;
+                } else if (checkedRadioButtonId == rbOpt3.getId()) {
+                    mPageNumStyle = Constants.PG_NUM_STYLE_X;
+                }
+                if (cbDefault.isChecked()) {
+                    SharedPreferencesUtil.getInstance().setDefaultPageNumStyle(editor, mPageNumStyle, mChoseId);
+                } else {
+                    SharedPreferencesUtil.getInstance().clearDefaultPageNumStyle(editor);
+                }
+                dialog.dismiss();
+            }
+        });
     }
 }

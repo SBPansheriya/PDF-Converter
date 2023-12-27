@@ -11,14 +11,15 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
         app:cardCornerRadius="35dp">
 
         <ImageView
             android:id="@+id/option_image"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:contentDescription="@string/rearrange_images"
             app:srcCompat="@drawable/rearrange" />
@@ -27,14 +28,13 @@
 
     <TextView
         android:id="@+id/option_name"
-        android:layout_width="70dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="3dp"
-        android:gravity="center"
-        android:padding="2dp"
         android:textAlignment="center"
         android:fontFamily="@font/metropolis_semibold"
         android:textSize="12sp"
-        tools:text="@string/rearrange_text" />
+        tools:text="@string/sort" />
 
 </LinearLayout>

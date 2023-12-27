@@ -12,10 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.viewpager.widget.PagerTabStrip;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,6 +39,7 @@ import com.androidmarket.pdfcreator.pdfModel.PreviewImageOptionItem;
 import com.androidmarket.pdfcreator.Constants;
 import com.androidmarket.pdfcreator.util.ImageSortUtils;
 import com.androidmarket.pdfcreator.util.ThemeUtils;
+import com.google.android.material.tabs.TabLayout;
 
 import static com.androidmarket.pdfcreator.Constants.IMAGE_SCALE_TYPE_ASPECT_RATIO;
 import static com.androidmarket.pdfcreator.Constants.IMAGE_SCALE_TYPE_STRETCH;
@@ -50,7 +54,7 @@ public class ActivityPreview extends AppCompatActivity implements AdapterPreview
     private static final int INTENT_REQUEST_REARRANGE_IMAGE = 1;
     private AdapterPreview mAdapterPreview;
     private ViewPager mViewPager;
-    TextView textView;
+    ImageView back;
 
     @SuppressLint("StringFormatInvalid")
     @Override
@@ -60,11 +64,14 @@ public class ActivityPreview extends AppCompatActivity implements AdapterPreview
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview);
 
-//        textView = findViewById(R.id.heading);
-//        int position = 0;
-//
-//        textView.setText(String.format(getResources().getString(R.string.showing_image),
-//                position + 1, mImagesArrayList.size()));
+        back = findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         ButterKnife.bind(this);
         // Extract mImagesArrayList uri array from the intent
@@ -144,10 +151,38 @@ public class ActivityPreview extends AppCompatActivity implements AdapterPreview
         dialog1.setCancelable(false);
         dialog1.show();
 
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
         Button cancel = dialog1.findViewById(R.id.canceldialog);
         RadioGroup radioGroup = dialog1.findViewById(R.id.scale_type);
+        RadioButton button = dialog1.findViewById(R.id.newest_name_list);
+        RadioButton button1 = dialog1.findViewById(R.id.oldest_name_list);
+        RadioButton button2 = dialog1.findViewById(R.id.newest_date_list);
+        RadioButton button3 = dialog1.findViewById(R.id.oldest_date_list);
+
+        int checkedPosition = sharedPreferences.getInt("checked_position", -1);
+
+        switch (checkedPosition) {
+            case 0:
+                button.setChecked(true);
+                break;
+            case 1:
+                button1.setChecked(true);
+                break;
+            case 2:
+                button2.setChecked(true);
+                break;
+            case 3:
+                button3.setChecked(true);
+                break;
+            default:
+                radioGroup.clearCheck();
+                break;
+        }
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 int position;
@@ -169,6 +204,9 @@ public class ActivityPreview extends AppCompatActivity implements AdapterPreview
                         Toast.makeText(getApplicationContext(), "Invalid sort option", Toast.LENGTH_SHORT).show();
                         return;
                 }
+
+                editor.putInt("checked_position", position);
+                editor.apply();
 
                 // Perform sort operation based on the selected position
                 ImageSortUtils.getInstance().performSortOperation(position, mImagesArrayList);

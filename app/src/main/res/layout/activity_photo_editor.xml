@@ -38,16 +38,17 @@
     <LinearLayout
         android:id="@+id/control"
         android:layout_width="match_parent"
-        android:layout_height="34dp"
+        android:layout_height="40dp"
         android:layout_below="@+id/app_bar"
-        android:layout_marginVertical="10dp"
         android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/border_crop_image"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="34dp"
+            android:layout_gravity="center"
             android:layout_weight="1">
 
             <ImageView
@@ -61,11 +62,11 @@
 
             <TextView
                 android:id="@+id/imagecount"
-                android:layout_width="140dp"
+                android:layout_width="160dp"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/metropolis_bold"
+                android:fontFamily="@font/metropolis_extrabold"
                 android:gravity="center"
-                android:text="@string/showing_image"
+                android:text="@string/showing_image_1_d_of_2_d"
                 android:textSize="14sp" />
 
             <ImageView
@@ -81,7 +82,7 @@
         <Button
             android:id="@+id/savecurrent"
             android:layout_width="57dp"
-            android:layout_height="24dp"
+            android:layout_height="28dp"
             android:layout_gravity="center"
             android:layout_marginStart="2dp"
             android:background="@drawable/cornered_edges"
@@ -95,7 +96,7 @@
         <Button
             android:id="@+id/resetCurrent"
             android:layout_width="67dp"
-            android:layout_height="24dp"
+            android:layout_height="28dp"
             android:layout_gravity="center"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="10dp"
@@ -110,76 +111,85 @@
 
     </LinearLayout>
 
-<!--    <LinearLayout-->
-<!--        android:id="@+id/controls"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentTop="true"-->
-<!--        android:layout_marginTop="5dp"-->
-<!--        android:orientation="horizontal">-->
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/controls"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentTop="true"-->
+    <!--        android:layout_marginTop="5dp"-->
+    <!--        android:orientation="horizontal">-->
 
-<!--        <Button-->
-<!--            android:id="@+id/resetCurrent"-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="5dp"-->
-<!--            android:background="@drawable/cornered_edges"-->
-<!--            android:text="@string/reset"-->
-<!--            android:textAllCaps="false"-->
-<!--            android:textColor="?attr/bottomSheetTextColor" />-->
+    <!--        <Button-->
+    <!--            android:id="@+id/resetCurrent"-->
+    <!--            android:layout_width="50dp"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginStart="5dp"-->
+    <!--            android:background="@drawable/cornered_edges"-->
+    <!--            android:text="@string/reset"-->
+    <!--            android:textAllCaps="false"-->
+    <!--            android:textColor="?attr/bottomSheetTextColor" />-->
 
-<!--        <Button-->
-<!--            android:id="@+id/savecurrent"-->
-<!--            android:layout_width="65dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="10dp"-->
-<!--            android:background="@drawable/cornered_edges"-->
-<!--            android:paddingStart="5dp"-->
-<!--            android:paddingEnd="5dp"-->
-<!--            android:text="@string/save"-->
-<!--            android:textAllCaps="false"-->
-<!--            android:textColor="?attr/bottomSheetTextColor" />-->
+    <!--        <Button-->
+    <!--            android:id="@+id/savecurrent"-->
+    <!--            android:layout_width="65dp"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginStart="10dp"-->
+    <!--            android:background="@drawable/cornered_edges"-->
+    <!--            android:paddingStart="5dp"-->
+    <!--            android:paddingEnd="5dp"-->
+    <!--            android:text="@string/save"-->
+    <!--            android:textAllCaps="false"-->
+    <!--            android:textColor="?attr/bottomSheetTextColor" />-->
 
-<!--        <ImageView-->
-<!--            android:id="@+id/previousImageButton"-->
-<!--            android:layout_width="40dp"-->
-<!--            android:layout_height="40dp"-->
+    <!--        <ImageView-->
+    <!--            android:id="@+id/previousImageButton"-->
+    <!--            android:layout_width="40dp"-->
+    <!--            android:layout_height="40dp"-->
 
-<!--            android:layout_marginStart="5dp"-->
-<!--            android:contentDescription="@string/previous_image_content_desc"-->
-<!--            android:gravity="center"-->
-<!--            app:srcCompat="@drawable/ic_navigate_before_white_24dp"-->
-<!--            tools:targetApi="lollipop"-->
-<!--            app:tint="?attr/bottomSheetColor" />-->
+    <!--            android:layout_marginStart="5dp"-->
+    <!--            android:contentDescription="@string/previous_image_content_desc"-->
+    <!--            android:gravity="center"-->
+    <!--            app:srcCompat="@drawable/ic_navigate_before_white_24dp"-->
+    <!--            tools:targetApi="lollipop"-->
+    <!--            app:tint="?attr/bottomSheetColor" />-->
 
-<!--        <TextView-->
-<!--            android:id="@+id/imagecount"-->
-<!--            android:layout_width="150dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:gravity="center"-->
-<!--            android:text="@string/showing_image" />-->
+    <!--        <TextView-->
+    <!--            android:id="@+id/imagecount"-->
+    <!--            android:layout_width="150dp"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:gravity="center"-->
+    <!--            android:text="@string/showing_image" />-->
 
-<!--        <ImageView-->
-<!--            android:id="@+id/nextimageButton"-->
-<!--            android:layout_width="40dp"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:contentDescription="@string/nextimage_contentdesc"-->
-<!--            android:gravity="center"-->
-<!--            app:srcCompat="@drawable/ic_navigate_next_black_24dp"-->
-<!--            tools:targetApi="lollipop"-->
-<!--            app:tint="?attr/bottomSheetColor" />-->
+    <!--        <ImageView-->
+    <!--            android:id="@+id/nextimageButton"-->
+    <!--            android:layout_width="40dp"-->
+    <!--            android:layout_height="40dp"-->
+    <!--            android:contentDescription="@string/nextimage_contentdesc"-->
+    <!--            android:gravity="center"-->
+    <!--            app:srcCompat="@drawable/ic_navigate_next_black_24dp"-->
+    <!--            tools:targetApi="lollipop"-->
+    <!--            app:tint="?attr/bottomSheetColor" />-->
 
-<!--    </LinearLayout>-->
+    <!--    </LinearLayout>-->
 
-    <ja.burhanrashid52.photoeditor.PhotoEditorView
-        android:id="@+id/photoEditorView"
+    <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/filters"
-        android:layout_below="@id/control"
-        android:layout_marginTop="10dp"
-        android:visibility="visible">
-    </ja.burhanrashid52.photoeditor.PhotoEditorView>
+        android:layout_marginTop="110dp"
+        android:layout_marginBottom="10dp"
+        android:layout_above="@+id/filters"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:cardCornerRadius="40dp">
+
+        <ja.burhanrashid52.photoeditor.PhotoEditorView
+            android:id="@+id/photoEditorView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:visibility="visible" />
+    </androidx.cardview.widget.CardView>
 
     <LinearLayout
         android:id="@+id/filters"
@@ -195,29 +205,32 @@
             android:layout_weight="1"
             android:max="100"
             android:progress="30"
-            android:visibility="gone"
+            android:progressTint="@color/dark_blue"
             android:thumbTint="@color/dark_blue"
-            android:progressTint="@color/dark_blue"/>
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/doodle_colors"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center"
-            android:orientation="horizontal"
-            tools:listitem="@layout/brush_color_item"
             android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
             android:visibility="gone"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/brush_color_item" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/roung_corner"
             android:orientation="horizontal"
-            tools:listitem="@layout/list_item_filter"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:paddingHorizontal="10dp"
+            android:paddingTop="5dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/list_item_filter" />
 
     </LinearLayout>
 

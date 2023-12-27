@@ -3,19 +3,49 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
+<!--    <com.google.android.material.appbar.AppBarLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+
+<!--        <androidx.appcompat.widget.Toolbar-->
+<!--            android:id="@+id/toolbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="?android:attr/actionBarSize"-->
+<!--            app:titleTextColor="?attr/titleToolbarTextColor" />-->
+
+<!--    </com.google.android.material.appbar.AppBarLayout>-->
+
+    <RelativeLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:minHeight="?attr/actionBarSize"
+        android:orientation="horizontal">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"
-            app:titleTextColor="?attr/titleToolbarTextColor" />
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/black_back_arrow" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+        <TextView
+            android:id="@+id/title_name"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/back"
+            android:fontFamily="@font/metropolis_bold"
+            android:gravity="center|start"
+            android:text="@string/pdf_preview"
+            android:textSize="18sp" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,23 +55,30 @@
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginHorizontal="10dp"
+        tools:listitem="@layout/item_rearrange_images"
         android:orientation="vertical" />
 
     <Button
         android:id="@+id/sort"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/cornered_edges"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
+        android:layout_height="52dp"
+        android:layout_marginBottom="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/corner_radius_border"
+        android:fontFamily="@font/metropolis_medium"
+        android:textSize="20sp"
         android:text="@string/sort"
         android:textAllCaps="false"
         android:textColor="?attr/bottomSheetTextColor" />
-
+    </RelativeLayout>
 </LinearLayout>

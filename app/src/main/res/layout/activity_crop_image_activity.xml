@@ -1,108 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.androidmarket.pdfcreator.activities.MainActivity">
+    tools:context="com.androidmarket.pdfcreator.activities.ActivityCropImage">
 
-    <com.google.android.material.appbar.AppBarLayout
+<!--    <com.google.android.material.appbar.AppBarLayout-->
+<!--        android:id="@+id/app_bar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+
+<!--        <com.google.android.material.appbar.MaterialToolbar-->
+<!--            android:id="@+id/toolbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="#FFFFFF"-->
+<!--            app:titleTextColor="@color/black"-->
+<!--            app:title="Edit Images"-->
+<!--            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"-->
+<!--            app:navigationIconTint="@color/black"/>-->
+
+<!--    </com.google.android.material.appbar.AppBarLayout>-->
+
+    <RelativeLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:minHeight="?attr/actionBarSize"
+        android:orientation="horizontal">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:titleTextColor="?attr/titleToolbarTextColor"
-            app:title="Edit Images"
-            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
-            app:navigationIconTint="@color/white"/>
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/black_back_arrow" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+        <TextView
+            android:id="@+id/title_name"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/back"
+            android:fontFamily="@font/metropolis_bold"
+            android:gravity="center|start"
+            android:text="@string/edit_image"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/done_cropping"
+            android:layout_width="30dp"
+            android:layout_height="27dp"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/skip"
+            android:src="@drawable/baseline_done_24"
+            app:tint="@color/black" />
+
+        <TextView
+            android:id="@+id/skip"
+            android:layout_width="60dp"
+            android:layout_height="27dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/cornered_edges"
+            android:backgroundTint="@color/dark_blue"
+            android:gravity="center"
+            android:fontFamily="@font/metropolis_regular"
+            android:text="@string/skip"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:layout_below="@+id/app_bar"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/border_crop_image"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="34dp"
+            android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/previousImageButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/previous_image_content_desc"
+            android:gravity="center"
+            app:srcCompat="@drawable/arrow_left" />
+
+        <TextView
+            android:id="@+id/imagecount"
+            android:layout_width="140dp"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/metropolis_bold"
+            android:gravity="center"
+            android:text="@string/showing_image"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/nextimageButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/nextimage_contentdesc"
+            android:gravity="center"
+            app:srcCompat="@drawable/arrrow_right" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/cropButton"
+            android:layout_width="57dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="2dp"
+            android:background="@drawable/cornered_edges"
+            android:fontFamily="@font/metropolis_medium"
+            android:minWidth="40dp"
+            android:text="@string/save_current"
+            android:textAllCaps="false"
+            android:textColor="?attr/bottomSheetTextColor"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/rotateButton"
+            android:layout_width="67dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/cornered_edges"
+            android:fontFamily="@font/metropolis_medium"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:text="@string/rotate"
+            android:textAllCaps="false"
+            android:textColor="?attr/bottomSheetTextColor"
+            android:textSize="12sp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?android:attr/actionBarSize"
+        android:layout_below="@+id/title"
+        android:layout_marginVertical="20dp"
+        android:layout_marginHorizontal="20dp"
         android:orientation="vertical"
         tools:context=".activity.CropImageActivity">
 
         <com.theartofdev.edmodo.cropper.CropImageView
             android:id="@+id/cropImageView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            custom:cropInitialCropWindowPaddingRatio="0" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/cropButton"
-                android:layout_width="wrap_content"
-                android:minWidth="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_weight="1"
-                android:background="@drawable/cornered_edges"
-                android:text="@string/save_current"
-                android:textAllCaps="false"
-                android:textColor="?attr/bottomSheetTextColor" />
-
-            <Button
-                android:id="@+id/rotateButton"
-                android:layout_width="wrap_content"
-                android:minWidth="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/cornered_edges"
-                android:paddingStart="2dp"
-                android:paddingEnd="2dp"
-                android:text="@string/rotate"
-                android:textAllCaps="false"
-                android:textColor="?attr/bottomSheetTextColor" />
-
-            <ImageView
-                android:id="@+id/previousImageButton"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="5dp"
-                android:layout_weight="3"
-                android:contentDescription="@string/previous_image_content_desc"
-                android:gravity="center"
-                android:layout_gravity="center"
-                app:tint="?attr/bottomSheetColor"
-                app:srcCompat="@drawable/ic_navigate_before_white_24dp"
-                tools:targetApi="lollipop" />
-
-            <TextView
-                android:id="@+id/imagecount"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="8"
-                android:gravity="center"
-                android:text="@string/showing_image" />
-
-            <ImageView
-                android:id="@+id/nextimageButton"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="3"
-                android:contentDescription="@string/nextimage_contentdesc"
-                android:gravity="center"
-                android:layout_gravity="center"
-                app:tint="?attr/bottomSheetColor"
-                app:srcCompat="@drawable/ic_navigate_next_black_24dp"
-                tools:targetApi="lollipop" />
-
-        </LinearLayout>
+            android:layout_height="match_parent"
+            app:cropBorderCornerColor="@color/dark_blue"
+            app:cropBorderCornerThickness="5dp"
+            app:cropBorderLineColor="@null"
+            android:fitsSystemWindows="true"
+            app:cropBorderCornerLength="30dp"
+            custom:cropInitialCropWindowPaddingRatio="0"
+            android:background="@drawable/crop_image_border2"/>
 
     </LinearLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

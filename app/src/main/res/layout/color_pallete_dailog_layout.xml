@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:id="@+id/dialog_linear"
+    android:layout_width="340dp"
+    android:layout_marginHorizontal="10dp"
+    android:layout_height="350dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent" 
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:textSize="17dp"
+            android:fontFamily="@font/metropolis_semibold"
+            android:text="Choose a color :"/>
+
+            <com.github.danielnilsson9.colorpickerview.view.ColorPickerView
+                android:id="@+id/color_pallete"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="30dp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/color_pallete"
+                android:gravity="center"
+                android:layout_alignParentEnd="true"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/canceldialog"
+                    android:layout_width="65dp"
+                    android:layout_height="30dp"
+                    android:text="@string/cancel"
+                    android:background="@drawable/create_pdf_dialog_border"
+                    android:fontFamily="@font/metropolis_medium"
+                    android:textColor="#80000000"
+                    android:backgroundTint="#E7EAEE"
+                    android:textAllCaps="false"
+                    android:textSize="13dp"
+                    android:src="@drawable/cancel"/>
+
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="0dp"/>
+
+                <Button
+                    android:id="@+id/okdialog"
+                    android:layout_width="45dp"
+                    android:layout_height="30dp"
+                    android:text="@string/ok"
+                    android:background="@drawable/create_pdf_dialog_border"
+                    android:fontFamily="@font/metropolis_medium"
+                    android:textColor="@color/white"
+                    android:backgroundTint="#00A9FF"
+                    android:textAllCaps="false"
+                    android:textSize="13dp"
+                    android:src="@drawable/cancel"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

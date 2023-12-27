@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,6 +38,8 @@ public class ActivityCropImage extends AppCompatActivity {
     private boolean mCurrentImageEdited = false;
     private boolean mFinishedClicked = false;
     private CropImageView mCropImageView;
+    ImageView back,done;
+    TextView skip;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,11 +47,38 @@ public class ActivityCropImage extends AppCompatActivity {
         setContentView(R.layout.activity_crop_image_activity);
         ButterKnife.bind(this);
 
-        MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+//        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         mCropImageView = findViewById(R.id.cropImageView);
+        back = findViewById(R.id.back);
+        done = findViewById(R.id.done_cropping);
+        skip = findViewById(R.id.skip);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setResult(Activity.RESULT_CANCELED);
+                finish();
+            }
+        });
+
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mFinishedClicked = true;
+                cropButtonClicked();
+            }
+        });
+
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentImageEdited = false;
+                nextImageClicked();
+            }
+        });
 
         setUpCropImageView();
 
@@ -135,20 +165,20 @@ public class ActivityCropImage extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            setResult(Activity.RESULT_CANCELED);
-            finish();
-        } else if (item.getItemId() == R.id.action_done) {
-            mFinishedClicked = true;
-            cropButtonClicked();
-        } else if (item.getItemId() == R.id.action_skip) {
-            mCurrentImageEdited = false;
-            nextImageClicked();
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        if (item.getItemId() == android.R.id.home) {
+//            setResult(Activity.RESULT_CANCELED);
+//            finish();
+//        } else if (item.getItemId() == R.id.action_done) {
+//            mFinishedClicked = true;
+//            cropButtonClicked();
+//        } else if (item.getItemId() == R.id.action_skip) {
+//            mCurrentImageEdited = false;
+//            nextImageClicked();
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     /**
      * Initial setup of crop image view

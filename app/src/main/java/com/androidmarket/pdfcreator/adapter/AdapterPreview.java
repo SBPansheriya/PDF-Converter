@@ -1,5 +1,6 @@
 package com.androidmarket.pdfcreator.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
@@ -58,6 +59,7 @@ public class AdapterPreview extends PagerAdapter {
         return view == object;
     }
 
+    @SuppressLint("StringFormatInvalid")
     @Override
     public CharSequence getPageTitle(int position) {
         return String.format(mContext.getResources().getString(R.string.showing_image),

@@ -21,9 +21,7 @@
             android:layout_height="70dp"
             android:layout_gravity="center"
             android:contentDescription="@string/rearrange_images"
-            android:padding="10dp"
-            app:srcCompat="@drawable/ic_rearrange"
-            app:tint="?attr/iconTintOnCard" />
+            app:srcCompat="@drawable/rearrange" />
 
     </androidx.cardview.widget.CardView>
 
@@ -35,6 +33,7 @@
         android:gravity="center"
         android:padding="2dp"
         android:textAlignment="center"
+        android:fontFamily="@font/metropolis_semibold"
         android:textSize="12sp"
         tools:text="@string/rearrange_text" />
 

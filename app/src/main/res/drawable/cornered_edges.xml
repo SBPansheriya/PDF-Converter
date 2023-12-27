@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="?attr/bottomSheetColor" />
+    <solid android:color="@color/dark_blue" />
     <!--border color and border width-->
     <stroke
         android:width="0dp"
-        android:color="?attr/bottomSheetColor" />
+        android:color="@color/dark_blue" />
     <!--border radius in dp-->
-    <corners android:radius="10dp" />
+    <corners android:radius="20dp" />
 </shape>

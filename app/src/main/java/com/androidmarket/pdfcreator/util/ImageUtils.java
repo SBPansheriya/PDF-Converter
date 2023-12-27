@@ -1,6 +1,7 @@
 package com.androidmarket.pdfcreator.util;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -17,9 +18,14 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.androidmarket.pdfcreator.Constants;
@@ -167,31 +173,74 @@ public class ImageUtils {
     public void showImageScaleTypeDialog(Context context, Boolean saveValue) {
 
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        MaterialDialog.Builder builder = DialogUtils.getInstance().createCustomDialogWithoutContent((Activity) context,
-                R.string.image_scale_type);
-        MaterialDialog materialDialog =
-                builder.customView(R.layout.image_scale_type_dialog, true)
-                        .onPositive((dialog1, which) -> {
-                            View view = dialog1.getCustomView();
-                            RadioGroup radioGroup = view.findViewById(R.id.scale_type);
-                            int selectedId = radioGroup.getCheckedRadioButtonId();
-                            if (selectedId == R.id.aspect_ratio)
-                                mImageScaleType = IMAGE_SCALE_TYPE_ASPECT_RATIO;
-                            else
-                                mImageScaleType = IMAGE_SCALE_TYPE_STRETCH;
+//        MaterialDialog.Builder builder = DialogUtils.getInstance().createCustomDialogWithoutContent((Activity) context,
+//                R.string.image_scale_type);
+//        MaterialDialog materialDialog =
+//                builder.customView(R.layout.image_scale_type_dialog, true)
+//                        .onPositive((dialog1, which) -> {
+//                            View view = dialog1.getCustomView();
+//                            RadioGroup radioGroup = view.findViewById(R.id.scale_type);
+//                            int selectedId = radioGroup.getCheckedRadioButtonId();
+//                            if (selectedId == R.id.aspect_ratio)
+//                                mImageScaleType = IMAGE_SCALE_TYPE_ASPECT_RATIO;
+//                            else
+//                                mImageScaleType = IMAGE_SCALE_TYPE_STRETCH;
+//
+//                            CheckBox mSetAsDefault = view.findViewById(R.id.cbSetDefault);
+//                            if (saveValue || mSetAsDefault.isChecked()) {
+//                                SharedPreferences.Editor editor = mSharedPreferences.edit();
+//                                editor.putString(Constants.DEFAULT_IMAGE_SCALE_TYPE_TEXT, mImageScaleType);
+//                                editor.apply();
+//                            }
+//                        }).build();
+//        if (saveValue) {
+//            View customView = materialDialog.getCustomView();
+//            customView.findViewById(R.id.cbSetDefault).setVisibility(View.GONE);
+//        }
+//        materialDialog.show();
 
-                            CheckBox mSetAsDefault = view.findViewById(R.id.cbSetDefault);
-                            if (saveValue || mSetAsDefault.isChecked()) {
-                                SharedPreferences.Editor editor = mSharedPreferences.edit();
-                                editor.putString(Constants.DEFAULT_IMAGE_SCALE_TYPE_TEXT, mImageScaleType);
-                                editor.apply();
-                            }
-                        }).build();
-        if (saveValue) {
-            View customView = materialDialog.getCustomView();
-            customView.findViewById(R.id.cbSetDefault).setVisibility(View.GONE);
+        Dialog dialog1 = new Dialog(context);
+        if (dialog1.getWindow() != null) {
+            dialog1.getWindow().setGravity(Gravity.CENTER);
+            dialog1.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog1.setCancelable(false);
         }
-        materialDialog.show();
+        dialog1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog1.setContentView(R.layout.set_image_scale_type_dialog);
+        dialog1.setCancelable(false);
+        dialog1.show();
+
+        Button cancel = dialog1.findViewById(R.id.canceldialog);
+        Button ok = dialog1.findViewById(R.id.okdialog);
+        RadioGroup radioGroup = dialog1.findViewById(R.id.scale_type);
+        CheckBox mSetAsDefault = dialog1.findViewById(R.id.cbSetDefault);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog1.dismiss();
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int selectedId = radioGroup.getCheckedRadioButtonId();
+                if (selectedId == R.id.aspect_ratio)
+                    mImageScaleType = IMAGE_SCALE_TYPE_ASPECT_RATIO;
+                else
+                    mImageScaleType = IMAGE_SCALE_TYPE_STRETCH;
+                if (saveValue || mSetAsDefault.isChecked()) {
+                    SharedPreferences.Editor editor = mSharedPreferences.edit();
+                    editor.putString(Constants.DEFAULT_IMAGE_SCALE_TYPE_TEXT, mImageScaleType);
+                    editor.apply();
+                }
+                dialog1.dismiss();
+            }
+        });
+        if (saveValue) {
+            dialog1.findViewById(R.id.cbSetDefault).setVisibility(View.GONE);
+        }
     }
 
     /**

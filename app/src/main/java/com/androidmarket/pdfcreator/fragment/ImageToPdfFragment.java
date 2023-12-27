@@ -537,29 +537,77 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     }
 
     private void compressImage() {
-        DialogUtils.getInstance().createCustomDialogWithoutContent(mActivity, R.string.compression_image_edit)
-                .customView(R.layout.compress_image_dialog, true)
-                .onPositive((dialog1, which) -> {
-                    final EditText qualityInput = dialog1.getCustomView().findViewById(R.id.quality);
-                    final CheckBox cbSetDefault = dialog1.getCustomView().findViewById(R.id.cbSetDefault);
-                    int check;
-                    try {
-                        check = Integer.parseInt(String.valueOf(qualityInput.getText()));
-                        if (check > 100 || check < 0) {
-                            Toast.makeText(getActivity(), R.string.invalid_entry, Toast.LENGTH_SHORT).show();
-                        } else {
-                            mPdfOptions.setQualityString(String.valueOf(check));
-                            if (cbSetDefault.isChecked()) {
-                                SharedPreferences.Editor editor = mSharedPreferences.edit();
-                                editor.putInt(DEFAULT_COMPRESSION, check);
-                                editor.apply();
-                            }
-                            showEnhancementOptions();
-                        }
-                    } catch (NumberFormatException e) {
+//        DialogUtils.getInstance().createCustomDialogWithoutContent(mActivity, R.string.compression_image_edit)
+//                .customView(R.layout.compress_image_dialog, true)
+//                .onPositive((dialog1, which) -> {
+//                    final EditText qualityInput = dialog1.getCustomView().findViewById(R.id.quality);
+//                    final CheckBox cbSetDefault = dialog1.getCustomView().findViewById(R.id.cbSetDefault);
+//                    int check;
+//                    try {
+//                        check = Integer.parseInt(String.valueOf(qualityInput.getText()));
+//                        if (check > 100 || check < 0) {
+//                            Toast.makeText(getActivity(), R.string.invalid_entry, Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            mPdfOptions.setQualityString(String.valueOf(check));
+//                            if (cbSetDefault.isChecked()) {
+//                                SharedPreferences.Editor editor = mSharedPreferences.edit();
+//                                editor.putInt(DEFAULT_COMPRESSION, check);
+//                                editor.apply();
+//                            }
+//                            showEnhancementOptions();
+//                        }
+//                    } catch (NumberFormatException e) {
+//                        Toast.makeText(getActivity(), R.string.invalid_entry, Toast.LENGTH_SHORT).show();
+//                    }
+//                }).show();
+
+        Dialog dialog = new Dialog(getContext());
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.compress_image_dialog_layout);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        final EditText qualityInput = dialog.findViewById(R.id.quality);
+        final CheckBox cbSetDefault = dialog.findViewById(R.id.cbSetDefault);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int check;
+                try {
+                    check = Integer.parseInt(String.valueOf(qualityInput.getText()));
+                    if (check > 100 || check < 0) {
                         Toast.makeText(getActivity(), R.string.invalid_entry, Toast.LENGTH_SHORT).show();
+                    } else {
+                        mPdfOptions.setQualityString(String.valueOf(check));
+                        if (cbSetDefault.isChecked()) {
+                            SharedPreferences.Editor editor = mSharedPreferences.edit();
+                            editor.putInt(DEFAULT_COMPRESSION, check);
+                            editor.apply();
+                        }
+                        showEnhancementOptions();
                     }
-                }).show();
+                    dialog.dismiss();
+                } catch (NumberFormatException e) {
+                    Toast.makeText(getActivity(), R.string.invalid_entry, Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            }
+        });
     }
 
     private void passwordProtectPDF() {

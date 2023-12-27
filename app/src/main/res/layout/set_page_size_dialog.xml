@@ -20,13 +20,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
+                android:fontFamily="@font/metropolis_semibold"
+                android:buttonTint="@color/dark_blue"
                 android:textSize="16sp" />
 
             <RadioButton
                 android:id="@+id/page_size_letter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/letter"
+                android:text="Latter"
+                android:fontFamily="@font/metropolis_semibold"
+                android:buttonTint="@color/dark_blue"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -34,6 +38,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/legal"
+                android:fontFamily="@font/metropolis_semibold"
+                android:buttonTint="@color/dark_blue"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -41,6 +47,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/executive"
+                android:fontFamily="@font/metropolis_semibold"
+                android:buttonTint="@color/dark_blue"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -48,6 +56,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ledger"
+                android:fontFamily="@font/metropolis_semibold"
+                android:buttonTint="@color/dark_blue"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -55,6 +65,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tabloid"
+                android:fontFamily="@font/metropolis_semibold"
+                android:buttonTint="@color/dark_blue"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -62,6 +74,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/a0_to_a10"
+                android:fontFamily="@font/metropolis_semibold"
+                android:buttonTint="@color/dark_blue"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -69,11 +83,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/b0_to_b10"
+                android:fontFamily="@font/metropolis_semibold"
+                android:buttonTint="@color/dark_blue"
                 android:textSize="16sp" />
 
         </RadioGroup>
 
         <LinearLayout
+
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="bottom"
@@ -83,8 +100,10 @@
                 android:id="@+id/spinner_page_size_a0_a10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
                 android:layout_marginBottom="8dp"
                 android:baselineAligned="false"
+                android:fontFamily="@font/metropolis_semibold"
                 android:entries="@array/array_page_sizes_a0_b10" />
 
             <Spinner
@@ -92,6 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
+                android:fontFamily="@font/metropolis_semibold"
                 android:entries="@array/array_page_sizes_b0_b10" />
         </LinearLayout>
     </LinearLayout>
@@ -101,5 +121,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:fontFamily="@font/metropolis_semibold"
         android:text="@string/set_as_default" />
 </LinearLayout>

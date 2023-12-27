@@ -21,38 +21,45 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/design" />
+        android:src="@drawable/design2" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/design2" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
         android:layout_gravity="center"
+        android:baselineAligned="false"
         android:orientation="horizontal"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".activity.MainActivity">
 
         <CheckBox
-            android:visibility="gone"
             android:id="@+id/checkbox"
             android:layout_width="0dp"
-            android:layout_weight="10"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="10dp" />
+            android:layout_margin="10dp"
+            android:layout_weight="10"
+            android:visibility="gone" />
 
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginStart="5dp"
             android:layout_gravity="center"
-            android:src="@drawable/add_watermark"/>
+            android:layout_marginStart="5dp"
+            android:src="@drawable/add_watermark" />
 
         <com.balysv.materialripple.MaterialRippleLayout
             android:id="@+id/fileRipple"
             android:layout_width="match_parent"
-            android:layout_marginStart="10dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:layout_weight="1">
 
             <LinearLayout
@@ -66,10 +73,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:padding="4dp"
-                    android:maxLines="1"
-                    android:fontFamily="@font/metropolis_bold"
                     android:ellipsize="marquee"
+                    android:fontFamily="@font/metropolis_bold"
+                    android:maxLines="1"
+                    android:padding="4dp"
                     android:text="@string/file_name_text"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
@@ -78,10 +85,10 @@
                     android:id="@+id/fileDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/metropolis_medium"
                     android:maxLines="1"
                     android:padding="4dp"
                     android:text="@string/file_date_text"
-                    android:fontFamily="@font/metropolis_medium"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
 
@@ -93,9 +100,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:layout_marginEnd="10dp"
             android:layout_gravity="center"
+            android:layout_weight="2.5"
             android:orientation="vertical">
 
             <LinearLayout
@@ -115,12 +121,13 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
 
                 <TextView
                     android:id="@+id/fileSize"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:maxLines="1"
                     android:text="@string/file_size_text"
                     android:textColor="@color/white"

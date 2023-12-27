@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:id="@+id/dialog_linear"
+    android:layout_width="330dp"
+    android:layout_marginHorizontal="10dp"
+    android:layout_height="420dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/set_page_size_img"/>
+
+                <TextView
+                    android:id="@+id/txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/metropolis_bold"
+                    android:textColor="@color/blue"
+                    android:text="@string/set_page_size"
+                    android:textSize="18dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:orientation="horizontal">
+
+                <RadioGroup
+                    android:id="@+id/radio_group_page_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/page_size_default"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:fontFamily="@font/metropolis_semibold"
+                        android:buttonTint="@color/dark_blue"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/page_size_letter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Latter"
+                        android:fontFamily="@font/metropolis_semibold"
+                        android:buttonTint="@color/dark_blue"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/page_size_legal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/legal"
+                        android:fontFamily="@font/metropolis_semibold"
+                        android:buttonTint="@color/dark_blue"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/page_size_executive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/executive"
+                        android:fontFamily="@font/metropolis_semibold"
+                        android:buttonTint="@color/dark_blue"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/page_size_ledger"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ledger"
+                        android:fontFamily="@font/metropolis_semibold"
+                        android:buttonTint="@color/dark_blue"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/page_size_tabloid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tabloid"
+                        android:fontFamily="@font/metropolis_semibold"
+                        android:buttonTint="@color/dark_blue"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/page_size_a0_a10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/a0_to_a10"
+                        android:fontFamily="@font/metropolis_semibold"
+                        android:buttonTint="@color/dark_blue"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/page_size_b0_b10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/b0_to_b10"
+                        android:fontFamily="@font/metropolis_semibold"
+                        android:buttonTint="@color/dark_blue"
+                        android:textSize="16sp" />
+
+                </RadioGroup>
+
+                <LinearLayout
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:orientation="vertical">
+
+                    <Spinner
+                        android:id="@+id/spinner_page_size_a0_a10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dropdown"
+                        android:layout_marginBottom="8dp"
+                        android:baselineAligned="false"
+                        android:fontFamily="@font/metropolis_semibold"
+                        android:entries="@array/array_page_sizes_a0_b10" />
+
+                    <Spinner
+                        android:id="@+id/spinner_page_size_b0_b10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:fontFamily="@font/metropolis_semibold"
+                        android:entries="@array/array_page_sizes_b0_b10" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/cbSetDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/metropolis_regular"
+                android:text="@string/set_as_default" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/canceldialog"
+                    android:layout_width="65dp"
+                    android:layout_height="30dp"
+                    android:text="@string/cancel"
+                    android:background="@drawable/create_pdf_dialog_border"
+                    android:fontFamily="@font/metropolis_medium"
+                    android:textColor="#80000000"
+                    android:backgroundTint="#E7EAEE"
+                    android:textAllCaps="false"
+                    android:textSize="13dp"
+                    android:src="@drawable/cancel"/>
+
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="0dp"/>
+
+                <Button
+                    android:id="@+id/okdialog"
+                    android:layout_width="45dp"
+                    android:layout_height="30dp"
+                    android:text="@string/ok"
+                    android:background="@drawable/create_pdf_dialog_border"
+                    android:fontFamily="@font/metropolis_medium"
+                    android:textColor="@color/white"
+                    android:backgroundTint="#00A9FF"
+                    android:textAllCaps="false"
+                    android:textSize="13dp"
+                    android:src="@drawable/cancel"/>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

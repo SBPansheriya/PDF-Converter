@@ -24,6 +24,7 @@
         android:layout_below="@+id/filter_preview"
         android:layout_marginBottom="3dp"
         android:textAlignment="center"
+        android:fontFamily="@font/metropolis_semibold"
         android:textSize="12sp"
         tools:text="@string/Filter_name"/>
 

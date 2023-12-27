@@ -432,6 +432,35 @@ public class FileUtils {
                     if (!isFileExist(filename + ext)) {
                         saveMethod.accept(filename);
                     } else {
+//                        Dialog dialog = new Dialog(mContext);
+//                        if (dialog.getWindow() != null) {
+//                            dialog.getWindow().setGravity(Gravity.CENTER);
+//                            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+//                            dialog.setCancelable(false);
+//                        }
+//                        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//                        dialog.setContentView(R.layout.create_pdf_dialog);
+//                        dialog.setCancelable(false);
+//                        dialog.show();
+//
+//                        Button cancel = dialog.findViewById(R.id.canceldialog);
+//                        Button ok = dialog.findViewById(R.id.okdialog);
+//
+//                        cancel.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                openSaveDialog(preFillName, ext, saveMethod);
+//                                dialog.dismiss();
+//                            }
+//                        });
+//
+//                        ok.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                saveMethod.accept(filename);
+//                                dialog.dismiss();
+//                            }
+//                        });
                         MaterialDialog.Builder builder2 = DialogUtils.getInstance().createOverwriteDialog(mContext);
                         builder2.onPositive((dialog2, which) -> saveMethod.accept(filename))
                                 .onNegative((dialog1, which) ->

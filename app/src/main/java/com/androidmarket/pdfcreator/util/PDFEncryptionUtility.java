@@ -1,10 +1,14 @@
 package com.androidmarket.pdfcreator.util;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.Editable;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -21,6 +25,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import androidmarket.R;
+
 import com.androidmarket.pdfcreator.db.DatabaseHelper;
 import com.androidmarket.pdfcreator.interfaces.DataSetChanged;
 
@@ -52,16 +57,63 @@ public class PDFEncryptionUtility {
      * @param filePath Path of file to be encrypted
      */
     public void setPassword(final String filePath, final DataSetChanged dataSetChanged) {
+//        mDialog.setTitle(R.string.set_password);
+//        final View mPositiveAction = mDialog.getActionButton(DialogAction.POSITIVE);
+//        assert mDialog.getCustomView() != null;
+//        EditText mPasswordInput = mDialog.getCustomView().findViewById(R.id.password);
+//        mPasswordInput.addTextChangedListener(
+//                new DefaultTextWatcher() {
+//                    @Override
+//                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                        mPositiveAction.setEnabled(s.toString().trim().length() > 0);
+//                    }
+//
+//                    @Override
+//                    public void afterTextChanged(Editable input) {
+//                        if (StringUtils.getInstance().isEmpty(input))
+//                            StringUtils.getInstance().
+//                                    showSnackbar(mContext, R.string.snackbar_password_cannot_be_blank);
+//                        else
+//                            mPassword = input.toString();
+//                    }
+//                });
+//        mDialog.show();
+//        mPositiveAction.setEnabled(false);
+//        mPositiveAction.setOnClickListener(v -> {
+//            try {
+//                String path = doEncryption(filePath, mPassword);
+//                StringUtils.getInstance().getSnackbarwithAction(mContext, R.string.snackbar_pdfCreated)
+//                        .setAction(R.string.snackbar_viewAction, v2 ->
+//                                mFileUtils.openFile(path, FileUtils.FileType.e_PDF)).show();
+//                if (dataSetChanged != null)
+//                    dataSetChanged.updateDataset();
+//            } catch (IOException | DocumentException e) {
+//                e.printStackTrace();
+//                StringUtils.getInstance().showSnackbar(mContext, R.string.cannot_add_password);
+//            }
+//            mDialog.dismiss();
+//        });
+        Dialog dialog = new Dialog(mContext);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.set_password_dialog);
+        dialog.setCancelable(false);
+        dialog.show();
 
-        mDialog.setTitle(R.string.set_password);
-        final View mPositiveAction = mDialog.getActionButton(DialogAction.POSITIVE);
-        assert mDialog.getCustomView() != null;
-        EditText mPasswordInput = mDialog.getCustomView().findViewById(R.id.password);
-        mPasswordInput.addTextChangedListener(
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        Button remove = dialog.findViewById(R.id.remove_dialog);
+        EditText passwordInput = dialog.findViewById(R.id.password);
+
+        passwordInput.addTextChangedListener(
                 new DefaultTextWatcher() {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        mPositiveAction.setEnabled(s.toString().trim().length() > 0);
+                        ok.setEnabled(s.toString().trim().length() > 0);
                     }
 
                     @Override
@@ -73,21 +125,36 @@ public class PDFEncryptionUtility {
                             mPassword = input.toString();
                     }
                 });
-        mDialog.show();
-        mPositiveAction.setEnabled(false);
-        mPositiveAction.setOnClickListener(v -> {
-            try {
-                String path = doEncryption(filePath, mPassword);
-                StringUtils.getInstance().getSnackbarwithAction(mContext, R.string.snackbar_pdfCreated)
-                        .setAction(R.string.snackbar_viewAction, v2 ->
-                                mFileUtils.openFile(path, FileUtils.FileType.e_PDF)).show();
-                if (dataSetChanged != null)
-                    dataSetChanged.updateDataset();
-            } catch (IOException | DocumentException e) {
-                e.printStackTrace();
-                StringUtils.getInstance().showSnackbar(mContext, R.string.cannot_add_password);
+
+        remove.setVisibility(View.GONE);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
             }
-            mDialog.dismiss();
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (StringUtils.getInstance().isEmpty(passwordInput.getText().toString())) {
+                    StringUtils.getInstance().showSnackbar(mContext, R.string.snackbar_password_cannot_be_blank);
+                } else {
+                    try {
+                        String path = doEncryption(filePath, mPassword);
+                        StringUtils.getInstance().getSnackbarwithAction(mContext, R.string.snackbar_pdfCreated)
+                                .setAction(R.string.snackbar_viewAction, v2 ->
+                                        mFileUtils.openFile(path, FileUtils.FileType.e_PDF)).show();
+                        if (dataSetChanged != null)
+                            dataSetChanged.updateDataset();
+                    } catch (IOException | DocumentException e) {
+                        e.printStackTrace();
+                        StringUtils.getInstance().showSnackbar(mContext, R.string.cannot_add_password);
+                    }
+                }
+                dialog.dismiss();
+            }
         });
     }
 
@@ -149,16 +216,64 @@ public class PDFEncryptionUtility {
             return;
 
         final String[] input_password = new String[1];
-        mDialog.setTitle(R.string.enter_password);
-        final View mPositiveAction = mDialog.getActionButton(DialogAction.POSITIVE);
-        final EditText mPasswordInput = Objects.requireNonNull(mDialog.getCustomView()).findViewById(R.id.password);
-        TextView text = mDialog.getCustomView().findViewById(R.id.enter_password);
-        text.setText(R.string.decrypt_message);
-        mPasswordInput.addTextChangedListener(
+//        mDialog.setTitle(R.string.enter_password);
+//        final View mPositiveAction = mDialog.getActionButton(DialogAction.POSITIVE);
+//        final EditText mPasswordInput = Objects.requireNonNull(mDialog.getCustomView()).findViewById(R.id.password);
+//        TextView text = mDialog.getCustomView().findViewById(R.id.enter_password);
+//        text.setText(R.string.decrypt_message);
+//        mPasswordInput.addTextChangedListener(
+//                new DefaultTextWatcher() {
+//                    @Override
+//                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                        mPositiveAction.setEnabled(s.toString().trim().length() > 0);
+//                    }
+//
+//                    @Override
+//                    public void afterTextChanged(Editable input) {
+//                        input_password[0] = input.toString();
+//                    }
+//                });
+//        mDialog.show();
+//        mPositiveAction.setEnabled(false);
+//        mPositiveAction.setOnClickListener(v -> {
+//
+//            // check for password
+//            // our master password & their user password
+//            // their master password
+//
+//            if (!removePasswordUsingDefMasterPassword(file, dataSetChanged, input_password)) {
+//                if (!removePasswordUsingInputMasterPassword(file, dataSetChanged, input_password)) {
+//                    StringUtils.getInstance().showSnackbar(mContext, R.string.master_password_changed);
+//                }
+//            }
+//            mDialog.dismiss();
+//        });
+
+        Dialog dialog = new Dialog(mContext);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.set_password_dialog);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        Button remove = dialog.findViewById(R.id.remove_dialog);
+        TextView textView = dialog.findViewById(R.id.txt);
+        EditText passwordInput = dialog.findViewById(R.id.password);
+
+        textView.setText("Old password");
+        passwordInput.setHint("Enter old password");
+
+        passwordInput.addTextChangedListener(
                 new DefaultTextWatcher() {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        mPositiveAction.setEnabled(s.toString().trim().length() > 0);
+                        ok.setEnabled(s.toString().trim().length() > 0);
                     }
 
                     @Override
@@ -166,26 +281,64 @@ public class PDFEncryptionUtility {
                         input_password[0] = input.toString();
                     }
                 });
-        mDialog.show();
-        mPositiveAction.setEnabled(false);
-        mPositiveAction.setOnClickListener(v -> {
 
-            // check for password
-            // our master password & their user password
-            // their master password
+        remove.setVisibility(View.GONE);
 
-            if (!removePasswordUsingDefMasterPassword(file, dataSetChanged, input_password)) {
-                if (!removePasswordUsingInputMasterPassword(file, dataSetChanged, input_password)) {
-                    StringUtils.getInstance().showSnackbar(mContext, R.string.master_password_changed);
-                }
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
             }
-            mDialog.dismiss();
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Dialog dialogremove = new Dialog(mContext);
+                if (dialogremove.getWindow() != null) {
+                    dialogremove.getWindow().setGravity(Gravity.CENTER);
+                    dialogremove.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                    dialogremove.setCancelable(false);
+                }
+                dialogremove.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                dialogremove.setContentView(R.layout.delete_dialog_watermark);
+                dialogremove.setCancelable(false);
+                dialogremove.show();
+
+                Button cancel = dialogremove.findViewById(R.id.canceldialog);
+                Button ok = dialogremove.findViewById(R.id.okdialog);
+                TextView txt = dialogremove.findViewById(R.id.txt);
+
+                txt.setText("Do you want to remove password ?");
+
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        removePassword(file,dataSetChanged);
+                        dialogremove.dismiss();
+                    }
+                });
+
+                ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (!removePasswordUsingDefMasterPassword(file, dataSetChanged, input_password)) {
+                            if (!removePasswordUsingInputMasterPassword(file, dataSetChanged, input_password)) {
+                                StringUtils.getInstance().showSnackbar(mContext, R.string.master_password_changed);
+                            }
+                        }
+                        dialogremove.dismiss();
+                    }
+                });
+            }
         });
     }
 
     /**
      * This function removes the password for encrypted files.
-     * @param file - the path of the actual encrypted file.
+     *
+     * @param file          - the path of the actual encrypted file.
      * @param inputPassword - the password of the encrypted file.
      * @return - output file path
      */

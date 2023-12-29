@@ -122,10 +122,8 @@ public class ViewFilesFragment extends Fragment
             }
         });
 
-
         FrameLayout nativeAdFrameOne = root.findViewById(R.id.nativeAdFrameLayout);
         AdsUtility.loadNativeAd(getActivity(), nativeAdFrameOne);
-
 
         TextView title, titleTwo;
         title = root.findViewById(R.id.title);
@@ -194,7 +192,6 @@ public class ViewFilesFragment extends Fragment
         if (mIsAllFilesSelected) {
             menuItem.setIcon(R.drawable.ic_check_box_24dp);
         }
-
     }
 
     private void setDataForQueryChange(String s) {
@@ -405,8 +402,6 @@ public class ViewFilesFragment extends Fragment
             activity.invalidateOptionsMenu();
         }
     }
-
-
 
     /*
     Just for reference

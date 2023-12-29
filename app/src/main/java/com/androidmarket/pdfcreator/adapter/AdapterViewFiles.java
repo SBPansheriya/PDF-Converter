@@ -1,17 +1,30 @@
 package com.androidmarket.pdfcreator.adapter;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
 import androidx.annotation.NonNull;
+
+import com.androidmarket.pdfcreator.CustomAdapter;
+import com.androidmarket.pdfcreator.activities.ActivityRearrangeImages;
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -19,12 +32,14 @@ import com.balysv.materialripple.MaterialRippleLayout;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import androidmarket.R;
+
 import com.androidmarket.pdfcreator.db.DatabaseHelper;
 import com.androidmarket.pdfcreator.interfaces.DataSetChanged;
 import com.androidmarket.pdfcreator.interfaces.EmptyStateChangeListener;
@@ -42,6 +57,7 @@ import com.androidmarket.pdfcreator.util.PopulateList;
 import com.androidmarket.pdfcreator.util.StringUtils;
 import com.androidmarket.pdfcreator.util.WatermarkUtils;
 
+import static com.androidmarket.pdfcreator.Constants.CHOICE_REMOVE_IMAGE;
 import static com.androidmarket.pdfcreator.Constants.SORTING_INDEX;
 import static com.androidmarket.pdfcreator.util.FileInfoUtils.getFormattedDate;
 
@@ -112,15 +128,43 @@ public class AdapterViewFiles extends RecyclerView.Adapter<AdapterViewFiles.View
         holder.fileDate.setText(getFormattedDate(pdfFile.getPdfFile()));
         holder.checkBox.setChecked(mSelectedFiles.contains(position));
         holder.encryptionImage.setVisibility(pdfFile.isEncrypted() ? View.VISIBLE : View.GONE);
-        holder.ripple.setOnClickListener(view -> {
-            new MaterialDialog.Builder(mActivity)
-                    .title(R.string.title)
-                    .items(R.array.items)
-                    .itemsIds(R.array.itemIds)
-                    .itemsCallback((dialog, view1, which, text)
-                            -> performOperation(which, position, pdfFile.getPdfFile()))
-                    .show();
-            notifyDataSetChanged();
+//        holder.ripple.setOnClickListener(view -> {
+//            new MaterialDialog.Builder(mActivity)
+//                    .title(R.string.title)
+//                    .icon(R.drawable.pdf_action_img)
+//                    .items(R.array.items)
+//                    .itemsIds(R.array.itemIds)
+//                    .itemsCallback((dialog, view1, which, text)
+//                            -> performOperation(which, position, pdfFile.getPdfFile()))
+//                    .show();
+//            notifyDataSetChanged();
+//        });
+        holder.ripple.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Dialog dialog = new Dialog(mActivity);
+                if (dialog.getWindow() != null) {
+                    dialog.getWindow().setGravity(Gravity.CENTER);
+                    dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                }
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                dialog.setContentView(R.layout.pdf_action_dialog_layout);
+                dialog.show();
+
+                ListView itemsListView = dialog.findViewById(R.id.listView);
+
+                String[] items = mActivity.getResources().getStringArray(R.array.items);
+                CustomAdapter adapter = new CustomAdapter(mActivity, Arrays.asList(items));
+                itemsListView.setAdapter(adapter);
+
+
+                itemsListView.setOnItemClickListener((parent, view1, position1, id) -> {
+//                    adapter.setSelectedItem(position);
+                    performOperation(position1, position, pdfFile.getPdfFile());
+                    dialog.dismiss();
+                });
+                notifyDataSetChanged();
+            }
         });
     }
 
@@ -278,9 +322,9 @@ public class AdapterViewFiles extends RecyclerView.Adapter<AdapterViewFiles.View
      * iterate through filelist and deletes
      * all files on positive response
      */
-    private void deleteFiles(ArrayList<Integer> files ) {
+    private void deleteFiles(ArrayList<Integer> files) {
 
-        int messageAlert , messageSnackbar;
+        int messageAlert, messageSnackbar;
         if (files.size() > 1) {
             messageAlert = R.string.delete_alert_selected;
             messageSnackbar = R.string.snackbar_files_deleted;
@@ -288,54 +332,120 @@ public class AdapterViewFiles extends RecyclerView.Adapter<AdapterViewFiles.View
             messageAlert = R.string.delete_alert_singular;
             messageSnackbar = R.string.snackbar_file_deleted;
         }
+//        AlertDialog.Builder dialogAlert = new AlertDialog.Builder(mActivity)
+//                .setCancelable(true)
+//                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+//                .setTitle(messageAlert)
+//                .setPositiveButton(R.string.yes, (dialog, which) -> {
+//                    ArrayList<String> filePath = new ArrayList<>();
+//
+//                    for (int position : files) {
+//                        if (position >= mFileList.size())
+//                            continue;
+//                        filePath.add(mFileList.get(position).getPdfFile().getPath());
+//                        mFileList.remove(position);
+//                    }
+//
+//                    mSelectedFiles.clear();
+//                    files.clear();
+//                    updateActionBarTitle();
+//                    notifyDataSetChanged();
+//
+//                    if (mFileList.size() == 0)
+//                        mEmptyStateChangeListener.setEmptyStateVisible();
+//
+//                    AtomicInteger undoClicked = new AtomicInteger();
+//                    StringUtils.getInstance().getSnackbarwithAction(mActivity, messageSnackbar)
+//                            .setAction(R.string.snackbar_undoAction, v -> {
+//                                if (mFileList.size() == 0) {
+//                                    mEmptyStateChangeListener.setEmptyStateInvisible();
+//                                }
+//                                updateDataset();
+//                                undoClicked.set(1);
+//                            }).addCallback(new Snackbar.Callback() {
+//                                @Override
+//                                public void onDismissed(Snackbar snackbar, int event) {
+//                                    if (undoClicked.get() == 0) {
+//                                        for (String path : filePath) {
+//                                            File fdelete = new File(path);
+//                                            mDatabaseHelper.insertRecord(fdelete.getAbsolutePath(),
+//                                                    mActivity.getString(R.string.deleted));
+//                                            if (fdelete.exists() && !fdelete.delete())
+//                                                StringUtils.getInstance().showSnackbar(mActivity,
+//                                                        R.string.snackbar_file_not_deleted);
+//                                        }
+//                                    }
+//                                }
+//                            }).show();
+//                });
+//        dialogAlert.create().show();
+        Dialog dialog = new Dialog(mActivity);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.delete_dialog_watermark);
+        dialog.setCancelable(false);
+        dialog.show();
 
-        AlertDialog.Builder dialogAlert = new AlertDialog.Builder(mActivity)
-                .setCancelable(true)
-                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
-                .setTitle(messageAlert)
-                .setPositiveButton(R.string.yes, (dialog, which) -> {
-                    ArrayList<String> filePath = new ArrayList<>();
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
 
-                    for (int position : files) {
-                        if (position >= mFileList.size())
-                            continue;
-                        filePath.add(mFileList.get(position).getPdfFile().getPath());
-                        mFileList.remove(position);
-                    }
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
 
-                    mSelectedFiles.clear();
-                    files.clear();
-                    updateActionBarTitle();
-                    notifyDataSetChanged();
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<String> filePath = new ArrayList<>();
 
-                    if (mFileList.size() == 0)
-                        mEmptyStateChangeListener.setEmptyStateVisible();
+                for (int position : files) {
+                    if (position >= mFileList.size())
+                        continue;
+                    filePath.add(mFileList.get(position).getPdfFile().getPath());
+                    mFileList.remove(position);
+                }
 
-                    AtomicInteger undoClicked = new AtomicInteger();
-                    StringUtils.getInstance().getSnackbarwithAction(mActivity, messageSnackbar)
-                            .setAction(R.string.snackbar_undoAction, v -> {
-                                if (mFileList.size() == 0) {
-                                    mEmptyStateChangeListener.setEmptyStateInvisible();
-                                }
-                                updateDataset();
-                                undoClicked.set(1);
-                            }).addCallback(new Snackbar.Callback() {
-                                    @Override
-                                    public void onDismissed(Snackbar snackbar, int event) {
-                                        if (undoClicked.get() == 0) {
-                                            for (String path : filePath) {
-                                                File fdelete = new File(path);
-                                                mDatabaseHelper.insertRecord(fdelete.getAbsolutePath(),
-                                                        mActivity.getString(R.string.deleted));
-                                                if (fdelete.exists() && !fdelete.delete())
-                                                    StringUtils.getInstance().showSnackbar(mActivity,
-                                                            R.string.snackbar_file_not_deleted);
-                                            }
-                                        }
+                mSelectedFiles.clear();
+                files.clear();
+                updateActionBarTitle();
+                notifyDataSetChanged();
+
+                if (mFileList.size() == 0)
+                    mEmptyStateChangeListener.setEmptyStateVisible();
+
+                AtomicInteger undoClicked = new AtomicInteger();
+                StringUtils.getInstance().getSnackbarwithAction(mActivity, messageSnackbar)
+                        .setAction(R.string.snackbar_undoAction, v -> {
+                            if (mFileList.size() == 0) {
+                                mEmptyStateChangeListener.setEmptyStateInvisible();
+                            }
+                            updateDataset();
+                            undoClicked.set(1);
+                        }).addCallback(new Snackbar.Callback() {
+                            @Override
+                            public void onDismissed(Snackbar snackbar, int event) {
+                                if (undoClicked.get() == 0) {
+                                    for (String path : filePath) {
+                                        File fdelete = new File(path);
+                                        mDatabaseHelper.insertRecord(fdelete.getAbsolutePath(),
+                                                mActivity.getString(R.string.deleted));
+                                        if (fdelete.exists() && !fdelete.delete())
+                                            StringUtils.getInstance().showSnackbar(mActivity,
+                                                    R.string.snackbar_file_not_deleted);
                                     }
-                            }).show();
-                });
-        dialogAlert.create().show();
+                                }
+                            }
+                        }).show();
+                dialog.dismiss();
+            }
+        });
     }
 
     /**
@@ -356,23 +466,96 @@ public class AdapterViewFiles extends RecyclerView.Adapter<AdapterViewFiles.View
      * @param position - position of file to be renamed
      */
     private void onRenameFileClick(final int position) {
-        new MaterialDialog.Builder(mActivity)
-                .title(R.string.creating_pdf)
-                .content(R.string.enter_file_name)
-                .input(mActivity.getString(R.string.example), null, (dialog, input) -> {
-                    if (input == null || input.toString().trim().isEmpty())
-                        StringUtils.getInstance().showSnackbar(mActivity, R.string.snackbar_name_not_blank);
-                    else {
-                        if (!mFileUtils.isFileExist(input + mActivity.getString(R.string.pdf_ext))) {
-                            renameFile(position, input.toString());
-                        } else {
-                            MaterialDialog.Builder builder = DialogUtils.getInstance().createOverwriteDialog(mActivity);
-                            builder.onPositive((dialog2, which) -> renameFile(position, input.toString()))
-                                    .onNegative((dialog1, which) -> onRenameFileClick(position))
-                                    .show();
+//        new MaterialDialog.Builder(mActivity)
+//                .title(R.string.creating_pdf)
+//                .content(R.string.enter_file_name)
+//                .input(mActivity.getString(R.string.example), null, (dialog, input) -> {
+//                    if (input == null || input.toString().trim().isEmpty())
+//                        StringUtils.getInstance().showSnackbar(mActivity, R.string.snackbar_name_not_blank);
+//                    else {
+//                        if (!mFileUtils.isFileExist(input + mActivity.getString(R.string.pdf_ext))) {
+//                            renameFile(position, input.toString());
+//                        } else {
+//                            MaterialDialog.Builder builder = DialogUtils.getInstance().createOverwriteDialog(mActivity);
+//                            builder.onPositive((dialog2, which) -> renameFile(position, input.toString()))
+//                                    .onNegative((dialog1, which) -> onRenameFileClick(position))
+//                                    .show();
+//                        }
+//                    }
+//                }).show();
+        Dialog dialog = new Dialog(mActivity);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.create_pdf_dialog);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        TextView textView = dialog.findViewById(R.id.txt1);
+        EditText editText = dialog.findViewById(R.id.add_pdfName);
+
+        textView.setText("Change file name");
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String input = editText.getText().toString();
+                if (input == null || input.trim().isEmpty())
+                    StringUtils.getInstance().showSnackbar(mActivity, R.string.snackbar_name_not_blank);
+                else {
+                    if (!mFileUtils.isFileExist(input + mActivity.getString(R.string.pdf_ext))) {
+                        renameFile(position, input);
+                    } else {
+                        MaterialDialog.Builder builder = DialogUtils.getInstance().createOverwriteDialog(mActivity);
+                        builder.onPositive((dialog2, which) -> renameFile(position, input))
+                                .onNegative((dialog1, which) -> onRenameFileClick(position))
+                                .show();
+                        Dialog dialog = new Dialog(mActivity);
+                        if (dialog.getWindow() != null) {
+                            dialog.getWindow().setGravity(Gravity.CENTER);
+                            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                            dialog.setCancelable(false);
                         }
+                        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                        dialog.setContentView(R.layout.name_override_dialog);
+                        dialog.setCancelable(false);
+                        dialog.show();
+
+                        Button cancel = dialog.findViewById(R.id.canceldialog);
+                        Button ok = dialog.findViewById(R.id.okdialog);
+
+                        cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                onRenameFileClick(position);
+                                dialog.dismiss();
+                            }
+                        });
+
+                        ok.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                renameFile(position, input);
+                                dialog.dismiss();
+                            }
+                        });
                     }
-                }).show();
+                }
+                dialog.dismiss();
+            }
+        });
     }
 
     private void renameFile(int position, String newName) {

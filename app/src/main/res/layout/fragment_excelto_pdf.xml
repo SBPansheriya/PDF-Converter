@@ -347,7 +347,7 @@
                             android:layout_height="0.5dp"
                             android:layout_marginStart="15dp"
                             android:layout_marginEnd="15dp"
-                            android:background="@color/color_excel_pdf" />
+                            android:background="#1A000000" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/enhancement_options_recycle_view"

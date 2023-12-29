@@ -1,8 +1,13 @@
 package com.androidmarket.pdfcreator.util;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -29,12 +34,13 @@ public class DialogUtils {
 
     /**
      * Creates a material dialog with `Warning` title
+     *
      * @param activity - activities instance
-     * @param content - content resource id
+     * @param content  - content resource id
      * @return - material dialog builder
      */
     public MaterialDialog.Builder createWarningDialog(Activity activity,
-                                                             int content) {
+                                                      int content) {
         return new MaterialDialog.Builder(activity)
                 .title(R.string.warning)
                 .content(content)
@@ -44,6 +50,7 @@ public class DialogUtils {
 
     /**
      * Creates a material dialog with `warning title` and overwrite message as content
+     *
      * @param activity - activities instance
      * @return - material dialog builder
      */
@@ -57,13 +64,14 @@ public class DialogUtils {
 
     /**
      * Creates a material dialog with given title & content
+     *
      * @param activity - activities instance
-     * @param title - dialog title resource id
-     * @param content - content resource id
+     * @param title    - dialog title resource id
+     * @param content  - content resource id
      * @return - material dialog builder
      */
     public MaterialDialog.Builder createCustomDialog(Activity activity,
-                                                            int title, int content) {
+                                                     int title, int content) {
         return new MaterialDialog.Builder(activity)
                 .title(title)
                 .content(content)
@@ -73,12 +81,13 @@ public class DialogUtils {
 
     /**
      * Creates a material dialog with given title
+     *
      * @param activity - activities instance
-     * @param title - dialog title resource id
+     * @param title    - dialog title resource id
      * @return - material dialog builder
      */
     public MaterialDialog.Builder createCustomDialogWithoutContent(Activity activity,
-                                                            int title) {
+                                                                   int title) {
         return new MaterialDialog.Builder(activity)
                 .title(title)
                 .positiveText(android.R.string.ok)
@@ -87,6 +96,7 @@ public class DialogUtils {
 
     /**
      * Creates dialog with animation
+     *
      * @param activity - activities instance
      * @return - material dialog
      */
@@ -98,8 +108,9 @@ public class DialogUtils {
 
     /**
      * Creates dialog with animation
+     *
      * @param activity - activities instance
-     * @param title - dialog message
+     * @param title    - dialog message
      * @return - material dialog
      */
     public MaterialDialog createCustomAnimationDialog(Activity activity, String title) {
@@ -129,12 +140,34 @@ public class DialogUtils {
                 stringId = R.string.viewfiles_addwatermark;
                 break;
         }
-        new MaterialDialog.Builder(activity)
-                .title(R.string.app_name)
-                .content(stringId)
-                .positiveText(android.R.string.ok)
-                .build()
-                .show();
-    }
+//        new MaterialDialog.Builder(activity)
+//                .title(R.string.app_name)
+//                .content(stringId)
+//                .positiveText(android.R.string.ok)
+//                .build()
+//                .show();
 
+        Dialog dialog = new Dialog(activity);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.pdf_converter_dialog_layout);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Button ok = dialog.findViewById(R.id.okdialog);
+        TextView textView = dialog.findViewById(R.id.txt);
+
+        textView.setText(stringId);
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
 }

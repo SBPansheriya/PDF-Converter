@@ -87,7 +87,6 @@ public class AdapterMergeFiles extends RecyclerView.Adapter<AdapterMergeFiles.Vi
         public void onCheckboxClick() {
             mOnClickListener.onItemClick(mFilePaths.get(getAdapterPosition()));
         }
-
     }
 
     public interface OnClickListener {

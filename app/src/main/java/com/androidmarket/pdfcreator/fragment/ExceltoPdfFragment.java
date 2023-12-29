@@ -2,6 +2,7 @@ package com.androidmarket.pdfcreator.fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+
 import androidx.annotation.NonNull;
 
 import com.androidmarket.pdfcreator.activities.HomeActivity;
@@ -24,20 +26,25 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Editable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.airbnb.lottie.LottieAnimationView;
@@ -192,25 +199,93 @@ public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.On
     }
 
     private void openExcelToPdf_() {
-        new MaterialDialog.Builder(mActivity)
-                .title(R.string.creating_pdf)
-                .content(R.string.enter_file_name)
-                .input(getString(R.string.example), null, (dialog, input) -> {
-                    if (mStringUtils.isEmpty(input)) {
-                        mStringUtils.showSnackbar(mActivity, R.string.snackbar_name_not_blank);
+//        new MaterialDialog.Builder(mActivity)
+//                .title(R.string.creating_pdf)
+//                .content(R.string.enter_file_name)
+//                .input(getString(R.string.example), null, (dialog, input) -> {
+//                    if (mStringUtils.isEmpty(input)) {
+//                        mStringUtils.showSnackbar(mActivity, R.string.snackbar_name_not_blank);
+//                    } else {
+//                        final String inputName = input.toString();
+//                        if (!mFileUtils.isFileExist(inputName + getString(R.string.pdf_ext))) {
+//                            convertToPdf(inputName);
+//                        } else {
+//                            MaterialDialog.Builder builder = DialogUtils.getInstance().createOverwriteDialog(mActivity);
+//                            builder.onPositive((dialog12, which) -> convertToPdf(inputName))
+//                                    .onNegative((dialog1, which) -> openExcelToPdf())
+//                                    .show();
+//                        }
+//                    }
+//                })
+//                .show();
+
+        Dialog dialog = new Dialog(mActivity);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.create_pdf_dialog);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        EditText editText = dialog.findViewById(R.id.add_pdfName);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String filename = editText.getText().toString();
+                if (mStringUtils.isEmpty(filename)) {
+                    mStringUtils.showSnackbar(mActivity, R.string.snackbar_name_not_blank);
+                } else {
+                    final String inputName = filename;
+                    if (!mFileUtils.isFileExist(inputName + getString(R.string.pdf_ext))) {
+                        convertToPdf(inputName);
                     } else {
-                        final String inputName = input.toString();
-                        if (!mFileUtils.isFileExist(inputName + getString(R.string.pdf_ext))) {
-                            convertToPdf(inputName);
-                        } else {
-                            MaterialDialog.Builder builder = DialogUtils.getInstance().createOverwriteDialog(mActivity);
-                            builder.onPositive((dialog12, which) -> convertToPdf(inputName))
-                                    .onNegative((dialog1, which) -> openExcelToPdf())
-                                    .show();
+                        Dialog dialog = new Dialog(mActivity);
+                        if (dialog.getWindow() != null) {
+                            dialog.getWindow().setGravity(Gravity.CENTER);
+                            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                            dialog.setCancelable(false);
                         }
+                        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                        dialog.setContentView(R.layout.name_override_dialog);
+                        dialog.setCancelable(false);
+                        dialog.show();
+
+                        Button cancel = dialog.findViewById(R.id.canceldialog);
+                        Button ok = dialog.findViewById(R.id.okdialog);
+
+                        cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                openExcelToPdf();
+                                dialog.dismiss();
+                            }
+                        });
+
+                        ok.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                convertToPdf(inputName);
+                                dialog.dismiss();
+                            }
+                        });
                     }
-                })
-                .show();
+                    dialog.dismiss();
+                }
+            }
+        });
     }
 
     @OnClick(R.id.open_pdf)
@@ -238,6 +313,7 @@ public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.On
             return true;
         }
     }
+
     private void getRuntimePermissions() {
         if (Build.VERSION.SDK_INT < 29) {
             PermissionsUtils.getInstance().requestRuntimePermissions(this,
@@ -326,29 +402,86 @@ public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.On
     }
 
     private void setPassword() {
-        MaterialDialog.Builder builder = DialogUtils.getInstance()
-                .createCustomDialogWithoutContent(mActivity, R.string.set_password);
-        final MaterialDialog dialog = builder
-                .customView(R.layout.custom_dialog, true)
-                .neutralText(R.string.remove_dialog)
-                .build();
+//        MaterialDialog.Builder builder = DialogUtils.getInstance()
+//                .createCustomDialogWithoutContent(mActivity, R.string.set_password);
+//        final MaterialDialog dialog = builder
+//                .customView(R.layout.custom_dialog, true)
+//                .neutralText(R.string.remove_dialog)
+//                .build();
+//
+//        final View positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
+//        final View neutralAction = dialog.getActionButton(DialogAction.NEUTRAL);
+//        final EditText passwordInput = Objects.requireNonNull(dialog.getCustomView()).findViewById(R.id.password);
+//        passwordInput.setText(mPassword);
+//        passwordInput.addTextChangedListener(watcherImpl(positiveAction));
+//        if (mStringUtils.isNotEmpty(mPassword)) {
+//            neutralAction.setOnClickListener(v -> {
+//                mPassword = null;
+//                setPasswordIcon(R.drawable.password_protect_pdf);
+//                mPasswordProtected = false;
+//                dialog.dismiss();
+//                mStringUtils.showSnackbar(mActivity, R.string.password_remove);
+//            });
+//        }
+//        dialog.show();
+//        positiveAction.setEnabled(false);
 
-        final View positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
-        final View neutralAction = dialog.getActionButton(DialogAction.NEUTRAL);
-        final EditText passwordInput = Objects.requireNonNull(dialog.getCustomView()).findViewById(R.id.password);
-        passwordInput.setText(mPassword);
-        passwordInput.addTextChangedListener(watcherImpl(positiveAction));
+        Dialog dialog = new Dialog(mActivity);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.set_password_dialog);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        Button remove = dialog.findViewById(R.id.remove_dialog);
+        EditText passwordinput = dialog.findViewById(R.id.password);
+
+        passwordinput.setText(mPassword);
+        passwordinput.addTextChangedListener(
+                new DefaultTextWatcher() {
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        ok.setEnabled(s.toString().trim().length() > 0);
+                    }
+                });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
         if (mStringUtils.isNotEmpty(mPassword)) {
-            neutralAction.setOnClickListener(v -> {
+            remove.setOnClickListener(v -> {
                 mPassword = null;
-                setPasswordIcon(R.drawable.baseline_enhanced_encryption_24);
+                setPasswordIcon(R.drawable.password_protect_pdf);
                 mPasswordProtected = false;
                 dialog.dismiss();
                 mStringUtils.showSnackbar(mActivity, R.string.password_remove);
             });
         }
-        dialog.show();
-        positiveAction.setEnabled(false);
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String input = passwordinput.getText().toString();
+                if (mStringUtils.isEmpty(input)) {
+                    mStringUtils.showSnackbar(mActivity, R.string.snackbar_password_cannot_be_blank);
+                } else {
+                    mPassword = input;
+                    mPasswordProtected = true;
+                    setPasswordIcon(R.drawable.baseline_done_24);
+                    dialog.dismiss();
+                }
+            }
+        });
     }
 
     private DefaultTextWatcher watcherImpl(View positiveAction) {

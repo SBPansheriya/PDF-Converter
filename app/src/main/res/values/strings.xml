@@ -21,16 +21,16 @@
 
     <!--   Items  -->
     <array name="items">
-        <item>Open File</item>
-        <item>Delete File</item>
-        <item>Rename File</item>
-        <item>Print File</item>
-        <item>Share File</item>
-        <item>Show Details</item>
-        <item>Add Password</item>
-        <item>Remove Password</item>
-        <item>Rotate Pages</item>
-        <item>Add Watermark</item>
+        <item>Open file</item>
+        <item>Delete file</item>
+        <item>Rename file</item>
+        <item>Print file</item>
+        <item>Share file</item>
+        <item>Show details</item>
+        <item>Add password</item>
+        <item>Remove password</item>
+        <item>Rotate pages</item>
+        <item>Add watermark</item>
     </array>
 
     <array name="itemIds" translatable="false">
@@ -71,12 +71,12 @@
     </string-array>
 
     <string-array name="fontStyles" translatable="false">
-        <item>NORMAL</item>
-        <item>BOLD</item>
-        <item>ITALIC</item>
-        <item>UNDERLINE</item>
-        <item>STRIKETHRU</item>
-        <item>BOLDITALIC</item>
+        <item>Normal</item>
+        <item>Bold</item>
+        <item>Italic</item>
+        <item>Underline</item>
+        <item>Strikethru</item>
+        <item>Boldeitalic</item>
     </string-array>
 
     <string name="pdf_ext" translatable="false">.pdf</string>
@@ -562,6 +562,11 @@
     <string name="set_border">Set border</string>
     <string name="enter_border_width_units">Enter border width units</string>
     <string name="there_already_exists_a_file_with_the_same_name_do_you_want_to_overwrite">There already exists a file with the same name. do you want to overwrite?</string>
+    <string name="pdf_action">PDF Action</string>
+    <string name="do_you_want_to_delete_this_file">Do you want to delete this file ?</string>
+    <string name="size">Size</string>
+    <string name="path">Path</string>
+    <string name="date_modified">Date Modified</string>
     <string-array name="faq_question_answers">
         <item>What image file formats are supported?#####The app supports jpeg, jpg, tiff, gif, psd, bmp, eps, png, etc.</item>
         <item>Can I create a new text file using the app?#####You can only create a new text file by extracting texts from an existing PDFs. To create a text file, \n1) Click the <strong>Extract Text</strong> option on the homepage. \n2) Select the PDF using <strong>SELECT PDF FILE</strong> button. \n3) Then, click <strong>EXTRACT TEXT</strong>. \n4) Once done, a text file with the texts from the PDF file will be created.</item>

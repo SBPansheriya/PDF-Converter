@@ -700,21 +700,21 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
 //        dialog.show();
 //        positiveAction.setEnabled(false);
 
-        Dialog dialog1 = new Dialog(getContext());
-        if (dialog1.getWindow() != null) {
-            dialog1.getWindow().setGravity(Gravity.CENTER);
-            dialog1.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-            dialog1.setCancelable(false);
+        Dialog dialog = new Dialog(getContext());
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
         }
-        dialog1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        dialog1.setContentView(R.layout.set_password_dialog);
-        dialog1.setCancelable(false);
-        dialog1.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.set_password_dialog);
+        dialog.setCancelable(false);
+        dialog.show();
 
-        Button cancel = dialog1.findViewById(R.id.canceldialog);
-        Button ok = dialog1.findViewById(R.id.okdialog);
-        Button remove = dialog1.findViewById(R.id.remove_dialog);
-        EditText passwordinput = dialog1.findViewById(R.id.password);
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        Button remove = dialog.findViewById(R.id.remove_dialog);
+        EditText passwordinput = dialog.findViewById(R.id.password);
 
         passwordinput.setText(mPdfOptions.getPassword());
         passwordinput.addTextChangedListener(
@@ -728,7 +728,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog1.dismiss();
+                dialog.dismiss();
             }
         });
 
@@ -737,7 +737,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                 mPdfOptions.setPassword(null);
                 mPdfOptions.setPasswordProtected(false);
                 showEnhancementOptions();
-                dialog1.dismiss();
+                dialog.dismiss();
                 Toast.makeText(getActivity(), R.string.password_remove, Toast.LENGTH_SHORT).show();
 
             });
@@ -752,7 +752,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                     mPdfOptions.setPassword(passwordinput.getText().toString());
                     mPdfOptions.setPasswordProtected(true);
                     showEnhancementOptions();
-                    dialog1.dismiss();
+                    dialog.dismiss();
                 }
             }
         });
@@ -884,15 +884,14 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
 
         colorPickerInput.setAlphaSliderVisible(true);
         ArrayAdapter<Font.FontFamily> fontFamilyAdapter = new ArrayAdapter<>(mActivity,
-                android.R.layout.simple_spinner_item, Font.FontFamily.values());
-        fontFamilyAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+                R.layout.simple_spinner_item, Font.FontFamily.values());
+        fontFamilyAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         fontFamilyInput.setAdapter(fontFamilyAdapter);
 
-        ArrayAdapter<String> styleAdapter = new ArrayAdapter<>(mActivity, android.R.layout.simple_spinner_dropdown_item,
+        ArrayAdapter<String> styleAdapter = new ArrayAdapter<>(mActivity, R.layout.simple_spinner_item,
                 mActivity.getResources().getStringArray(R.array.fontStyles));
-        styleAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+        styleAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         styleInput.setAdapter(styleAdapter);
-
 
         if (mPdfOptions.isWatermarkAdded()) {
             watermarkTextInput.setText(mPdfOptions.getWatermark().getWatermarkText());

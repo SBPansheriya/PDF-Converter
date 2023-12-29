@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<!--    <CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--        android:id="@android:id/text1"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="?android:attr/dropdownListPreferredItemHeight"-->
-<!--        android:textAppearance="?android:attr/textAppearanceListItemSmall"-->
-<!--        android:textColor="?android:attr/textColorAlertDialogListItem"-->
-<!--        android:gravity="center_vertical"-->
-<!--        android:paddingStart="16dp"-->
-<!--        android:paddingEnd="16dp"-->
-<!--        android:background="?android:attr/activatedBackgroundIndicator"-->
-<!--        android:checkMark="?android:attr/listChoiceIndicatorSingle"-->
-<!--        />-->
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginHorizontal="10dp"
+        android:text="@string/enter_password"
+        android:gravity="center|start"
+        android:textSize="17sp"
+        android:textColor="@color/black"
+        android:letterSpacing="0.030"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/metropolis_semibold"/>
 
-</RelativeLayout>
+</LinearLayout>

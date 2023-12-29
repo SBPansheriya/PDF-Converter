@@ -1,7 +1,9 @@
 package com.androidmarket.pdfcreator.util;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -11,8 +13,14 @@ import android.os.AsyncTask;
 import android.os.ParcelFileDescriptor;
 import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
+
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
@@ -33,6 +41,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import androidmarket.R;
 import com.androidmarket.pdfcreator.db.DatabaseHelper;
@@ -56,29 +65,56 @@ public class PDFUtils {
      *
      * @param file - file name
      */
+    @SuppressLint("StringFormatInvalid")
     public void showDetails(File file) {
         String name = file.getName();
         String path = file.getPath();
         String size = FileInfoUtils.getFormattedSize(file);
-        String lastModDate = FileInfoUtils.getFormattedSize(file);
+        String lastModDate = FileInfoUtils.getFormattedDate(file);
+//        TextView message = new TextView(mContext);
+//        TextView title = new TextView(mContext);
+//        message.setText(String.format(mContext.getResources().getString(R.string.file_info), name, path, size, lastModDate));
+//        message.setTextIsSelectable(true);
+//        title.setText(R.string.details);
+//        title.setPadding(20, 10, 10, 10);
+//        title.setTextSize(30);
+//        title.setTextColor(mContext.getResources().getColor(R.color.black));
+//        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+//        final AlertDialog dialog = builder.create();
+//        builder.setView(message);
+//        builder.setCustomTitle(title);
+//        builder.setPositiveButton(mContext.getResources().getString(R.string.ok),
+//                (dialogInterface, i) -> dialog.dismiss());
+//        builder.create();
+//        builder.show();
+        Dialog dialog = new Dialog(mContext);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.show_detail_dialog_layout);
+        dialog.setCancelable(false);
+        dialog.show();
 
-        TextView message = new TextView(mContext);
-        TextView title = new TextView(mContext);
-        message.setText(String.format
-                (mContext.getResources().getString(R.string.file_info), name, path, size, lastModDate));
-        message.setTextIsSelectable(true);
-        title.setText(R.string.details);
-        title.setPadding(20, 10, 10, 10);
-        title.setTextSize(30);
-        title.setTextColor(mContext.getResources().getColor(R.color.black));
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        final AlertDialog dialog = builder.create();
-        builder.setView(message);
-        builder.setCustomTitle(title);
-        builder.setPositiveButton(mContext.getResources().getString(R.string.ok),
-                (dialogInterface, i) -> dialog.dismiss());
-        builder.create();
-        builder.show();
+        Button ok = dialog.findViewById(R.id.okdialog);
+        TextView filename = dialog.findViewById(R.id.filename);
+        TextView Path = dialog.findViewById(R.id.path);
+        TextView Size = dialog.findViewById(R.id.size);
+        TextView dateModified = dialog.findViewById(R.id.date_modified);
+
+        filename.setText(name);
+        Path.setText(path);
+        Size.setText(size);
+        dateModified.setText(lastModDate);
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
     }
 
     /**
@@ -412,5 +448,4 @@ public class PDFUtils {
             }
         }
     }
-
 }

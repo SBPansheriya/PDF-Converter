@@ -32,6 +32,7 @@
     <color name="open_pdf">#8FC6C3</color>
     <color name="blue">#36BDFB</color>
     <color name="dark_blue">#00A9FF</color>
+    <color name="dark_blue20">#3300A9FF</color>
     <!-- DOTS COLOR -->
 
 </resources>

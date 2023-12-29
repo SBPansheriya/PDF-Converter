@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
+    xmlns:picker="http://schemas.android.com/tools"
     android:id="@+id/dialog_linear"
     android:layout_width="330dp"
+    android:layout_height="230dp"
+    android:layout_gravity="center"
+    android:gravity="center"
     android:layout_marginHorizontal="10dp"
-    android:layout_height="235dp">
+    android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -20,16 +23,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:gravity="center"
-                android:layout_marginTop="10dp"
                 android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/image"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/add_border_img"/>
+                    android:src="@drawable/font_size_img" />
 
                 <TextView
                     android:id="@+id/txt"
@@ -37,9 +40,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/metropolis_bold"
+                    android:text="Font size (Default : 12)"
                     android:textColor="@color/dark_blue"
-                    android:text="@string/add_image_border"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -52,19 +55,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginHorizontal="10dp"
-                    android:textSize="15sp"
+                    android:textSize="17sp"
                     android:fontFamily="@font/metropolis_semibold"
                     android:textColor="@color/black"
-                    android:text="@string/set_border"/>
+                    android:text="Font Size"/>
 
                 <EditText
-                    android:id="@+id/number"
+                    android:id="@+id/fontInput"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:layout_marginHorizontal="10dp"
                     android:paddingStart="10dp"
+                    android:textColor="#80000000"
                     android:fontFamily="@font/metropolis_medium"
-                    android:hint="@string/enter_border_width_units"
+                    android:hint="@string/enter_font_size"
                     android:layout_marginTop="5dp"
                     android:maxLines="1"
                     android:textSize="14sp"
@@ -73,52 +77,60 @@
             </LinearLayout>
 
             <CheckBox
-                android:id="@+id/cbSetDefault"
+                android:id="@+id/cbSetFontDefault"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="@color/black"
-                android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:buttonTint="@color/black"
                 android:fontFamily="@font/metropolis_semibold"
                 android:text="@string/set_as_default" />
 
-
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginBottom="10dp"
+                android:gravity="end"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/canceldialog"
-                    android:layout_width="65dp"
-                    android:layout_height="30dp"
-                    android:text="@string/cancel"
-                    android:background="@drawable/create_pdf_dialog_border"
-                    android:fontFamily="@font/metropolis_medium"
-                    android:textColor="#80000000"
-                    android:backgroundTint="#E7EAEE"
-                    android:textAllCaps="false"
-                    android:textSize="13dp"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-                <View
-                    android:layout_width="10dp"
-                    android:layout_height="0dp"/>
+                    <Button
+                        android:id="@+id/canceldialog"
+                        android:layout_width="65dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/create_pdf_dialog_border"
+                        android:backgroundTint="#E7EAEE"
+                        android:fontFamily="@font/metropolis_medium"
+                        android:text="@string/cancel"
+                        android:textAllCaps="false"
+                        android:textColor="#80000000"
+                        android:textSize="13sp" />
 
-                <Button
-                    android:id="@+id/okdialog"
-                    android:layout_width="45dp"
-                    android:layout_height="30dp"
-                    android:text="Ok"
-                    android:background="@drawable/create_pdf_dialog_border"
-                    android:fontFamily="@font/metropolis_medium"
-                    android:textColor="@color/white"
-                    android:backgroundTint="@color/dark_blue"
-                    android:textAllCaps="false"
-                    android:textSize="13sp"/>
+                    <View
+                        android:layout_width="10dp"
+                        android:layout_height="0dp" />
+
+                    <Button
+                        android:id="@+id/okdialog"
+                        android:layout_width="45dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/create_pdf_dialog_border"
+                        android:backgroundTint="#00A9FF"
+                        android:fontFamily="@font/metropolis_medium"
+                        android:text="Ok"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/metropolis_bold"
-                    android:textColor="@color/blue"
+                    android:textColor="@color/dark_blue"
                     android:text="@string/warning"
                     android:textSize="18sp"/>
             </LinearLayout>

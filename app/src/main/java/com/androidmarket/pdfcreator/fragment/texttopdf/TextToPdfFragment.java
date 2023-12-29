@@ -2,22 +2,30 @@ package com.androidmarket.pdfcreator.fragment.texttopdf;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -49,6 +57,7 @@ import com.androidmarket.pdfcreator.util.PermissionsUtils;
 import com.androidmarket.pdfcreator.util.StringUtils;
 import com.androidmarket.pdfcreator.util.TextToPDFUtils;
 import com.androidmarket.pdfcreator.util.TextToPdfAsync;
+import com.github.danielnilsson9.colorpickerview.view.ColorPickerView;
 
 import static android.app.Activity.RESULT_OK;
 import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_WRITE_PERMISSION;
@@ -100,7 +109,6 @@ public class TextToPdfFragment extends Fragment implements OnItemClickListener,
         AdsUtility.loadNativeAd(getActivity(), nativeAdFrameOne);
 
 
-
         ImageView ivBack = rootView.findViewById(R.id.ivBack);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +123,7 @@ public class TextToPdfFragment extends Fragment implements OnItemClickListener,
 
     private void addEnhancements() {
         mEnhancerList = new ArrayList<>();
-        for (final Enhancers enhancer: Enhancers.values()) {
+        for (final Enhancers enhancer : Enhancers.values()) {
             mEnhancerList.add(enhancer.getEnhancer(mActivity, this, mBuilder));
         }
     }
@@ -127,7 +135,7 @@ public class TextToPdfFragment extends Fragment implements OnItemClickListener,
         GridLayoutManager mGridLayoutManager = new GridLayoutManager(mActivity, 1);
         mTextEnhancementOptionsRecycleView.setLayoutManager(mGridLayoutManager);
         List<EnhancementOptionsEntity> optionsEntityist = new ArrayList<>();
-        for (Enhancer enhancer: mEnhancerList) {
+        for (Enhancer enhancer : mEnhancerList) {
             optionsEntityist.add(enhancer.getEnhancementOptionsEntity());
         }
         mTextAdapterEnhancementOptions = new AdapterEnhancementOptions(this, optionsEntityist);
@@ -142,27 +150,98 @@ public class TextToPdfFragment extends Fragment implements OnItemClickListener,
 
     @OnClick(R.id.createtextpdf)
     public void openCreateTextPdf() {
-        new MaterialDialog.Builder(mActivity)
-                .title(R.string.creating_pdf)
-                .content(R.string.enter_file_name)
-                .input(getString(R.string.example), mFileNameWithType,
-                        (dialog, input) -> {
-                            if (StringUtils.getInstance().isEmpty(input)) {
-                                StringUtils.getInstance().showSnackbar(mActivity, R.string.snackbar_name_not_blank);
-                            } else {
-                                final String inputName = input.toString();
-                                if (!mFileUtils.isFileExist(inputName + getString(R.string.pdf_ext))) {
-                                    createPdf(inputName);
-                                } else {
-                                    MaterialDialog.Builder builder = DialogUtils.getInstance()
-                                            .createOverwriteDialog(mActivity);
-                                    builder.onPositive((dialog12, which) -> createPdf(inputName))
-                                            .onNegative((dialog1, which) -> openCreateTextPdf())
-                                            .show();
-                                }
+//        new MaterialDialog.Builder(mActivity)
+//                .title(R.string.creating_pdf)
+//                .content(R.string.enter_file_name)
+//                .input(getString(R.string.example), mFileNameWithType,
+//                        (dialog, input) -> {
+//                            if (StringUtils.getInstance().isEmpty(input)) {
+//                                StringUtils.getInstance().showSnackbar(mActivity, R.string.snackbar_name_not_blank);
+//                            } else {
+//                                final String inputName = input.toString();
+//                                if (!mFileUtils.isFileExist(inputName + getString(R.string.pdf_ext))) {
+//                                    createPdf(inputName);
+//                                } else {
+//                                    MaterialDialog.Builder builder = DialogUtils.getInstance()
+//                                            .createOverwriteDialog(mActivity);
+//                                    builder.onPositive((dialog12, which) -> createPdf(inputName))
+//                                            .onNegative((dialog1, which) -> openCreateTextPdf())
+//                                            .show();
+//                                }
+//                            }
+//                        })
+//                .show();
+
+        Dialog dialog = new Dialog(getContext());
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.create_pdf_dialog);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        EditText input = dialog.findViewById(R.id.add_pdfName);
+
+        input.setText(mFileNameWithType);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String inputname  = input.getText().toString();
+                if (StringUtils.getInstance().isEmpty(inputname)) {
+                    StringUtils.getInstance().showSnackbar(mActivity, R.string.snackbar_name_not_blank);
+                } else {
+                    final String inputName = inputname;
+                    if (!mFileUtils.isFileExist(inputName + getString(R.string.pdf_ext))) {
+                        createPdf(inputName);
+                    } else {
+                        Dialog dialog = new Dialog(getActivity());
+                        if (dialog.getWindow() != null) {
+                            dialog.getWindow().setGravity(Gravity.CENTER);
+                            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                            dialog.setCancelable(false);
+                        }
+                        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                        dialog.setContentView(R.layout.name_override_dialog);
+                        dialog.setCancelable(false);
+                        dialog.show();
+
+                        Button cancel = dialog.findViewById(R.id.canceldialog);
+                        Button ok = dialog.findViewById(R.id.okdialog);
+
+                        cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                openCreateTextPdf();
+                                dialog.dismiss();
                             }
-                        })
-                .show();
+                        });
+
+                        ok.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                createPdf(inputName);
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                }
+                dialog.dismiss();
+            }
+        });
     }
 
     /**
@@ -261,6 +340,7 @@ public class TextToPdfFragment extends Fragment implements OnItemClickListener,
             return true;
         }
     }
+
     private void getRuntimePermissions() {
         if (Build.VERSION.SDK_INT < 29) {
             PermissionsUtils.getInstance().requestRuntimePermissions(this,

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -121,6 +122,7 @@ public class ActivityCropImage extends AppCompatActivity {
             filename = "cropped_" + FileUtils.getFileName(path);
 
         File file = new File(folder, filename);
+        Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
 
         mCropImageView.saveCroppedImageAsync(Uri.fromFile(file));
     }

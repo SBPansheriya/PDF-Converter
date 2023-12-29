@@ -39,13 +39,14 @@
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/metropolis_bold"
                     android:text="@string/add_watermark"
-                    android:textColor="@color/blue"
+                    android:textColor="@color/dark_blue"
                     android:textSize="18sp" />
             </LinearLayout>
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:fillViewport="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -56,6 +57,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="10dp"
                         android:orientation="vertical">
 
                         <TextView
@@ -70,11 +72,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:layout_marginVertical="5dp"
-                            android:fontFamily="@font/metropolis_medium"
                             android:background="@drawable/create_pdf_dialog_border"
+                            android:fontFamily="@font/metropolis_medium"
                             android:inputType="text"
-                            android:textColor="#80000000"
-                            android:paddingStart="10dp" />
+                            android:paddingStart="10dp"
+                            android:textColor="#80000000" />
 
                         <!--                <com.google.android.material.textfield.TextInputLayout-->
                         <!--                    android:layout_width="match_parent"-->
@@ -100,11 +102,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:layout_marginVertical="5dp"
-                            android:fontFamily="@font/metropolis_medium"
                             android:background="@drawable/create_pdf_dialog_border"
+                            android:fontFamily="@font/metropolis_medium"
                             android:inputType="number"
-                            android:textColor="#80000000"
-                            android:paddingStart="10dp" />
+                            android:paddingStart="10dp"
+                            android:textColor="#80000000" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -118,16 +120,14 @@
                         android:id="@+id/watermarkColor"
                         android:layout_width="match_parent"
                         android:layout_height="350dp"
-                        android:layout_marginHorizontal="10dp"
-                        android:layout_marginBottom="10dp"
                         picker:alphaChannelVisible="true" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:layout_marginHorizontal="10dp"
                         android:orientation="vertical">
-
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -141,11 +141,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:layout_marginVertical="5dp"
-                            android:fontFamily="@font/metropolis_medium"
                             android:background="@drawable/create_pdf_dialog_border"
+                            android:fontFamily="@font/metropolis_medium"
                             android:inputType="number"
-                            android:textColor="#80000000"
-                            android:paddingStart="10dp" />
+                            android:paddingStart="10dp"
+                            android:textColor="#80000000" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -157,15 +157,17 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
-                            android:background="@drawable/create_pdf_dialog_border"
                             android:layout_marginVertical="5dp"
+                            android:background="@drawable/create_pdf_dialog_border"
                             android:orientation="horizontal">
 
                             <Spinner
                                 android:id="@+id/watermarkFontFamily"
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
-                                android:fontFamily="@font/metropolis_semibold"
+                                android:backgroundTint="@color/black"
+                                android:theme="@style/SpinnerTheme"
+                                android:dropDownWidth="170dp"
                                 android:spinnerMode="dropdown" />
                         </RelativeLayout>
 
@@ -182,11 +184,14 @@
                             android:layout_marginVertical="5dp"
                             android:background="@drawable/create_pdf_dialog_border"
                             android:orientation="horizontal">
+
                             <Spinner
                                 android:id="@+id/watermarkStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
+                                android:backgroundTint="@color/black"
                                 android:ems="10"
+                                android:theme="@style/SpinnerTheme"
                                 android:fontFamily="@font/metropolis_semibold"
                                 android:spinnerMode="dropdown" />
                         </RelativeLayout>
@@ -207,7 +212,7 @@
                             <Button
                                 android:id="@+id/remove_dialog"
                                 android:layout_width="65dp"
-                                android:layout_height="35dp"
+                                android:layout_height="30dp"
                                 android:background="@drawable/create_pdf_dialog_border"
                                 android:backgroundTint="#E7EAEE"
                                 android:fontFamily="@font/metropolis_medium"
@@ -229,7 +234,7 @@
                             <Button
                                 android:id="@+id/canceldialog"
                                 android:layout_width="65dp"
-                                android:layout_height="35dp"
+                                android:layout_height="30dp"
                                 android:background="@drawable/create_pdf_dialog_border"
                                 android:backgroundTint="#E7EAEE"
                                 android:fontFamily="@font/metropolis_medium"
@@ -245,7 +250,7 @@
                             <Button
                                 android:id="@+id/okdialog"
                                 android:layout_width="45dp"
-                                android:layout_height="35dp"
+                                android:layout_height="30dp"
                                 android:background="@drawable/create_pdf_dialog_border"
                                 android:backgroundTint="#00A9FF"
                                 android:fontFamily="@font/metropolis_medium"

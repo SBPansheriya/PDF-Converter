@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/metropolis_bold"
-                    android:textColor="@color/blue"
+                    android:textColor="@color/dark_blue"
                     android:text="@string/add_margins"
                     android:textSize="18sp"/>
             </LinearLayout>
@@ -54,7 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/top"
-                    android:fontFamily="@font/metropolis_bold"
+                    android:fontFamily="@font/metropolis_semibold"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
@@ -71,7 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/bottom"
-                    android:fontFamily="@font/metropolis_bold"
+                    android:fontFamily="@font/metropolis_semibold"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
@@ -88,7 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/right"
-                    android:fontFamily="@font/metropolis_bold"
+                    android:fontFamily="@font/metropolis_semibold"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
@@ -105,7 +105,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/left"
-                    android:fontFamily="@font/metropolis_bold"
+                    android:fontFamily="@font/metropolis_semibold"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 

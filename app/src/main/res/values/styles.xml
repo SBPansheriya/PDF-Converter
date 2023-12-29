@@ -121,4 +121,10 @@
     <style name="MaterialCardviewStyleLight" parent="Widget.MaterialComponents.CardView">
         <item name="cardBackgroundColor">@color/white</item>
     </style>
+
+    <style name="SpinnerTheme">
+        <item name="colorAccent">@color/dark_blue</item>
+        <item name="colorControlNormal">@color/dark_blue</item>
+    </style>
+
 </resources>

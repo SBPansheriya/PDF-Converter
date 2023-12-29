@@ -3,15 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RadioButton
-        android:id="@+id/page_num_opt1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:buttonTint="@color/dark_blue"
-        android:layout_marginStart="10dp"
-        android:paddingStart="20dp"
-        android:fontFamily="@font/metropolis_semibold"
-        android:text="Bold"
-        android:textSize="18sp" />
+<!--    <CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--        android:id="@android:id/text1"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="?android:attr/dropdownListPreferredItemHeight"-->
+<!--        android:textAppearance="?android:attr/textAppearanceListItemSmall"-->
+<!--        android:textColor="?android:attr/textColorAlertDialogListItem"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:paddingStart="16dp"-->
+<!--        android:paddingEnd="16dp"-->
+<!--        android:background="?android:attr/activatedBackgroundIndicator"-->
+<!--        android:checkMark="?android:attr/listChoiceIndicatorSingle"-->
+<!--        />-->
 
 </RelativeLayout>

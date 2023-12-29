@@ -209,7 +209,6 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         return root;
     }
 
-
     /**
      * Adds images (if any) received in the bundle
      */
@@ -715,7 +714,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         Button cancel = dialog1.findViewById(R.id.canceldialog);
         Button ok = dialog1.findViewById(R.id.okdialog);
         Button remove = dialog1.findViewById(R.id.remove_dialog);
-        EditText passwordinput = dialog1.findViewById(R.id.add_pdfName);
+        EditText passwordinput = dialog1.findViewById(R.id.password);
 
         passwordinput.setText(mPdfOptions.getPassword());
         passwordinput.addTextChangedListener(
@@ -733,14 +732,16 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
             }
         });
 
-        remove.setOnClickListener(v -> {
-            mPdfOptions.setPassword(null);
-            mPdfOptions.setPasswordProtected(false);
-            showEnhancementOptions();
-            dialog1.dismiss();
-            Toast.makeText(getActivity(), R.string.password_remove, Toast.LENGTH_SHORT).show();
+        if (StringUtils.getInstance().isNotEmpty(mPdfOptions.getPassword())) {
+            remove.setOnClickListener(v -> {
+                mPdfOptions.setPassword(null);
+                mPdfOptions.setPasswordProtected(false);
+                showEnhancementOptions();
+                dialog1.dismiss();
+                Toast.makeText(getActivity(), R.string.password_remove, Toast.LENGTH_SHORT).show();
 
-        });
+            });
+        }
 
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -760,7 +761,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     private void addWatermark() {
 //        final MaterialDialog dialog = new MaterialDialog.Builder(mActivity)
 //                .title(R.string.add_watermark)
-//                .customView(R.layout.add_watermark_dialog, true)
+//                .customView(R.layout.add_water_mark_dialog_layout, true)
 //                .positiveText(android.R.string.ok)
 //                .negativeText(android.R.string.cancel)
 //                .neutralText(R.string.remove_dialog)
@@ -881,12 +882,15 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
 
         final Watermark watermark = new Watermark();
 
+        colorPickerInput.setAlphaSliderVisible(true);
         ArrayAdapter<Font.FontFamily> fontFamilyAdapter = new ArrayAdapter<>(mActivity,
-                android.R.layout.simple_spinner_dropdown_item, Font.FontFamily.values());
+                android.R.layout.simple_spinner_item, Font.FontFamily.values());
+        fontFamilyAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         fontFamilyInput.setAdapter(fontFamilyAdapter);
 
         ArrayAdapter<String> styleAdapter = new ArrayAdapter<>(mActivity, android.R.layout.simple_spinner_dropdown_item,
                 mActivity.getResources().getStringArray(R.array.fontStyles));
+        styleAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         styleInput.setAdapter(styleAdapter);
 
 
@@ -972,26 +976,67 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     }
 
     private void setPageColor() {
-        MaterialDialog materialDialog = new MaterialDialog.Builder(mActivity)
-                .title(R.string.page_color)
-                .customView(R.layout.dialog_color_chooser, true)
-                .positiveText(R.string.ok)
-                .negativeText(R.string.cancel)
-                .onPositive((dialog, which) -> {
-                    View view = dialog.getCustomView();
-                    ColorPickerView colorPickerView = view.findViewById(R.id.color_picker);
-                    CheckBox defaultCheckbox = view.findViewById(R.id.set_default);
-                    mPageColor = colorPickerView.getColor();
-                    if (defaultCheckbox.isChecked()) {
-                        SharedPreferences.Editor editor = mSharedPreferences.edit();
-                        editor.putInt(Constants.DEFAULT_PAGE_COLOR_ITP, mPageColor);
-                        editor.apply();
-                    }
-                })
-                .build();
-        ColorPickerView colorPickerView = materialDialog.getCustomView().findViewById(R.id.color_picker);
+//        MaterialDialog materialDialog = new MaterialDialog.Builder(mActivity)
+//                .title(R.string.page_color)
+//                .customView(R.layout.dialog_color_chooser, true)
+//                .positiveText(R.string.ok)
+//                .negativeText(R.string.cancel)
+//                .onPositive((dialog, which) -> {
+//                    View view = dialog.getCustomView();
+//                    ColorPickerView colorPickerView = view.findViewById(R.id.color_picker);
+//                    CheckBox defaultCheckbox = view.findViewById(R.id.set_default);
+//                    mPageColor = colorPickerView.getColor();
+//                    if (defaultCheckbox.isChecked()) {
+//                        SharedPreferences.Editor editor = mSharedPreferences.edit();
+//                        editor.putInt(Constants.DEFAULT_PAGE_COLOR_ITP, mPageColor);
+//                        editor.apply();
+//                    }
+//                })
+//                .build();
+//        ColorPickerView colorPickerView = materialDialog.getCustomView().findViewById(R.id.color_picker);
+//        colorPickerView.setColor(mPageColor);
+//        materialDialog.show();
+
+        Dialog dialog = new Dialog(getContext());
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.dialog_color_chooser_layout);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        ColorPickerView colorPickerView = dialog.findViewById(R.id.watermarkColor);
+        CheckBox defaultCheckbox = dialog.findViewById(R.id.set_default);
+        TextView title = dialog.findViewById(R.id.txt);
+
+        title.setText("Page color");
+
+        colorPickerView.setAlphaSliderVisible(true);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPageColor = colorPickerView.getColor();
+                if (defaultCheckbox.isChecked()) {
+                    SharedPreferences.Editor editor = mSharedPreferences.edit();
+                    editor.putInt(Constants.DEFAULT_PAGE_COLOR_ITP, mPageColor);
+                    editor.apply();
+                }
+                dialog.dismiss();
+            }
+        });
         colorPickerView.setColor(mPageColor);
-        materialDialog.show();
     }
 
     @Override

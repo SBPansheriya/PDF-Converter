@@ -1,11 +1,17 @@
 package com.androidmarket.pdfcreator.util;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.graphics.Color;
 import android.text.Editable;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -25,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import androidmarket.R;
+
 import com.androidmarket.pdfcreator.db.DatabaseHelper;
 import com.androidmarket.pdfcreator.interfaces.DataSetChanged;
 import com.androidmarket.pdfcreator.pdfModel.Watermark;
@@ -42,28 +49,111 @@ public class WatermarkUtils {
 
     public void setWatermark(String path, final DataSetChanged dataSetChanged) {
 
-        final MaterialDialog mDialog = new MaterialDialog.Builder(mContext)
-                .title(R.string.add_watermark)
-                .customView(R.layout.add_watermark_dialog, true)
-                .positiveText(android.R.string.ok)
-                .negativeText(android.R.string.cancel)
-                .build();
+//        final MaterialDialog mDialog = new MaterialDialog.Builder(mContext)
+//                .title(R.string.add_watermark)
+//                .customView(R.layout.add_watermark_dialog, true)
+//                .positiveText(android.R.string.ok)
+//                .negativeText(android.R.string.cancel)
+//                .build();
+//
+//        final View mPositiveAction = mDialog.getActionButton(DialogAction.POSITIVE);
+//
+//        this.mWatermark = new Watermark();
+//
+//        final EditText watermarkTextInput = mDialog.getCustomView().findViewById(R.id.watermarkText);
+//        final EditText angleInput = mDialog.getCustomView().findViewById(R.id.watermarkAngle);
+//        final ColorPickerView colorPickerInput = mDialog.getCustomView().findViewById(R.id.watermarkColor);
+//        final EditText fontSizeInput = mDialog.getCustomView().findViewById(R.id.watermarkFontSize);
+//        final Spinner fontFamilyInput = mDialog.getCustomView().findViewById(R.id.watermarkFontFamily);
+//        final Spinner styleInput = mDialog.getCustomView().findViewById(R.id.watermarkStyle);
+//
+//        fontFamilyInput.setAdapter(new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_dropdown_item,
+//                Font.FontFamily.values()));
+//        styleInput.setAdapter(new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_dropdown_item,
+//                mContext.getResources().getStringArray(R.array.fontStyles)));
+//
+//        angleInput.setText("0");
+//        fontSizeInput.setText("50");
+//
+//        watermarkTextInput.addTextChangedListener(
+//                new DefaultTextWatcher() {
+//                    @Override
+//                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                        mPositiveAction.setEnabled(s.toString().trim().length() > 0);
+//                    }
+//
+//                    @Override
+//                    public void afterTextChanged(Editable input) {
+//                        if (StringUtils.getInstance().isEmpty(input))
+//                            StringUtils.getInstance().
+//                                    showSnackbar(mContext, R.string.snackbar_watermark_cannot_be_blank);
+//                        else {
+//                            mWatermark.setWatermarkText(input.toString());
+//                        }
+//                    }
+//                });
+//
+//        mPositiveAction.setEnabled(false);
+//        mPositiveAction.setOnClickListener(v -> {
+//            try {
+//                mWatermark.setWatermarkText(watermarkTextInput.getText().toString());
+//                mWatermark.setFontFamily(((Font.FontFamily) fontFamilyInput.getSelectedItem()));
+//                mWatermark.setFontStyle(getStyleValueFromName(((String) styleInput.getSelectedItem())));
+//
+//                mWatermark.setRotationAngle(StringUtils.getInstance().parseIntOrDefault(angleInput.getText(), 0));
+//                mWatermark.setTextSize(StringUtils.getInstance().parseIntOrDefault(fontSizeInput.getText(), 50));
+//
+//                //colorPickerInput.getColor() returns ans ARGB Color and BaseColor can use that ARGB as parameter
+//                mWatermark.setTextColor((new BaseColor(colorPickerInput.getColor())));
+//
+//                String filePath = createWatermark(path);
+//                dataSetChanged.updateDataset();
+//                StringUtils.getInstance().getSnackbarwithAction(mContext, R.string.watermark_added).setAction(
+//                        R.string.snackbar_viewAction, v1 ->
+//                                mFileUtils.openFile(filePath, FileUtils.FileType.e_PDF)).show();
+//            } catch (IOException | DocumentException e) {
+//                e.printStackTrace();
+//                StringUtils.getInstance().showSnackbar(mContext, R.string.cannot_add_watermark);
+//            }
+//            mDialog.dismiss();
+//        });
+//        mDialog.show();
 
-        final View mPositiveAction = mDialog.getActionButton(DialogAction.POSITIVE);
+        Dialog dialog1 = new Dialog(mContext);
+        if (dialog1.getWindow() != null) {
+            dialog1.getWindow().setGravity(Gravity.CENTER);
+            dialog1.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog1.setCancelable(false);
+        }
+        dialog1.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog1.setContentView(R.layout.add_water_mark_dialog_layout);
+        dialog1.setCancelable(false);
+        dialog1.show();
+
+        Button cancel = dialog1.findViewById(R.id.canceldialog);
+        Button ok = dialog1.findViewById(R.id.okdialog);
+        Button remove = dialog1.findViewById(R.id.remove_dialog);
+        final EditText watermarkTextInput = dialog1.findViewById(R.id.watermarkText);
+        final EditText angleInput = dialog1.findViewById(R.id.watermarkAngle);
+        final ColorPickerView colorPickerInput = dialog1.findViewById(R.id.watermarkColor);
+        final EditText fontSizeInput = dialog1.findViewById(R.id.watermarkFontSize);
+        final Spinner fontFamilyInput = dialog1.findViewById(R.id.watermarkFontFamily);
+        final Spinner styleInput = dialog1.findViewById(R.id.watermarkStyle);
 
         this.mWatermark = new Watermark();
 
-        final EditText watermarkTextInput = mDialog.getCustomView().findViewById(R.id.watermarkText);
-        final EditText angleInput = mDialog.getCustomView().findViewById(R.id.watermarkAngle);
-        final ColorPickerView colorPickerInput = mDialog.getCustomView().findViewById(R.id.watermarkColor);
-        final EditText fontSizeInput = mDialog.getCustomView().findViewById(R.id.watermarkFontSize);
-        final Spinner fontFamilyInput = mDialog.getCustomView().findViewById(R.id.watermarkFontFamily);
-        final Spinner styleInput = mDialog.getCustomView().findViewById(R.id.watermarkStyle);
+        remove.setVisibility(View.GONE);
 
-        fontFamilyInput.setAdapter(new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_dropdown_item,
-                Font.FontFamily.values()));
-        styleInput.setAdapter(new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_dropdown_item,
-                mContext.getResources().getStringArray(R.array.fontStyles)));
+        colorPickerInput.setAlphaSliderVisible(true);
+        ArrayAdapter<Font.FontFamily> fontFamilyAdapter = new ArrayAdapter<>(mContext,
+                R.layout.simple_spinner_item, Font.FontFamily.values());
+        fontFamilyAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        fontFamilyInput.setAdapter(fontFamilyAdapter);
+
+        ArrayAdapter<String> styleAdapter = new ArrayAdapter<>(mContext, R.layout.simple_spinner_item,
+                mContext.getResources().getStringArray(R.array.fontStyles));
+        styleAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        styleInput.setAdapter(styleAdapter);
 
         angleInput.setText("0");
         fontSizeInput.setText("50");
@@ -72,7 +162,7 @@ public class WatermarkUtils {
                 new DefaultTextWatcher() {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        mPositiveAction.setEnabled(s.toString().trim().length() > 0);
+                        ok.setEnabled(s.toString().trim().length() > 0);
                     }
 
                     @Override
@@ -86,31 +176,39 @@ public class WatermarkUtils {
                     }
                 });
 
-        mPositiveAction.setEnabled(false);
-        mPositiveAction.setOnClickListener(v -> {
-            try {
-                mWatermark.setWatermarkText(watermarkTextInput.getText().toString());
-                mWatermark.setFontFamily(((Font.FontFamily) fontFamilyInput.getSelectedItem()));
-                mWatermark.setFontStyle(getStyleValueFromName(((String) styleInput.getSelectedItem())));
-
-                mWatermark.setRotationAngle(StringUtils.getInstance().parseIntOrDefault(angleInput.getText(), 0));
-                mWatermark.setTextSize(StringUtils.getInstance().parseIntOrDefault(fontSizeInput.getText(), 50));
-
-                //colorPickerInput.getColor() returns ans ARGB Color and BaseColor can use that ARGB as parameter
-                mWatermark.setTextColor((new BaseColor(colorPickerInput.getColor())));
-
-                String filePath = createWatermark(path);
-                dataSetChanged.updateDataset();
-                StringUtils.getInstance().getSnackbarwithAction(mContext, R.string.watermark_added).setAction(
-                        R.string.snackbar_viewAction, v1 ->
-                                mFileUtils.openFile(filePath, FileUtils.FileType.e_PDF)).show();
-            } catch (IOException | DocumentException e) {
-                e.printStackTrace();
-                StringUtils.getInstance().showSnackbar(mContext, R.string.cannot_add_watermark);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog1.dismiss();
             }
-            mDialog.dismiss();
         });
-        mDialog.show();
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    mWatermark.setWatermarkText(watermarkTextInput.getText().toString());
+                    mWatermark.setFontFamily(((Font.FontFamily) fontFamilyInput.getSelectedItem()));
+                    mWatermark.setFontStyle(getStyleValueFromName(((String) styleInput.getSelectedItem())));
+
+                    mWatermark.setRotationAngle(StringUtils.getInstance().parseIntOrDefault(angleInput.getText(), 0));
+                    mWatermark.setTextSize(StringUtils.getInstance().parseIntOrDefault(fontSizeInput.getText(), 50));
+
+                    //colorPickerInput.getColor() returns ans ARGB Color and BaseColor can use that ARGB as parameter
+                    mWatermark.setTextColor((new BaseColor(colorPickerInput.getColor())));
+
+                    String filePath = createWatermark(path);
+                    dataSetChanged.updateDataset();
+                    StringUtils.getInstance().getSnackbarwithAction(mContext, R.string.watermark_added).setAction(
+                            R.string.snackbar_viewAction, v1 ->
+                                    mFileUtils.openFile(filePath, FileUtils.FileType.e_PDF)).show();
+                } catch (IOException | DocumentException e) {
+                    e.printStackTrace();
+                    StringUtils.getInstance().showSnackbar(mContext, R.string.cannot_add_watermark);
+                }
+                dialog1.dismiss();
+            }
+        });
     }
 
     private String createWatermark(String path) throws IOException, DocumentException {

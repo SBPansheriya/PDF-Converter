@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.ImageEditor">
+    tools:context="com.androidmarket.pdfcreator.activities.ActivityImageEditor">
 
     <RelativeLayout
         android:id="@+id/app_bar"

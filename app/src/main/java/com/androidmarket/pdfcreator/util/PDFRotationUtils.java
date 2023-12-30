@@ -1,10 +1,18 @@
 package com.androidmarket.pdfcreator.util;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.util.SparseIntArray;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.androidmarket.pdfcreator.Constants;
 import com.itextpdf.text.pdf.PdfDictionary;
 import com.itextpdf.text.pdf.PdfName;
 import com.itextpdf.text.pdf.PdfNumber;
@@ -38,26 +46,71 @@ public class PDFRotationUtils {
      * @param sourceFilePath - path of file to be rotated
      */
     public void rotatePages(String sourceFilePath, final DataSetChanged dataSetChanged) {
-        MaterialDialog.Builder builder = DialogUtils.getInstance().createCustomDialogWithoutContent(mContext,
-                R.string.rotate_pages);
-        builder.customView(R.layout.dialog_rotate_pdf, true)
-                .onPositive((dialog, which) -> {
-                    final RadioGroup angleInput = dialog.getCustomView().findViewById(R.id.rotation_angle);
-                    int angle = mAngleRadioButton.get(angleInput.getCheckedRadioButtonId());
-                    String destFilePath = FileUtils.getFileDirectoryPath(sourceFilePath);
-                    String fileName = FileUtils.getFileName(sourceFilePath);
-                    destFilePath += String.format(mContext.getString(R.string.rotated_file_name),
-                            fileName.substring(0, fileName.lastIndexOf('.')),
-                            Integer.toString(angle),
-                            mContext.getString(R.string.pdf_ext));
-                    boolean result = rotatePDFPages(angle, sourceFilePath,
-                            destFilePath, dataSetChanged);
-                    if (result) {
-                        new DatabaseHelper(mContext).insertRecord(destFilePath,
-                                mContext.getString(R.string.rotated));
-                    }
-                })
-                .show();
+//        MaterialDialog.Builder builder = DialogUtils.getInstance().createCustomDialogWithoutContent(mContext,
+//                R.string.rotate_pages);
+//        builder.customView(R.layout.dialog_rotate_pdf, true)
+//                .onPositive((dialog, which) -> {
+//                    final RadioGroup angleInput = dialog.getCustomView().findViewById(R.id.rotation_angle);
+//                    int angle = mAngleRadioButton.get(angleInput.getCheckedRadioButtonId());
+//                    String destFilePath = FileUtils.getFileDirectoryPath(sourceFilePath);
+//                    String fileName = FileUtils.getFileName(sourceFilePath);
+//                    destFilePath += String.format(mContext.getString(R.string.rotated_file_name),
+//                            fileName.substring(0, fileName.lastIndexOf('.')),
+//                            Integer.toString(angle),
+//                            mContext.getString(R.string.pdf_ext));
+//                    boolean result = rotatePDFPages(angle, sourceFilePath,
+//                            destFilePath, dataSetChanged);
+//                    if (result) {
+//                        new DatabaseHelper(mContext).insertRecord(destFilePath,
+//                                mContext.getString(R.string.rotated));
+//                    }
+//                })
+//                .show();
+
+        Dialog dialog = new Dialog(mContext);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.dialog_rotate_pdf_layout);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        RadioButton rbOpt1 = dialog.findViewById(R.id.deg90);
+        RadioButton rbOpt2 = dialog.findViewById(R.id.deg180);
+        RadioButton rbOpt3 = dialog.findViewById(R.id.deg270);
+        RadioGroup angleInput = dialog.findViewById(R.id.rotation_angle);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int angle = mAngleRadioButton.get(angleInput.getCheckedRadioButtonId());
+                String destFilePath = FileUtils.getFileDirectoryPath(sourceFilePath);
+                String fileName = FileUtils.getFileName(sourceFilePath);
+                destFilePath += String.format(mContext.getString(R.string.rotated_file_name),
+                        fileName.substring(0, fileName.lastIndexOf('.')),
+                        Integer.toString(angle),
+                        mContext.getString(R.string.pdf_ext));
+                boolean result = rotatePDFPages(angle, sourceFilePath,
+                        destFilePath, dataSetChanged);
+                if (result) {
+                    new DatabaseHelper(mContext).insertRecord(destFilePath,
+                            mContext.getString(R.string.rotated));
+                }
+                dialog.dismiss();
+            }
+        });
     }
 
     /**

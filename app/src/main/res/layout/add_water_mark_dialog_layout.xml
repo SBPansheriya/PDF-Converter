@@ -4,7 +4,7 @@
     xmlns:picker="http://schemas.android.com/tools"
     android:id="@+id/dialog_linear"
     android:layout_width="330dp"
-    android:layout_height="500dp"
+    android:layout_height="455dp"
     android:layout_marginHorizontal="10dp"
     android:orientation="horizontal">
 
@@ -16,6 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -119,7 +120,7 @@
                     <com.github.danielnilsson9.colorpickerview.view.ColorPickerView
                         android:id="@+id/watermarkColor"
                         android:layout_width="match_parent"
-                        android:layout_height="350dp"
+                        android:layout_height="300dp"
                         android:layout_marginHorizontal="10dp"
                         picker:alphaChannelVisible="true" />
 
@@ -168,6 +169,7 @@
                                 android:layout_height="40dp"
                                 android:fontFamily="@font/metropolis_semibold"
                                 android:dropDownWidth="180dp"
+                                android:popupBackground="@drawable/spinner_pop_bg"
                                 android:spinnerMode="dropdown" />
                         </RelativeLayout>
 
@@ -189,7 +191,8 @@
                                 android:id="@+id/watermarkStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
-                                android:dropDownWidth="180dp"
+                                android:dropDownWidth="150dp"
+                                android:popupBackground="@drawable/spinner_pop_bg"
                                 android:fontFamily="@font/metropolis_semibold"
                                 android:spinnerMode="dropdown" />
                         </RelativeLayout>

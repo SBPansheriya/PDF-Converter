@@ -151,7 +151,6 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     private String mPageNumStyle;
     private int mChoseId;
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -196,7 +195,6 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
             mNoOfImages.setVisibility(View.GONE);
 //            mMorphButtonUtility.morphToGrey(mCreatePdf, mMorphButtonUtility.integer());
         }
-
 
         ImageView ivBack = root.findViewById(R.id.ivBack);
         ivBack.setOnClickListener(new View.OnClickListener() {

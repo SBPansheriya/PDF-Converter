@@ -1,27 +1,19 @@
 package com.androidmarket.pdfcreator.util;
 
-import static com.androidmarket.pdfcreator.Constants.DEFAULT_COMPRESSION;
+import static com.androidmarket.pdfcreator.util.WatermarkUtils.getStyleNameFromFont;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Build;
-import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Toast;
-
-import androidx.core.content.ContextCompat;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -30,7 +22,6 @@ import java.util.HashMap;
 import androidmarket.R;
 
 import com.androidmarket.pdfcreator.pdfPreferences.TextToPdfPreferences;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class PageSizeUtils {
 
@@ -89,91 +80,184 @@ public class PageSizeUtils {
      * @param saveValue - save the value in shared preferences
      * @return - dialog object
      */
-    public MaterialDialog showPageSizeDialog(boolean saveValue) {
-        MaterialDialog materialDialog = getPageSizeDialog(saveValue);
+//    public MaterialDialog showPageSizeDialog(boolean saveValue) {
+//        MaterialDialog materialDialog = getPageSizeDialog(saveValue);
+//
+//        View view = materialDialog.getCustomView();
+//        RadioGroup radioGroup = view.findViewById(R.id.radio_group_page_size);
+//        Spinner spinnerA = view.findViewById(R.id.spinner_page_size_a0_a10);
+//        Spinner spinnerB = view.findViewById(R.id.spinner_page_size_b0_b10);
+//        RadioButton radioButtonDefault = view.findViewById(R.id.page_size_default);
+//        radioButtonDefault.setText(String.format(mActivity.getString(R.string.default_page_size), mDefaultPageSize));
+//
+//        if (saveValue) view.findViewById(R.id.cbSetDefault).setVisibility(View.GONE);
+//
+//        ArrayAdapter<String> spinnerAAdapter = new ArrayAdapter<>(mActivity, R.layout.simple_spinner_item,
+//                mActivity.getResources().getStringArray(R.array.array_page_sizes_a0_b10));
+//        spinnerAAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+//        spinnerA.setAdapter(spinnerAAdapter);
+//
+//        ArrayAdapter<String> spinnerBAdapter = new ArrayAdapter<>(mActivity, R.layout.simple_spinner_item,
+//                mActivity.getResources().getStringArray(R.array.array_page_sizes_b0_b10));
+//        spinnerBAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+//        spinnerB.setAdapter(spinnerBAdapter);
+//
+//        if (mPageSize.equals(mDefaultPageSize)) {
+//            radioGroup.check(R.id.page_size_default);
+//        } else if (mPageSize.startsWith("A")) {
+//            radioGroup.check(R.id.page_size_a0_a10);
+////            spinnerA.setSelection(java.lang.Integer.parseInt(mPageSize.substring(1)));
+//            spinnerA.setSelection(spinnerAAdapter.getPosition(mPageSize.substring(1)));
+//        } else if (mPageSize.startsWith("B")) {
+//            radioGroup.check(R.id.page_size_b0_b10);
+////            spinnerB.setSelection(java.lang.Integer.parseInt(mPageSize.substring(1)));
+//            spinnerA.setSelection(spinnerBAdapter.getPosition(mPageSize.substring(1)));
+//        } else {
+//            Integer key = getKey(mPageSizeToString, mPageSize);
+//            if (key != null) radioGroup.check(key);
+//        }
+//        materialDialog.show();
+//        return materialDialog;
+//    }
+//
+//    /**
+//     * Private show page size utils dialog
+//     *
+//     * @param saveValue - save the value in shared prefs
+//     * @return - dialog object
+//     */
+//
+//    public MaterialDialog getPageSizeDialog(boolean saveValue) {
+////        View customView = LayoutInflater.from(mActivity).inflate(R.layout.set_page_size_dialog_layout, null);
+//
+////        Button btnOk = customView.findViewById(R.id.okdialog);
+////        Button btnCancel = customView.findViewById(R.id.canceldialog);
+////        RadioGroup radioGroup = customView.findViewById(R.id.radio_group_page_size);
+////        Spinner spinnerA = customView.findViewById(R.id.spinner_page_size_a0_a10);
+////        Spinner spinnerB = customView.findViewById(R.id.spinner_page_size_b0_b10);
+////        CheckBox mSetAsDefault = customView.findViewById(R.id.cbSetDefault);
+//
+////        MaterialDialog dialog = new MaterialDialog.Builder(mActivity)
+////                .customView(customView, true)
+////                .show();
+//        MaterialDialog.Builder builder = new MaterialDialog.Builder(mActivity);
+//        LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(mActivity.LAYOUT_INFLATER_SERVICE);
+//        View dialogView = inflater.inflate(R.layout.set_page_size_dialog_layout, null);
+//        builder.customView(dialogView, false);
+//
+//        MaterialDialog myalertdialog = builder.build();
+//
+//        Button btnOk = dialogView.findViewById(R.id.okdialog);
+//        Button btnCancel = dialogView.findViewById(R.id.canceldialog);
+//        RadioGroup radioGroup = dialogView.findViewById(R.id.radio_group_page_size);
+//        Spinner spinnerA = dialogView.findViewById(R.id.spinner_page_size_a0_a10);
+//        Spinner spinnerB = dialogView.findViewById(R.id.spinner_page_size_b0_b10);
+//        CheckBox mSetAsDefault = dialogView.findViewById(R.id.cbSetDefault);
+//
+//        btnOk.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                int selectedId = radioGroup.getCheckedRadioButtonId();
+//                mPageSize = getPageSize(selectedId, spinnerA.getSelectedItem().toString(), spinnerB.getSelectedItem().toString());
+//
+//                if (saveValue || mSetAsDefault.isChecked()) {
+//                    mPreferences.setPageSize(mPageSize);
+//                }
+//                myalertdialog.dismiss();
+//            }
+//        });
+//
+//
+//        btnCancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                myalertdialog.dismiss();
+//            }
+//        });
+//
+//        return myalertdialog;
+//    }
 
-        View view = materialDialog.getCustomView();
-        RadioGroup radioGroup = view.findViewById(R.id.radio_group_page_size);
-        Spinner spinnerA = view.findViewById(R.id.spinner_page_size_a0_a10);
-        Spinner spinnerB = view.findViewById(R.id.spinner_page_size_b0_b10);
-        RadioButton radioButtonDefault = view.findViewById(R.id.page_size_default);
+    public Dialog showPageSizeDialog(boolean saveValue) {
+        Dialog dialog = getPageSizeDialog(saveValue);
+
+        RadioGroup radioGroup = dialog.findViewById(R.id.radio_group_page_size);
+        Spinner spinnerA = dialog.findViewById(R.id.spinner_page_size_a0_a10);
+        Spinner spinnerB = dialog.findViewById(R.id.spinner_page_size_b0_b10);
+        RadioButton radioButtonDefault = dialog.findViewById(R.id.page_size_default);
         radioButtonDefault.setText(String.format(mActivity.getString(R.string.default_page_size), mDefaultPageSize));
 
-        if (saveValue) view.findViewById(R.id.set_as_default).setVisibility(View.GONE);
+        if (saveValue) dialog.findViewById(R.id.cbSetDefault).setVisibility(View.VISIBLE);
+
+        ArrayAdapter<String> spinnerAAdapter = new ArrayAdapter<>(mActivity, R.layout.simple_spinner_item,
+                mActivity.getResources().getStringArray(R.array.array_page_sizes_a0_b10));
+        spinnerAAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        spinnerA.setAdapter(spinnerAAdapter);
+
+        ArrayAdapter<String> spinnerBAdapter = new ArrayAdapter<>(mActivity, R.layout.simple_spinner_item,
+                mActivity.getResources().getStringArray(R.array.array_page_sizes_b0_b10));
+        spinnerBAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        spinnerB.setAdapter(spinnerBAdapter);
 
         if (mPageSize.equals(mDefaultPageSize)) {
             radioGroup.check(R.id.page_size_default);
         } else if (mPageSize.startsWith("A")) {
             radioGroup.check(R.id.page_size_a0_a10);
-            spinnerA.setSelection(java.lang.Integer.parseInt(mPageSize.substring(1)));
+//            spinnerA.setSelection(java.lang.Integer.parseInt(mPageSize.substring(1)));
+            spinnerA.setSelection(spinnerAAdapter.getPosition(mPageSize.substring(1)));
         } else if (mPageSize.startsWith("B")) {
             radioGroup.check(R.id.page_size_b0_b10);
-            spinnerB.setSelection(java.lang.Integer.parseInt(mPageSize.substring(1)));
+//            spinnerB.setSelection(java.lang.Integer.parseInt(mPageSize.substring(1)));
+            spinnerA.setSelection(spinnerBAdapter.getPosition(mPageSize.substring(1)));
         } else {
             Integer key = getKey(mPageSizeToString, mPageSize);
             if (key != null) radioGroup.check(key);
         }
-        materialDialog.show();
-        return materialDialog;
+        dialog.show();
+        return dialog;
     }
 
-    /**
-     * Private show page size utils dialog
-     *
-     * @param saveValue - save the value in shared prefs
-     * @return - dialog object
-     */
+    public Dialog getPageSizeDialog(boolean saveValue) {
+        Dialog dialog = new Dialog(mActivity);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.set_page_size_dialog_layout);
+        dialog.setCancelable(false);
+        dialog.show();
 
-    public MaterialDialog getPageSizeDialog(boolean saveValue) {
-//        View customView = LayoutInflater.from(mActivity).inflate(R.layout.set_page_size_dialog_layout, null);
-
-//        Button btnOk = customView.findViewById(R.id.okdialog);
-//        Button btnCancel = customView.findViewById(R.id.canceldialog);
-//        RadioGroup radioGroup = customView.findViewById(R.id.radio_group_page_size);
-//        Spinner spinnerA = customView.findViewById(R.id.spinner_page_size_a0_a10);
-//        Spinner spinnerB = customView.findViewById(R.id.spinner_page_size_b0_b10);
-//        CheckBox mSetAsDefault = customView.findViewById(R.id.cbSetDefault);
-
-//        MaterialDialog dialog = new MaterialDialog.Builder(mActivity)
-//                .customView(customView, true)
-//                .show();
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(mActivity);
-        LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(mActivity.LAYOUT_INFLATER_SERVICE);
-        View dialogView = inflater.inflate(R.layout.set_page_size_dialog_layout, null);
-        builder.customView(dialogView, false);
-
-        MaterialDialog myalertdialog = builder.build();
-
-        Button btnOk = dialogView.findViewById(R.id.okdialog);
-        Button btnCancel = dialogView.findViewById(R.id.canceldialog);
-        RadioGroup radioGroup = dialogView.findViewById(R.id.radio_group_page_size);
-        Spinner spinnerA = dialogView.findViewById(R.id.spinner_page_size_a0_a10);
-        Spinner spinnerB = dialogView.findViewById(R.id.spinner_page_size_b0_b10);
-        CheckBox mSetAsDefault = dialogView.findViewById(R.id.cbSetDefault);
+        Button btnOk = dialog.findViewById(R.id.okdialog);
+        Button btnCancel = dialog.findViewById(R.id.canceldialog);
+        RadioGroup radioGroup = dialog.findViewById(R.id.radio_group_page_size);
+        Spinner spinnerA = dialog.findViewById(R.id.spinner_page_size_a0_a10);
+        Spinner spinnerB = dialog.findViewById(R.id.spinner_page_size_b0_b10);
+        CheckBox mSetAsDefault = dialog.findViewById(R.id.cbSetDefault);
 
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 int selectedId = radioGroup.getCheckedRadioButtonId();
                 mPageSize = getPageSize(selectedId, spinnerA.getSelectedItem().toString(), spinnerB.getSelectedItem().toString());
 
                 if (saveValue || mSetAsDefault.isChecked()) {
                     mPreferences.setPageSize(mPageSize);
                 }
-                myalertdialog.dismiss();
+                dialog.dismiss();
             }
         });
-
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myalertdialog.dismiss();
+                dialog.dismiss();
             }
         });
 
-        return myalertdialog;
+        return dialog;
     }
 
 //    public MaterialDialog getPageSizeDialog(boolean saveValue) {

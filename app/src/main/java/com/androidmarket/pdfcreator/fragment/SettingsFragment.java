@@ -1,18 +1,25 @@
 package com.androidmarket.pdfcreator.fragment;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,10 +27,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.androidmarket.pdfcreator.activities.HomeActivity;
 import com.androidmarket.pdfcreator.adapter.AdapterEnhancementOptions;
+import com.androidmarket.pdfcreator.util.SettingsOptions;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.itextpdf.text.Font;
 
 import java.util.ArrayList;
@@ -85,9 +95,6 @@ public class SettingsFragment extends Fragment implements OnItemClickListener {
                 getActivity().finish();
             }
         });
-
-
-
         return root;
     }
 
@@ -177,60 +184,148 @@ public class SettingsFragment extends Fragment implements OnItemClickListener {
      * To modify default image compression value
      */
     private void changeCompressImage() {
-
-        MaterialDialog dialog = DialogUtils.getInstance()
-                .createCustomDialogWithoutContent(mActivity, R.string.compression_image_edit)
-                .customView(R.layout.compress_image_dialog, true)
-                .onPositive((dialog1, which) -> {
-                    final EditText qualityInput = dialog1.getCustomView().findViewById(R.id.quality);
-                    int check;
-                    try {
-                        check = Integer.parseInt(String.valueOf(qualityInput.getText()));
-                        if (check > 100 || check < 0) {
-                            StringUtils.getInstance().showSnackbar(mActivity, R.string.invalid_entry);
-                        } else {
-                            SharedPreferences.Editor editor = mSharedPreferences.edit();
-                            editor.putInt(DEFAULT_COMPRESSION, check);
-                            editor.apply();
-                            showSettingsOptions();
-                        }
-                    } catch (NumberFormatException e) {
-                        StringUtils.getInstance().showSnackbar(mActivity, R.string.invalid_entry);
-                    }
-                }).build();
-        View customView = dialog.getCustomView();
-        customView.findViewById(R.id.cbSetDefault).setVisibility(View.GONE);
+//        MaterialDialog dialog = DialogUtils.getInstance()
+//                .createCustomDialogWithoutContent(mActivity, R.string.compression_image_edit)
+//                .customView(R.layout.compress_image_dialog, true)
+//                .onPositive((dialog1, which) -> {
+//                    final EditText qualityInput = dialog1.getCustomView().findViewById(R.id.quality);
+//                    int check;
+//                    try {
+//                        check = Integer.parseInt(String.valueOf(qualityInput.getText()));
+//                        if (check > 100 || check < 0) {
+//                            StringUtils.getInstance().showSnackbar(mActivity, R.string.invalid_entry);
+//                        } else {
+//                            SharedPreferences.Editor editor = mSharedPreferences.edit();
+//                            editor.putInt(DEFAULT_COMPRESSION, check);
+//                            editor.apply();
+//                            showSettingsOptions();
+//                        }
+//                    } catch (NumberFormatException e) {
+//                        StringUtils.getInstance().showSnackbar(mActivity, R.string.invalid_entry);
+//                    }
+//                }).build();
+//        View customView = dialog.getCustomView();
+//        customView.findViewById(R.id.cbSetDefault).setVisibility(View.GONE);
+//        dialog.show();
+        Dialog dialog = new Dialog(getContext());
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.compress_image_dialog_layout_setting);
+        dialog.setCancelable(false);
         dialog.show();
+
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        final EditText qualityInput = dialog.findViewById(R.id.quality);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int check;
+                try {
+                    check = Integer.parseInt(String.valueOf(qualityInput.getText()));
+                    if (check > 100 || check < 0) {
+                        StringUtils.getInstance().showSnackbar(mActivity, R.string.invalid_entry);
+                    } else {
+                        SharedPreferences.Editor editor = mSharedPreferences.edit();
+                        editor.putInt(DEFAULT_COMPRESSION, check);
+                        editor.apply();
+                        showSettingsOptions();
+                    }
+                    dialog.dismiss();
+                } catch (NumberFormatException e) {
+                    StringUtils.getInstance().showSnackbar(mActivity, R.string.invalid_entry);
+                }
+            }
+        });
     }
 
     /**
      * To modify font size
      */
     private void editFontSize() {
-        MaterialDialog.Builder builder = DialogUtils.getInstance()
-                .createCustomDialogWithoutContent(mActivity, R.string.font_size_edit);
-        MaterialDialog dialog = builder.customView(R.layout.dialog_font_size, true)
-                .onPositive((dialog1, which) -> {
-                    final EditText fontInput = dialog1.getCustomView().findViewById(R.id.fontInput);
-                    try {
-                        int check = Integer.parseInt(String.valueOf(fontInput.getText()));
-                        if (check > 1000 || check < 0) {
-                            StringUtils.getInstance().showSnackbar(mActivity, R.string.invalid_entry);
-                        } else {
-                            StringUtils.getInstance().showSnackbar(mActivity, R.string.font_size_changed);
-                            SharedPreferences.Editor editor = mSharedPreferences.edit();
-                            editor.putInt(Constants.DEFAULT_FONT_SIZE_TEXT, check);
-                            editor.apply();
-                            showSettingsOptions();
-                        }
-                    } catch (NumberFormatException e) {
-                        StringUtils.getInstance().showSnackbar(mActivity, R.string.invalid_entry);
-                    }
-                })
-                .build();
-        View customView = dialog.getCustomView();
-        customView.findViewById(R.id.cbSetFontDefault).setVisibility(View.GONE);
+        int fontSize = mSharedPreferences.getInt(Constants.DEFAULT_FONT_SIZE_TEXT,
+                Constants.DEFAULT_FONT_SIZE);
+//        MaterialDialog.Builder builder = DialogUtils.getInstance()
+//                .createCustomDialogWithoutContent(mActivity, R.string.font_size_edit);
+//        MaterialDialog dialog = builder.customView(R.layout.dialog_font_size, true)
+//                .onPositive((dialog1, which) -> {
+//                    final EditText fontInput = dialog1.getCustomView().findViewById(R.id.fontInput);
+//                    try {
+//                        int check = Integer.parseInt(String.valueOf(fontInput.getText()));
+//                        if (check > 1000 || check < 0) {
+//                            StringUtils.getInstance().showSnackbar(mActivity, R.string.invalid_entry);
+//                        } else {
+//                            StringUtils.getInstance().showSnackbar(mActivity, R.string.font_size_changed);
+//                            SharedPreferences.Editor editor = mSharedPreferences.edit();
+//                            editor.putInt(Constants.DEFAULT_FONT_SIZE_TEXT, check);
+//                            editor.apply();
+//                            showSettingsOptions();
+//                        }
+//                    } catch (NumberFormatException e) {
+//                        StringUtils.getInstance().showSnackbar(mActivity, R.string.invalid_entry);
+//                    }
+//                })
+//                .build();
+//        View customView = dialog.getCustomView();
+//        customView.findViewById(R.id.cbSetFontDefault).setVisibility(View.GONE);
+//        dialog.show();
+        Dialog dialog = new Dialog(mActivity);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.dialog_font_size_layout_setting);
+        dialog.setCancelable(false);
         dialog.show();
+
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        EditText fontInput = dialog.findViewById(R.id.fontInput);
+        TextView title = dialog.findViewById(R.id.txt);
+
+        title.setText(String.format("Font size (Default: %d)", fontSize));
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    int check = Integer.parseInt(String.valueOf(fontInput.getText()));
+                    if (check > 1000 || check < 0) {
+                        StringUtils.getInstance().showSnackbar(mActivity, R.string.invalid_entry);
+                    } else {
+                        StringUtils.getInstance().showSnackbar(mActivity, R.string.font_size_changed);
+                        SharedPreferences.Editor editor = mSharedPreferences.edit();
+                        editor.putInt(Constants.DEFAULT_FONT_SIZE_TEXT, check);
+                        editor.apply();
+                        showSettingsOptions();
+                    }
+                } catch (NumberFormatException e) {
+                    StringUtils.getInstance().showSnackbar(mActivity, R.string.invalid_entry);
+                }
+                dialog.dismiss();
+            }
+        });
     }
 
     /**
@@ -261,6 +356,48 @@ public class SettingsFragment extends Fragment implements OnItemClickListener {
         rb.setChecked(true);
         customView.findViewById(R.id.cbSetDefault).setVisibility(View.GONE);
         materialDialog.show();
+
+//        Dialog dialog = new Dialog(mActivity);
+//        if (dialog.getWindow() != null) {
+//            dialog.getWindow().setGravity(Gravity.CENTER);
+//            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+//            dialog.setCancelable(false);
+//        }
+//        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//        dialog.setContentView(R.layout.dialog_font_family_layout_setting);
+//        dialog.setCancelable(false);
+//        dialog.show();
+//
+//        Button cancel = dialog.findViewById(R.id.canceldialog);
+//        Button ok = dialog.findViewById(R.id.okdialog);
+//        TextView title = dialog.findViewById(R.id.txt);
+//        RadioGroup radioGroup = dialog.findViewById(R.id.radio_group_font_family);
+//
+//        title.setText(String.format(mActivity.getString(R.string.default_font_family_text), fontFamily));
+//
+//        cancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        ok.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                RadioGroup radioGroup = dialog.findViewById(R.id.radio_group_font_family);
+//                int selectedId = radioGroup.getCheckedRadioButtonId();
+//                RadioButton radioButton = dialog.findViewById(selectedId);
+//                String fontFamily1 = radioButton.getText().toString();
+//                SharedPreferences.Editor editor = mSharedPreferences.edit();
+//                editor.putString(Constants.DEFAULT_FONT_FAMILY_TEXT, fontFamily1);
+//                editor.apply();
+//                showSettingsOptions();
+//                dialog.dismiss();
+//            }
+//        });
+//        RadioButton rb = (RadioButton) radioGroup.getChildAt(ordinal);
+//        rb.setChecked(true);
     }
 
     /**
@@ -268,7 +405,7 @@ public class SettingsFragment extends Fragment implements OnItemClickListener {
      */
     private void setPageSize() {
         PageSizeUtils utils = new PageSizeUtils(mActivity);
-        MaterialDialog materialDialog = utils.showPageSizeDialog(true);
+        Dialog materialDialog = utils.showPageSizeDialog(true);
         materialDialog.setOnDismissListener(dialog -> showSettingsOptions());
     }
 

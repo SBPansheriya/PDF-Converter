@@ -83,10 +83,32 @@ public class ActivityPreview extends AppCompatActivity implements AdapterPreview
         mViewPager.setAdapter(mAdapterPreview);
         mViewPager.setPageTransformer(true, new DepthPageTransformer());
 
+
+        TabLayout tabLayout = findViewById(R.id.tabs);
+
+        tabLayout.setupWithViewPager(mViewPager);
+
+        for (int i = 0; i < mImagesArrayList.size(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            if (tab != null) {
+                tab.setText(String.format(getResources().getString(R.string.showing_image_1_d_of_2_d),
+                        i + 1, mImagesArrayList.size()));
+            }
+        }
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
         showOptions();
+    }
+
+    private void setTabMargins(TabLayout.Tab tab, int start, int top, int end, int bottom) {
+        View customView = tab.getCustomView();
+        if (customView != null) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) customView.getLayoutParams();
+            params.setMargins(start, top, end, bottom);
+            customView.requestLayout();
+        }
     }
 
     /**

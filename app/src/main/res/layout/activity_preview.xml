@@ -43,25 +43,44 @@
     <!--        android:layout_marginHorizontal="50dp"-->
     <!--        android:background="@drawable/cornered_edges"/>-->
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/app_bar"
+        app:tabBackground="@drawable/tab_selector"
+        app:tabMaxWidth="200dp"
+        app:tabMinWidth="200dp"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp"
+        app:tabMode="scrollable"
+        app:tabPaddingEnd="24dp"
+        app:tabPaddingStart="24dp"
+        app:tabRippleColor="@null"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextAppearance="@style/TabTextAppearance" />
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/view"
-        android:layout_below="@+id/app_bar"
-        android:layout_marginTop="-6dp"
-        android:layout_marginBottom="6dp"
+        android:layout_below="@id/tabs"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="15dp"
         android:fitsSystemWindows="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.viewpager.widget.PagerTabStrip
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp" />
+        <!--        <androidx.viewpager.widget.PagerTitleStrip-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:textAlignment="center"-->
+        <!--            android:layout_gravity="top"-->
+        <!--            android:layout_marginStart="16dp"-->
+        <!--            android:layout_marginEnd="16dp"-->
+        <!--            android:paddingTop="5dp"-->
+        <!--            android:paddingBottom="5dp"/>-->
 
     </androidx.viewpager.widget.ViewPager>
 

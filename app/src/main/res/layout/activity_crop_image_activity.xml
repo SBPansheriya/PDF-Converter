@@ -153,33 +153,31 @@
 
     </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/title"
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="20dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        tools:context=".activity.CropImageActivity">
+        android:gravity="center">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="23dp">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/rounded_corner">
 
             <com.theartofdev.edmodo.cropper.CropImageView
                 android:id="@+id/cropImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 app:cropBorderCornerColor="@color/dark_blue"
                 app:cropBorderCornerLength="30dp"
                 app:cropBorderCornerOffset="2dp"
                 app:cropBorderCornerThickness="5dp"
                 app:cropBorderLineColor="@color/transparent"
                 custom:cropInitialCropWindowPaddingRatio="0" />
-        </androidx.cardview.widget.CardView>
-    </RelativeLayout>
+        </FrameLayout>
+    </LinearLayout>
 
     <!--    <RelativeLayout-->
     <!--        android:layout_width="match_parent"-->

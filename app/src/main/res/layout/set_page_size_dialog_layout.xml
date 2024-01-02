@@ -4,17 +4,17 @@
     android:orientation="horizontal"
     android:id="@+id/dialog_linear"
     android:layout_width="330dp"
-    android:layout_height="440dp">
+    android:layout_height="430dp">
 
-<!--    <androidx.cardview.widget.CardView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        app:cardCornerRadius="10dp">-->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/dialog_bg"
+            android:layout_marginHorizontal="10dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -133,23 +133,28 @@
                     android:layout_height="match_parent"
                     android:gravity="bottom"
                     android:orientation="vertical">
-
                     <Spinner
                         android:id="@+id/spinner_page_size_a0_a10"
-                        android:layout_width="wrap_content"
+                        android:layout_width="170dp"
                         android:layout_height="wrap_content"
-                        android:spinnerMode="dropdown"
                         android:layout_marginBottom="8dp"
+                        android:backgroundTint="@color/black"
                         android:baselineAligned="false"
-                        android:fontFamily="@font/metropolis_semibold"
-                        android:entries="@array/array_page_sizes_a0_b10" />
+                        android:dropDownWidth="200dp"
+                        android:entries="@array/array_page_sizes_a0_b10"
+                        android:popupBackground="@drawable/spinner_pop_bg"
+                        android:spinnerMode="dropdown" />
 
                     <Spinner
                         android:id="@+id/spinner_page_size_b0_b10"
-                        android:layout_width="wrap_content"
+                        android:layout_width="170dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
-                        android:fontFamily="@font/metropolis_semibold"
+                        android:backgroundTint="@color/black"
+                        android:baselineAligned="false"
+                        android:dropDownWidth="210dp"
+                        android:popupBackground="@drawable/spinner_pop_bg"
+                        android:spinnerMode="dropdown"
                         android:entries="@array/array_page_sizes_b0_b10" />
                 </LinearLayout>
             </LinearLayout>
@@ -203,5 +208,5 @@
                     android:src="@drawable/cancel"/>
             </LinearLayout>
         </LinearLayout>
-<!--    </androidx.cardview.widget.CardView>-->
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

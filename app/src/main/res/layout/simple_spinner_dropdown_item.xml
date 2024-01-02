@@ -1,7 +1,7 @@
 <CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@android:id/text1"
-    android:layout_width="179dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/spinnerDropDownItemStyle"
     android:paddingHorizontal="10dp"
@@ -16,5 +16,4 @@
     android:textAllCaps="false"
     android:text="132122"
     android:layout_marginTop="2dp"
-    android:fontFamily="@font/metropolis_semibold"
-    />
+    android:fontFamily="@font/metropolis_semibold" />

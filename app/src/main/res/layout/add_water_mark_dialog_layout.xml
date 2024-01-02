@@ -4,7 +4,7 @@
     xmlns:picker="http://schemas.android.com/tools"
     android:id="@+id/dialog_linear"
     android:layout_width="330dp"
-    android:layout_height="455dp"
+    android:layout_height="600dp"
     android:layout_marginHorizontal="10dp"
     android:orientation="horizontal">
 
@@ -167,8 +167,9 @@
                                 android:id="@+id/watermarkFontFamily"
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
+                                android:backgroundTint="@color/black"
                                 android:fontFamily="@font/metropolis_semibold"
-                                android:dropDownWidth="180dp"
+                                android:dropDownWidth="170dp"
                                 android:popupBackground="@drawable/spinner_pop_bg"
                                 android:spinnerMode="dropdown" />
                         </RelativeLayout>
@@ -191,7 +192,8 @@
                                 android:id="@+id/watermarkStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
-                                android:dropDownWidth="150dp"
+                                android:dropDownWidth="130dp"
+                                android:backgroundTint="@color/black"
                                 android:popupBackground="@drawable/spinner_pop_bg"
                                 android:fontFamily="@font/metropolis_semibold"
                                 android:spinnerMode="dropdown" />

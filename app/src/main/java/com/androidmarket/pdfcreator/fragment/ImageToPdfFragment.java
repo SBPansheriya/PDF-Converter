@@ -900,8 +900,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
             colorPickerInput.setColor(color.getRGB());
 
             fontFamilyInput.setSelection(fontFamilyAdapter.getPosition(mPdfOptions.getWatermark().getFontFamily()));
-            styleInput.setSelection(styleAdapter.getPosition(
-                    getStyleNameFromFont(mPdfOptions.getWatermark().getFontStyle())));
+            styleInput.setSelection(styleAdapter.getPosition(getStyleNameFromFont(mPdfOptions.getWatermark().getFontStyle())));
         } else {
             angleInput.setText("0");
             fontSizeInput.setText("50");

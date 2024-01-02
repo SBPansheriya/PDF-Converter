@@ -61,7 +61,7 @@ public class ActivityImageEditor extends AppCompatActivity implements OnFilterIt
     private final ArrayList<String> mImagePaths = new ArrayList<>();
     private ArrayList<FilterItem> mFilterItems;
     private ArrayList<BrushItem> mBrushItems;
-
+    AdapterImageFilters adapter;
     private int mDisplaySize;
     private int mCurrentImage; // 0 by default
     private String mFilterName;
@@ -235,7 +235,7 @@ public class ActivityImageEditor extends AppCompatActivity implements OnFilterIt
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(layoutManager);
-        AdapterImageFilters adapter = new AdapterImageFilters(mFilterItems, this, this);
+        adapter = new AdapterImageFilters(mFilterItems, this, this);
         recyclerView.setAdapter(adapter);
 
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -252,7 +252,8 @@ public class ActivityImageEditor extends AppCompatActivity implements OnFilterIt
      */
     @Override
     public void onItemClick(View view, int position) {
-        //setting mClicked true when none filter is selected otherwise false
+        adapter.setSelectedItemPosition(position);
+
         mClicked = position == 0;
         // Brush effect is in second position
         if (position == 1) {
@@ -318,6 +319,8 @@ public class ActivityImageEditor extends AppCompatActivity implements OnFilterIt
             Button cancel = dialog.findViewById(R.id.canceldialog);
             Button ok = dialog.findViewById(R.id.okdialog);
             final ColorPickerView colorPickerInput = dialog.findViewById(R.id.color_pallete);
+
+            colorPickerInput.setAlphaSliderVisible(true);
 
             cancel.setOnClickListener(new View.OnClickListener() {
                 @Override

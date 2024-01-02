@@ -185,7 +185,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="10dp"
-            app:cardCornerRadius="40dp">
+            app:cardCornerRadius="20dp">
 
             <ja.burhanrashid52.photoeditor.PhotoEditorView
                 android:id="@+id/photoEditorView"

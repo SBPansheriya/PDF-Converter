@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -97,13 +98,11 @@ public class SettingsFragment extends Fragment implements OnItemClickListener {
         });
         return root;
     }
-
 //    @OnClick(R.id.storagelocation)
 //    void modifyStorageLocation() {
 ////        Intent intent = new Intent(mActivity, FolderPicker.class);
 ////        startActivityForResult(intent, MODIFY_STORAGE_LOCATION_CODE);
 //    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == MODIFY_STORAGE_LOCATION_CODE) {
@@ -158,26 +157,63 @@ public class SettingsFragment extends Fragment implements OnItemClickListener {
      * To modify master password of PDFs
      */
     private void changeMasterPassword() {
-        MaterialDialog.Builder builder = DialogUtils.getInstance().createCustomDialogWithoutContent(mActivity,
-                R.string.change_master_pwd);
-        MaterialDialog materialDialog =
-                builder.customView(R.layout.dialog_change_master_pwd, true)
-                        .onPositive((dialog1, which) -> {
-                            View view = dialog1.getCustomView();
-                            EditText et = view.findViewById(R.id.value);
-                            String value = et.getText().toString();
-                            if (!value.isEmpty())
-                                mSharedPreferences.edit().putString(MASTER_PWD_STRING, value).apply();
-                            else
-                                StringUtils.getInstance().showSnackbar(mActivity, R.string.invalid_entry);
+//        MaterialDialog.Builder builder = DialogUtils.getInstance().createCustomDialogWithoutContent(mActivity,
+//                R.string.change_master_pwd);
+//        MaterialDialog materialDialog =
+//                builder.customView(R.layout.dialog_change_master_pwd, true)
+//                        .onPositive((dialog1, which) -> {
+//                            View view = dialog1.getCustomView();
+//                            EditText et = view.findViewById(R.id.value);
+//                            String value = et.getText().toString();
+//                            if (!value.isEmpty())
+//                                mSharedPreferences.edit().putString(MASTER_PWD_STRING, value).apply();
+//                            else
+//                                StringUtils.getInstance().showSnackbar(mActivity, R.string.invalid_entry);
+//
+//
+//                        }).build();
+//        View view = materialDialog.getCustomView();
+//        TextView tv = view.findViewById(R.id.content);
+//        tv.setText(String.format(mActivity.getString(R.string.current_master_pwd),
+//                mSharedPreferences.getString(MASTER_PWD_STRING, appName)));
+//        materialDialog.show();
 
+        Dialog dialog = new Dialog(getContext());
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.dialog_change_master_pwd_layout);
+        dialog.setCancelable(false);
+        dialog.show();
 
-                        }).build();
-        View view = materialDialog.getCustomView();
-        TextView tv = view.findViewById(R.id.content);
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        EditText et = dialog.findViewById(R.id.value);
+        TextView tv = dialog.findViewById(R.id.content);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String value = et.getText().toString();
+                if (!value.isEmpty())
+                    mSharedPreferences.edit().putString(MASTER_PWD_STRING, value).apply();
+                else
+                    StringUtils.getInstance().showSnackbar(mActivity, R.string.invalid_entry);
+                dialog.dismiss();
+            }
+        });
         tv.setText(String.format(mActivity.getString(R.string.current_master_pwd),
                 mSharedPreferences.getString(MASTER_PWD_STRING, appName)));
-        materialDialog.show();
     }
 
     /**
@@ -214,12 +250,13 @@ public class SettingsFragment extends Fragment implements OnItemClickListener {
             dialog.setCancelable(false);
         }
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        dialog.setContentView(R.layout.compress_image_dialog_layout_setting);
+        dialog.setContentView(R.layout.compress_image_dialog_layout);
         dialog.setCancelable(false);
         dialog.show();
 
         Button cancel = dialog.findViewById(R.id.canceldialog);
         Button ok = dialog.findViewById(R.id.okdialog);
+        CheckBox cbSetDefault = dialog.findViewById(R.id.cbSetDefault);
         final EditText qualityInput = dialog.findViewById(R.id.quality);
 
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -249,6 +286,8 @@ public class SettingsFragment extends Fragment implements OnItemClickListener {
                 }
             }
         });
+
+        cbSetDefault.setVisibility(View.GONE);
     }
 
     /**
@@ -288,7 +327,7 @@ public class SettingsFragment extends Fragment implements OnItemClickListener {
             dialog.setCancelable(false);
         }
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        dialog.setContentView(R.layout.dialog_font_size_layout_setting);
+        dialog.setContentView(R.layout.dialog_font_size_layout);
         dialog.setCancelable(false);
         dialog.show();
 
@@ -296,6 +335,7 @@ public class SettingsFragment extends Fragment implements OnItemClickListener {
         Button ok = dialog.findViewById(R.id.okdialog);
         EditText fontInput = dialog.findViewById(R.id.fontInput);
         TextView title = dialog.findViewById(R.id.txt);
+        CheckBox checkBox = dialog.findViewById(R.id.cbSetFontDefault);
 
         title.setText(String.format("Font size (Default: %d)", fontSize));
 
@@ -326,6 +366,8 @@ public class SettingsFragment extends Fragment implements OnItemClickListener {
                 dialog.dismiss();
             }
         });
+
+        checkBox.setVisibility(View.GONE);
     }
 
     /**
@@ -335,69 +377,72 @@ public class SettingsFragment extends Fragment implements OnItemClickListener {
         String fontFamily = mSharedPreferences.getString(Constants.DEFAULT_FONT_FAMILY_TEXT,
                 Constants.DEFAULT_FONT_FAMILY);
         int ordinal = Font.FontFamily.valueOf(fontFamily).ordinal();
-        MaterialDialog.Builder builder = DialogUtils.getInstance().createCustomDialogWithoutContent(mActivity,
-                R.string.font_family_edit);
-        MaterialDialog materialDialog = builder.customView(R.layout.dialog_font_family, true)
-                .onPositive((dialog, which) -> {
-                    View view = dialog.getCustomView();
-                    RadioGroup radioGroup = view.findViewById(R.id.radio_group_font_family);
-                    int selectedId = radioGroup.getCheckedRadioButtonId();
-                    RadioButton radioButton = view.findViewById(selectedId);
-                    String fontFamily1 = radioButton.getText().toString();
-                    SharedPreferences.Editor editor = mSharedPreferences.edit();
-                    editor.putString(Constants.DEFAULT_FONT_FAMILY_TEXT, fontFamily1);
-                    editor.apply();
-                    showSettingsOptions();
-                })
-                .build();
-        View customView = materialDialog.getCustomView();
-        RadioGroup radioGroup = customView.findViewById(R.id.radio_group_font_family);
-        RadioButton rb = (RadioButton) radioGroup.getChildAt(ordinal);
-        rb.setChecked(true);
-        customView.findViewById(R.id.cbSetDefault).setVisibility(View.GONE);
-        materialDialog.show();
-
-//        Dialog dialog = new Dialog(mActivity);
-//        if (dialog.getWindow() != null) {
-//            dialog.getWindow().setGravity(Gravity.CENTER);
-//            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-//            dialog.setCancelable(false);
-//        }
-//        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//        dialog.setContentView(R.layout.dialog_font_family_layout_setting);
-//        dialog.setCancelable(false);
-//        dialog.show();
-//
-//        Button cancel = dialog.findViewById(R.id.canceldialog);
-//        Button ok = dialog.findViewById(R.id.okdialog);
-//        TextView title = dialog.findViewById(R.id.txt);
-//        RadioGroup radioGroup = dialog.findViewById(R.id.radio_group_font_family);
-//
-//        title.setText(String.format(mActivity.getString(R.string.default_font_family_text), fontFamily));
-//
-//        cancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dialog.dismiss();
-//            }
-//        });
-//
-//        ok.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                RadioGroup radioGroup = dialog.findViewById(R.id.radio_group_font_family);
-//                int selectedId = radioGroup.getCheckedRadioButtonId();
-//                RadioButton radioButton = dialog.findViewById(selectedId);
-//                String fontFamily1 = radioButton.getText().toString();
-//                SharedPreferences.Editor editor = mSharedPreferences.edit();
-//                editor.putString(Constants.DEFAULT_FONT_FAMILY_TEXT, fontFamily1);
-//                editor.apply();
-//                showSettingsOptions();
-//                dialog.dismiss();
-//            }
-//        });
+//        MaterialDialog.Builder builder = DialogUtils.getInstance().createCustomDialogWithoutContent(mActivity,
+//                R.string.font_family_edit);
+//        MaterialDialog materialDialog = builder.customView(R.layout.dialog_font_family, true)
+//                .onPositive((dialog, which) -> {
+//                    View view = dialog.getCustomView();
+//                    RadioGroup radioGroup = view.findViewById(R.id.radio_group_font_family);
+//                    int selectedId = radioGroup.getCheckedRadioButtonId();
+//                    RadioButton radioButton = view.findViewById(selectedId);
+//                    String fontFamily1 = radioButton.getText().toString();
+//                    SharedPreferences.Editor editor = mSharedPreferences.edit();
+//                    editor.putString(Constants.DEFAULT_FONT_FAMILY_TEXT, fontFamily1);
+//                    editor.apply();
+//                    showSettingsOptions();
+//                })
+//                .build();
+//        View customView = materialDialog.getCustomView();
+//        RadioGroup radioGroup = customView.findViewById(R.id.radio_group_font_family);
 //        RadioButton rb = (RadioButton) radioGroup.getChildAt(ordinal);
 //        rb.setChecked(true);
+//        customView.findViewById(R.id.cbSetDefault).setVisibility(View.GONE);
+//        materialDialog.show();
+
+        Dialog dialog = new Dialog(mActivity);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.dialog_font_family_layout);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        TextView title = dialog.findViewById(R.id.txt);
+
+        CheckBox checkBox = dialog.findViewById(R.id.set_default);
+
+        title.setText(String.format(mActivity.getString(R.string.default_font_family_text), fontFamily));
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RadioGroup radioGroup = dialog.findViewById(R.id.radio_group_font_family);
+                int selectedId = radioGroup.getCheckedRadioButtonId();
+                RadioButton radioButton = dialog.findViewById(selectedId);
+                String fontFamily1 = radioButton.getText().toString();
+                SharedPreferences.Editor editor = mSharedPreferences.edit();
+                editor.putString(Constants.DEFAULT_FONT_FAMILY_TEXT, fontFamily1);
+                editor.apply();
+                showSettingsOptions();
+                dialog.dismiss();
+            }
+        });
+        RadioGroup radioGroup = dialog.findViewById(R.id.radio_group_font_family);
+        RadioButton rb = (RadioButton) radioGroup.getChildAt(ordinal);
+        rb.setChecked(true);
+        checkBox.setVisibility(View.GONE);
     }
 
     /**
@@ -413,24 +458,59 @@ public class SettingsFragment extends Fragment implements OnItemClickListener {
      * To modify theme
      */
     private void setTheme() {
-        MaterialDialog.Builder builder = DialogUtils.getInstance().createCustomDialogWithoutContent(mActivity,
-                R.string.theme_edit);
-        MaterialDialog materialDialog = builder.customView(R.layout.dialog_theme_default, true)
-                .onPositive(((dialog, which) -> {
-                    View view = dialog.getCustomView();
-                    RadioGroup radioGroup = view.findViewById(R.id.radio_group_themes);
-                    int selectedId = radioGroup.getCheckedRadioButtonId();
-                    RadioButton radioButton = view.findViewById(selectedId);
-                    String themeName = radioButton.getText().toString();
-                    ThemeUtils.getInstance().saveTheme(mActivity, themeName);
-                    mActivity.recreate();
-                }))
-                .build();
-        RadioGroup radioGroup = materialDialog.getCustomView().findViewById(R.id.radio_group_themes);
-        RadioButton rb = (RadioButton) radioGroup
-                .getChildAt(ThemeUtils.getInstance().getSelectedThemePosition(mActivity));
+//        MaterialDialog.Builder builder = DialogUtils.getInstance().createCustomDialogWithoutContent(mActivity,
+//                R.string.theme_edit);
+//        MaterialDialog materialDialog = builder.customView(R.layout.dialog_theme_default, true)
+//                .onPositive(((dialog, which) -> {
+//                    View view = dialog.getCustomView();
+//                    RadioGroup radioGroup = view.findViewById(R.id.radio_group_themes);
+//                    int selectedId = radioGroup.getCheckedRadioButtonId();
+//                    RadioButton radioButton = view.findViewById(selectedId);
+//                    String themeName = radioButton.getText().toString();
+//                    ThemeUtils.getInstance().saveTheme(mActivity, themeName);
+//                    mActivity.recreate();
+//                }))
+//                .build();
+//        RadioGroup radioGroup = materialDialog.getCustomView().findViewById(R.id.radio_group_themes);
+//        RadioButton rb = (RadioButton) radioGroup
+//                .getChildAt(ThemeUtils.getInstance().getSelectedThemePosition(mActivity));
+//        rb.setChecked(true);
+//        materialDialog.show();
+        Dialog dialog = new Dialog(mActivity);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.dialog_theme_default_layout);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        RadioGroup radioGroup = dialog.findViewById(R.id.radio_group_themes);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int selectedId = radioGroup.getCheckedRadioButtonId();
+                RadioButton radioButton = dialog.findViewById(selectedId);
+                String themeName = radioButton.getText().toString();
+                ThemeUtils.getInstance().saveTheme(mActivity, themeName);
+                mActivity.recreate();
+                dialog.dismiss();
+            }
+        });
+        RadioButton rb = (RadioButton) radioGroup.getChildAt(ThemeUtils.getInstance().getSelectedThemePosition(mActivity));
         rb.setChecked(true);
-        materialDialog.show();
     }
 
     /**
@@ -440,14 +520,65 @@ public class SettingsFragment extends Fragment implements OnItemClickListener {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         int currChoseId = mSharedPreferences.getInt(Constants.PREF_PAGE_STYLE_ID, -1);
 
-        RelativeLayout dialogLayout = (RelativeLayout) getLayoutInflater()
-                .inflate(R.layout.add_pgnum_dialog, null);
+//        RelativeLayout dialogLayout = (RelativeLayout) getLayoutInflater()
+//                .inflate(R.layout.add_pgnum_dialog, null);
+//
+//        RadioButton rbOpt1 = dialogLayout.findViewById(R.id.page_num_opt1);
+//        RadioButton rbOpt2 = dialogLayout.findViewById(R.id.page_num_opt2);
+//        RadioButton rbOpt3 = dialogLayout.findViewById(R.id.page_num_opt3);
+//        RadioGroup rg = dialogLayout.findViewById(R.id.radioGroup);
+//        CheckBox cbDefault = dialogLayout.findViewById(R.id.set_as_default);
+//
+//        if (currChoseId > 0) {
+//            cbDefault.setChecked(true);
+//            rg.clearCheck();
+//            rg.check(currChoseId);
+//        }
+//
+//        MaterialDialog materialDialog = new MaterialDialog.Builder(mActivity)
+//                .title(R.string.choose_page_number_style)
+//                .customView(dialogLayout, false)
+//                .positiveText(R.string.ok)
+//                .negativeText(R.string.cancel)
+//                .neutralText(R.string.remove_dialog)
+//                .onPositive(((dialog, which) -> {
+//                    int id = rg.getCheckedRadioButtonId();
+//                    String style = null;
+//                    if (id == rbOpt1.getId()) {
+//                        style = Constants.PG_NUM_STYLE_PAGE_X_OF_N;
+//                    } else if (id == rbOpt2.getId()) {
+//                        style = Constants.PG_NUM_STYLE_X_OF_N;
+//                    } else if (id == rbOpt3.getId()) {
+//                        style = Constants.PG_NUM_STYLE_X;
+//                    }
+//                    if (cbDefault.isChecked()) {
+//                        SharedPreferencesUtil.getInstance().setDefaultPageNumStyle(editor, style, id);
+//                    } else {
+//                        SharedPreferencesUtil.getInstance().clearDefaultPageNumStyle(editor);
+//                    }
+//                }))
+//                .build();
+//        materialDialog.show();
 
-        RadioButton rbOpt1 = dialogLayout.findViewById(R.id.page_num_opt1);
-        RadioButton rbOpt2 = dialogLayout.findViewById(R.id.page_num_opt2);
-        RadioButton rbOpt3 = dialogLayout.findViewById(R.id.page_num_opt3);
-        RadioGroup rg = dialogLayout.findViewById(R.id.radioGroup);
-        CheckBox cbDefault = dialogLayout.findViewById(R.id.set_as_default);
+        Dialog dialog = new Dialog(getContext());
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.add_pgnum_dialog_layout);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+        Button remove = dialog.findViewById(R.id.remove_dialog);
+        CheckBox cbDefault = dialog.findViewById(R.id.set_as_default);
+        RadioButton rbOpt1 = dialog.findViewById(R.id.page_num_opt1);
+        RadioButton rbOpt2 = dialog.findViewById(R.id.page_num_opt2);
+        RadioButton rbOpt3 = dialog.findViewById(R.id.page_num_opt3);
+        RadioGroup rg = dialog.findViewById(R.id.radioGroup);
 
         if (currChoseId > 0) {
             cbDefault.setChecked(true);
@@ -455,29 +586,39 @@ public class SettingsFragment extends Fragment implements OnItemClickListener {
             rg.check(currChoseId);
         }
 
-        MaterialDialog materialDialog = new MaterialDialog.Builder(mActivity)
-                .title(R.string.choose_page_number_style)
-                .customView(dialogLayout, false)
-                .positiveText(R.string.ok)
-                .negativeText(R.string.cancel)
-                .neutralText(R.string.remove_dialog)
-                .onPositive(((dialog, which) -> {
-                    int id = rg.getCheckedRadioButtonId();
-                    String style = null;
-                    if (id == rbOpt1.getId()) {
-                        style = Constants.PG_NUM_STYLE_PAGE_X_OF_N;
-                    } else if (id == rbOpt2.getId()) {
-                        style = Constants.PG_NUM_STYLE_X_OF_N;
-                    } else if (id == rbOpt3.getId()) {
-                        style = Constants.PG_NUM_STYLE_X;
-                    }
-                    if (cbDefault.isChecked()) {
-                        SharedPreferencesUtil.getInstance().setDefaultPageNumStyle(editor, style, id);
-                    } else {
-                        SharedPreferencesUtil.getInstance().clearDefaultPageNumStyle(editor);
-                    }
-                }))
-                .build();
-        materialDialog.show();
+        remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rg.clearCheck();
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id = rg.getCheckedRadioButtonId();
+                String style = null;
+                if (id == rbOpt1.getId()) {
+                    style = Constants.PG_NUM_STYLE_PAGE_X_OF_N;
+                } else if (id == rbOpt2.getId()) {
+                    style = Constants.PG_NUM_STYLE_X_OF_N;
+                } else if (id == rbOpt3.getId()) {
+                    style = Constants.PG_NUM_STYLE_X;
+                }
+                if (cbDefault.isChecked()) {
+                    SharedPreferencesUtil.getInstance().setDefaultPageNumStyle(editor, style, id);
+                } else {
+                    SharedPreferencesUtil.getInstance().clearDefaultPageNumStyle(editor);
+                }
+                dialog.dismiss();
+            }
+        });
     }
 }

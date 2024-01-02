@@ -4,13 +4,13 @@
     xmlns:picker="http://schemas.android.com/tools"
     android:id="@+id/dialog_linear"
     android:layout_width="330dp"
-    android:layout_height="460dp"
+    android:layout_height="wrap_content"
     android:layout_marginHorizontal="10dp"
     android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:cardCornerRadius="10dp">
 
         <LinearLayout
@@ -66,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:layout_gravity="center"
+                android:layout_marginBottom="15dp"
                 android:layout_marginTop="15dp"
                 android:orientation="horizontal">
 
@@ -74,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginHorizontal="10dp"
-                    android:layout_marginBottom="10dp"
+
                     android:gravity="center"
                     android:orientation="horizontal">
 

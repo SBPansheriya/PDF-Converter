@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +27,20 @@ public class AdapterImageFilters extends RecyclerView.Adapter<AdapterImageFilter
     private final ArrayList<FilterItem> mFilterItem;
     private final OnFilterItemClickedListener mOnFilterItemClickedListener;
     private final Context  mContext;
+    private int selectedItemPosition = 0;
 
     public AdapterImageFilters(ArrayList<FilterItem> filterItems, Context context,
                                OnFilterItemClickedListener listener) {
         mFilterItem = filterItems;
         mContext = context;
         mOnFilterItemClickedListener = listener;
+    }
+
+    public void setSelectedItemPosition(int position) {
+        int previousSelectedItemPosition = selectedItemPosition;
+        selectedItemPosition = position;
+        notifyItemChanged(previousSelectedItemPosition);
+        notifyItemChanged(selectedItemPosition);
     }
 
     @NonNull
@@ -49,6 +59,12 @@ public class AdapterImageFilters extends RecyclerView.Adapter<AdapterImageFilter
         } else
             holder.img.setImageResource(imageId);
         holder.name.setText(mFilterItem.get(position).getName());
+
+        if (position == selectedItemPosition) {
+            holder.name.setTextColor(Color.parseColor("#00A9FF"));
+        } else {
+            holder.name.setTextColor(Color.parseColor("#80000000"));
+        }
     }
 
     @Override

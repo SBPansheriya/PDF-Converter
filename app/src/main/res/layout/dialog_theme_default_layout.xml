@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:picker="http://schemas.android.com/tools"
     android:id="@+id/dialog_linear"
-    android:layout_width="330dp"
-    android:layout_height="320dp"
+    android:layout_width="260dp"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:gravity="center"
     android:layout_marginHorizontal="10dp"
@@ -12,7 +12,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:cardCornerRadius="10dp">
 
         <LinearLayout
@@ -32,7 +32,7 @@
                     android:id="@+id/image"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/font_family_img" />
+                    android:src="@drawable/change_default_img" />
 
                 <TextView
                     android:id="@+id/txt"
@@ -40,13 +40,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/metropolis_bold"
-                    android:text="Font family (Default : poppins)"
+                    android:text="Change default theme"
                     android:textColor="@color/dark_blue"
                     android:textSize="16sp" />
             </LinearLayout>
 
             <RadioGroup
-                android:id="@+id/radio_group_font_family"
+                android:id="@+id/radio_group_themes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -60,7 +60,7 @@
                     android:paddingStart="5dp"
                     android:textSize="14dp"
                     android:fontFamily="@font/metropolis_semibold"
-                    android:text="Courier" />
+                    android:text="System" />
 
                 <RadioButton
                     android:layout_width="match_parent"
@@ -69,7 +69,7 @@
                     android:paddingStart="5dp"
                     android:textSize="14dp"
                     android:fontFamily="@font/metropolis_semibold"
-                    android:text="Helvetica" />
+                    android:text="Black" />
 
                 <RadioButton
                     android:layout_width="match_parent"
@@ -78,7 +78,7 @@
                     android:paddingStart="5dp"
                     android:textSize="14dp"
                     android:fontFamily="@font/metropolis_semibold"
-                    android:text="Times roman" />
+                    android:text="Dark" />
 
                 <RadioButton
                     android:layout_width="match_parent"
@@ -87,25 +87,8 @@
                     android:paddingStart="5dp"
                     android:textSize="14dp"
                     android:fontFamily="@font/metropolis_semibold"
-                    android:text="Symbol" />
+                    android:text="White" />
 
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/dark_blue"
-                    android:paddingStart="5dp"
-                    android:textSize="14dp"
-                    android:fontFamily="@font/metropolis_semibold"
-                    android:text="Zapfdingbats" />
-
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/dark_blue"
-                    android:paddingStart="5dp"
-                    android:textSize="14dp"
-                    android:fontFamily="@font/metropolis_semibold"
-                    android:text="Undefined" />
             </RadioGroup>
 
             <LinearLayout
@@ -114,6 +97,7 @@
                 android:gravity="end"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -121,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginHorizontal="10dp"
-                    android:layout_marginBottom="10dp"
+
                     android:gravity="center"
                     android:orientation="horizontal">
 

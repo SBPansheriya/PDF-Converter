@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +22,21 @@ public class AdapterPreviewImageOptions extends RecyclerView.Adapter<AdapterPrev
     private final ArrayList<PreviewImageOptionItem> mOptions;
     private final Context mContext;
     private final OnItemClickListener mOnItemClickListener;
+    private int selectedItemPosition = RecyclerView.NO_POSITION;
+
 
     public AdapterPreviewImageOptions(OnItemClickListener onItemClickListener,
                                       ArrayList<PreviewImageOptionItem> optionItems, Context context) {
         mOnItemClickListener = onItemClickListener;
         mOptions = optionItems;
         mContext = context;
+    }
+
+    public void setSelectedItemPosition(int position) {
+        int previousSelectedItemPosition = selectedItemPosition;
+        selectedItemPosition = position;
+        notifyItemChanged(previousSelectedItemPosition);
+        notifyItemChanged(selectedItemPosition);
     }
 
     @NonNull
@@ -42,6 +53,12 @@ public class AdapterPreviewImageOptions extends RecyclerView.Adapter<AdapterPrev
         int imageId = mOptions.get(position).getOptionImageId();
         holder.imageView.setImageDrawable(mContext.getDrawable(imageId));
         holder.textView.setText(mOptions.get(position).getOptionName());
+
+        if (position == selectedItemPosition) {
+            holder.textView.setTextColor(Color.parseColor("#00A9FF"));
+        } else {
+            holder.textView.setTextColor(Color.parseColor("#80000000"));
+        }
     }
 
     @Override

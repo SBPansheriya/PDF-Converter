@@ -188,7 +188,7 @@ public class PageSizeUtils {
         RadioButton radioButtonDefault = dialog.findViewById(R.id.page_size_default);
         radioButtonDefault.setText(String.format(mActivity.getString(R.string.default_page_size), mDefaultPageSize));
 
-        if (saveValue) dialog.findViewById(R.id.cbSetDefault).setVisibility(View.VISIBLE);
+        if (saveValue) dialog.findViewById(R.id.cbSetDefault).setVisibility(View.GONE);
 
         ArrayAdapter<String> spinnerAAdapter = new ArrayAdapter<>(mActivity, R.layout.simple_spinner_item,
                 mActivity.getResources().getStringArray(R.array.array_page_sizes_a0_b10));

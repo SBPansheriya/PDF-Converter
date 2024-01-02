@@ -25,13 +25,14 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:cardCornerRadius="5dp">
 
             <ImageView
                 android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:src="@drawable/img"
                 android:contentDescription="@string/preview_image_to_pdf"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop" />

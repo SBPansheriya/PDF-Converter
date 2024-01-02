@@ -1,78 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
+    xmlns:picker="http://schemas.android.com/tools"
     android:id="@+id/dialog_linear"
     android:layout_width="340dp"
+    android:layout_height="wrap_content"
     android:layout_marginHorizontal="10dp"
-    android:layout_height="350dp">
+    android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:cardCornerRadius="10dp">
 
         <RelativeLayout
-            android:layout_width="match_parent" 
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:textSize="17dp"
-            android:fontFamily="@font/metropolis_semibold"
-            android:text="Choose a color :"/>
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:fontFamily="@font/metropolis_semibold"
+                android:text="Choose a color :"
+                android:textSize="17dp" />
 
             <com.github.danielnilsson9.colorpickerview.view.ColorPickerView
                 android:id="@+id/color_pallete"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="300dp"
                 android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="30dp"/>
+                android:layout_marginTop="30dp"
+                picker:alphaChannelVisible="true" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/color_pallete"
-                android:gravity="center"
                 android:layout_alignParentEnd="true"
                 android:layout_marginHorizontal="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/canceldialog"
                     android:layout_width="65dp"
                     android:layout_height="30dp"
-                    android:text="@string/cancel"
                     android:background="@drawable/create_pdf_dialog_border"
-                    android:fontFamily="@font/metropolis_medium"
-                    android:textColor="#80000000"
                     android:backgroundTint="#E7EAEE"
+                    android:fontFamily="@font/metropolis_medium"
+                    android:src="@drawable/cancel"
+                    android:text="@string/cancel"
                     android:textAllCaps="false"
-                    android:textSize="13dp"
-                    android:src="@drawable/cancel"/>
+                    android:textColor="#80000000"
+                    android:textSize="13dp" />
 
                 <View
                     android:layout_width="10dp"
-                    android:layout_height="0dp"/>
+                    android:layout_height="0dp" />
 
                 <Button
                     android:id="@+id/okdialog"
                     android:layout_width="45dp"
                     android:layout_height="30dp"
-                    android:text="@string/ok"
                     android:background="@drawable/create_pdf_dialog_border"
-                    android:fontFamily="@font/metropolis_medium"
-                    android:textColor="@color/white"
                     android:backgroundTint="#00A9FF"
+                    android:fontFamily="@font/metropolis_medium"
+                    android:src="@drawable/cancel"
+                    android:text="@string/ok"
                     android:textAllCaps="false"
-                    android:textSize="13dp"
-                    android:src="@drawable/cancel"/>
+                    android:textColor="@color/white"
+                    android:textSize="13dp" />
             </LinearLayout>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

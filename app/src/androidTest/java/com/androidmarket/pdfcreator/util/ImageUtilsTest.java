@@ -3,7 +3,6 @@ package com.androidmarket.pdfcreator.util;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.itextpdf.text.Rectangle;
 
@@ -14,6 +13,8 @@ import org.junit.runner.RunWith;
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+
+import androidx.test.runner.AndroidJUnit4;
 
 @RunWith(AndroidJUnit4.class)
 public class ImageUtilsTest {

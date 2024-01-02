@@ -123,7 +123,6 @@ public class ActivityRearrangeImages extends AppCompatActivity implements Adapte
 //
 //                    })
 //                    .show();
-
             Dialog dialog = new Dialog(ActivityRearrangeImages.this);
             if (dialog.getWindow() != null) {
                 dialog.getWindow().setGravity(Gravity.CENTER);
@@ -216,32 +215,32 @@ public class ActivityRearrangeImages extends AppCompatActivity implements Adapte
         dialog1.setCancelable(false);
         dialog1.show();
 
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
 
         Button cancel = dialog1.findViewById(R.id.canceldialog);
         RadioGroup radioGroup = dialog1.findViewById(R.id.scale_type);
-        RadioButton button = dialog1.findViewById(R.id.newest_name_list);
-        RadioButton button1 = dialog1.findViewById(R.id.oldest_name_list);
-        RadioButton button2 = dialog1.findViewById(R.id.newest_date_list);
-        RadioButton button3 = dialog1.findViewById(R.id.oldest_date_list);
+//        RadioButton button = dialog1.findViewById(R.id.newest_name_list);
+//        RadioButton button1 = dialog1.findViewById(R.id.oldest_name_list);
+//        RadioButton button2 = dialog1.findViewById(R.id.newest_date_list);
+//        RadioButton button3 = dialog1.findViewById(R.id.oldest_date_list);
 
-        int checkedPosition = sharedPreferences.getInt("checked_position", (-1));
-
-        switch (checkedPosition) {
-            case 0:
-                button.setChecked(true);
-                break;
-            case 1:
-                button1.setChecked(true);
-                break;
-            case 2:
-                button2.setChecked(true);
-                break;
-            case 3:
-                button3.setChecked(true);
-                break;
-        }
+//        int checkedPosition = sharedPreferences.getInt("checked_position", (-1));
+//
+//        switch (checkedPosition) {
+//            case 0:
+//                button.setChecked(true);
+//                break;
+//            case 1:
+//                button1.setChecked(true);
+//                break;
+//            case 2:
+//                button2.setChecked(true);
+//                break;
+//            case 3:
+//                button3.setChecked(true);
+//                break;
+//        }
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @SuppressLint("NonConstantResourceId")
@@ -265,9 +264,8 @@ public class ActivityRearrangeImages extends AppCompatActivity implements Adapte
                         Toast.makeText(getApplicationContext(), "Invalid sort option", Toast.LENGTH_SHORT).show();
                         return;
                 }
-
-                editor.putInt("checked_position", position);
-                editor.apply();
+//                editor.putInt("checked_position", position);
+//                editor.apply();
 
                 // Perform sort operation based on the selected position
                 ImageSortUtils.getInstance().performSortOperation(position, mImages);

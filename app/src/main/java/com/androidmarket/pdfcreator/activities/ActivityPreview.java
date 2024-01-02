@@ -47,6 +47,8 @@ import static com.androidmarket.pdfcreator.Constants.PREVIEW_IMAGES;
 
 public class ActivityPreview extends AppCompatActivity implements AdapterPreviewImageOptions.OnItemClickListener {
 
+    private static final String SORT_PREFERENCE_KEY = "sort_preference";
+
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
@@ -55,6 +57,10 @@ public class ActivityPreview extends AppCompatActivity implements AdapterPreview
     private AdapterPreview mAdapterPreview;
     private ViewPager mViewPager;
     ImageView back;
+    AdapterPreviewImageOptions adapter;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    int checkedPosition;
 
     @SuppressLint("StringFormatInvalid")
     @Override
@@ -65,6 +71,11 @@ public class ActivityPreview extends AppCompatActivity implements AdapterPreview
         setContentView(R.layout.activity_preview);
 
         back = findViewById(R.id.back);
+
+//        sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+//        editor = sharedPreferences.edit();
+//
+//        checkedPosition = sharedPreferences.getInt(SORT_PREFERENCE_KEY, -1);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +93,6 @@ public class ActivityPreview extends AppCompatActivity implements AdapterPreview
         mAdapterPreview = new AdapterPreview(this, mImagesArrayList);
         mViewPager.setAdapter(mAdapterPreview);
         mViewPager.setPageTransformer(true, new DepthPageTransformer());
-
 
         TabLayout tabLayout = findViewById(R.id.tabs);
 
@@ -117,7 +127,7 @@ public class ActivityPreview extends AppCompatActivity implements AdapterPreview
     private void showOptions() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
-        AdapterPreviewImageOptions adapter = new AdapterPreviewImageOptions(this, getOptions(),
+        adapter = new AdapterPreviewImageOptions(this, getOptions(),
                 getApplicationContext());
         mRecyclerView.setAdapter(adapter);
     }
@@ -136,6 +146,9 @@ public class ActivityPreview extends AppCompatActivity implements AdapterPreview
 
     @Override
     public void onItemClick(int position) {
+
+        adapter.setSelectedItemPosition(position);
+
         switch (position) {
             case 0:
                 startActivityForResult(ActivityRearrangeImages.getStartIntent(this, mImagesArrayList),
@@ -173,35 +186,26 @@ public class ActivityPreview extends AppCompatActivity implements AdapterPreview
         dialog1.setCancelable(false);
         dialog1.show();
 
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
         Button cancel = dialog1.findViewById(R.id.canceldialog);
         RadioGroup radioGroup = dialog1.findViewById(R.id.scale_type);
-        RadioButton button = dialog1.findViewById(R.id.newest_name_list);
-        RadioButton button1 = dialog1.findViewById(R.id.oldest_name_list);
-        RadioButton button2 = dialog1.findViewById(R.id.newest_date_list);
-        RadioButton button3 = dialog1.findViewById(R.id.oldest_date_list);
 
-        int checkedPosition = sharedPreferences.getInt("checked_position", -1);
-
-        switch (checkedPosition) {
-            case 0:
-                button.setChecked(true);
-                break;
-            case 1:
-                button1.setChecked(true);
-                break;
-            case 2:
-                button2.setChecked(true);
-                break;
-            case 3:
-                button3.setChecked(true);
-                break;
-            default:
-                radioGroup.clearCheck();
-                break;
-        }
+//        switch (checkedPosition) {
+//            case 0:
+//                radioGroup.check(R.id.newest_name_list);
+//                break;
+//            case 1:
+//                radioGroup.check(R.id.oldest_name_list);
+//                break;
+//            case 2:
+//                radioGroup.check(R.id.newest_date_list);
+//                break;
+//            case 3:
+//                radioGroup.check(R.id.oldest_date_list);
+//                break;
+//            default:
+//                radioGroup.clearCheck();
+//                break;
+//        }
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @SuppressLint("NonConstantResourceId")
@@ -222,15 +226,12 @@ public class ActivityPreview extends AppCompatActivity implements AdapterPreview
                         position = 3;
                         break;
                     default:
-                        // Handle the default case or show an error message
                         Toast.makeText(getApplicationContext(), "Invalid sort option", Toast.LENGTH_SHORT).show();
                         return;
                 }
 
-                editor.putInt("checked_position", position);
-                editor.apply();
+//                editor.putInt(SORT_PREFERENCE_KEY, position).apply();
 
-                // Perform sort operation based on the selected position
                 ImageSortUtils.getInstance().performSortOperation(position, mImagesArrayList);
                 mAdapterPreview.setData(new ArrayList<>(mImagesArrayList));
                 mViewPager.setAdapter(mAdapterPreview);

@@ -300,7 +300,6 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         mFileUtils.openFile(mPath, FileUtils.FileType.e_PDF);
     }
 
-
     private boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 29) {
             return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
@@ -470,7 +469,6 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                 break;
         }
     }
-
 
     /**
      * Saves Images with gray scale filter

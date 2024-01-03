@@ -223,7 +223,6 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
             String uriRealPath = mFileUtils.getUriRealPath((Uri) p);
             if (uriRealPath == null) {
                 Toast.makeText(getActivity(), R.string.whatsappToast, Toast.LENGTH_SHORT).show();
-
             } else {
                 mImagesUri.add(uriRealPath);
             }
@@ -302,9 +301,11 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
 
     private boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 29) {
-            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
         } else if (Build.VERSION.SDK_INT >= 29) {
-            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
         } else
             return true;
     }
@@ -415,7 +416,6 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
 
     @Override
     public void onItemClick(int position) {
-
         if (mImagesUri.size() == 0) {
             Toast.makeText(getActivity(), R.string.snackbar_no_images, Toast.LENGTH_SHORT).show();
 //            StringUtils.getInstance().showSnackbar(mActivity, R.string.snackbar_no_images);
@@ -453,19 +453,19 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                         INTENT_REQUEST_REARRANGE_IMAGE);
                 break;
             case 9:
-                createPdf(true);
-                break;
-            case 10:
                 addMargins();
                 break;
-            case 11:
+            case 10:
                 addPageNumbers();
                 break;
-            case 12:
+            case 11:
                 addWatermark();
                 break;
-            case 13:
+            case 12:
                 setPageColor();
+                break;
+            case 13:
+                createPdf(true);
                 break;
         }
     }
@@ -1162,7 +1162,6 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                 mMarginBottom = StringUtils.getInstance().parseIntOrDefault(bottom.getText(), 0);
                 mMarginRight = StringUtils.getInstance().parseIntOrDefault(right.getText(), 0);
                 mMarginLeft = StringUtils.getInstance().parseIntOrDefault(left.getText(), 0);
-
                 mPdfOptions.setMargins(mMarginTop, mMarginBottom, mMarginRight, mMarginLeft);
                 dialog.dismiss();
             }
@@ -1174,7 +1173,6 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         mPageNumStyle = mSharedPreferences.getString(Constants.PREF_PAGE_STYLE, null);
         mChoseId = mSharedPreferences.getInt(Constants.PREF_PAGE_STYLE_ID, -1);
-
 //        RelativeLayout dialogLayout = (RelativeLayout) getLayoutInflater()
 //                .inflate(R.layout.add_pgnum_dialog, null);
 //
@@ -1216,7 +1214,6 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
 //                .onNeutral((((dialog, which) -> mPageNumStyle = null)))
 //                .build();
 //        materialDialog.show();
-
         Dialog dialog = new Dialog(getContext());
         if (dialog.getWindow() != null) {
             dialog.getWindow().setGravity(Gravity.CENTER);

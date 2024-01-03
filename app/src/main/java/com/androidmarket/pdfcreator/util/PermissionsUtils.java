@@ -1,12 +1,21 @@
 package com.androidmarket.pdfcreator.util;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -16,8 +25,13 @@ import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 
 import static com.androidmarket.pdfcreator.Constants.READ_PERMISSIONS;
+import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_READ_PERMISSION;
 import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_WRITE_PERMISSION;
 import static com.androidmarket.pdfcreator.Constants.WRITE_PERMISSIONS;
+
+import com.androidmarket.pdfcreator.Constants;
+
+import androidmarket.R;
 
 /**
  * !! IMPORTANT !!
@@ -117,33 +131,100 @@ public class PermissionsUtils {
             permission = READ_PERMISSIONS;
         }
         if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission[0])) {
-            new AlertDialog.Builder(activity)
-                    .setTitle("Permission Denied")
-                    .setMessage("Storage permission is needed for proper functioning of app.")
-                    .setPositiveButton("Re-try", (dialog, which) -> {
-                        requestRuntimePermissions(activity, permission, REQUEST_CODE_FOR_WRITE_PERMISSION);
-                        dialog.dismiss();
-                    })
-                    .setNegativeButton("Cancel", (dialog, which) -> {
-                        dialog.dismiss();
-                    }).show();
+//            new AlertDialog.Builder(activity)
+//                    .setTitle("Permission Denied")
+//                    .setMessage("Storage permission is needed for proper functioning of app.")
+//                    .setPositiveButton("Re-try", (dialog, which) -> {
+//                        requestRuntimePermissions(activity, permission, REQUEST_CODE_FOR_WRITE_PERMISSION);
+//                        dialog.dismiss();
+//                    })
+//                    .setNegativeButton("Cancel", (dialog, which) -> {
+//                        dialog.dismiss();
+//                    }).show();
+
+            Dialog dialog = new Dialog(activity);
+            if (dialog.getWindow() != null) {
+                dialog.getWindow().setGravity(Gravity.CENTER);
+                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                dialog.setCancelable(false);
+            }
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            dialog.setContentView(R.layout.permission_denied_first_dialog);
+            dialog.setCancelable(false);
+            dialog.show();
+
+            Button cancel = dialog.findViewById(R.id.canceldialog);
+            Button ok = dialog.findViewById(R.id.okdialog);
+
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    requestRuntimePermissions(activity, permission, REQUEST_CODE_FOR_WRITE_PERMISSION);
+                    dialog.dismiss();
+                }
+            });
         } else if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, permission[0])) {
-            new AlertDialog.Builder(activity)
-                    .setTitle("Permission Denied")
-                    .setMessage("You have chosen to never ask the permission again, but storage permission is needed for proper functioning of app. ")
-                    .setPositiveButton("Enable from settings", (dialog, which) -> {
-                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
-                        intent.setData(uri);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-                        activity.startActivity(intent);
-                        dialog.dismiss();
-                    })
-                    .setNegativeButton("Cancel", (dialog, which) -> {
-                        dialog.dismiss();
-                    }).show();
+//            new AlertDialog.Builder(activity)
+//                    .setTitle("Permission Denied")
+//                    .setMessage("You have chosen to never ask the permission again, but storage permission is needed for proper functioning of app. ")
+//                    .setPositiveButton("Enable from settings", (dialog, which) -> {
+//                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//                        Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
+//                        intent.setData(uri);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+//                        activity.startActivity(intent);
+//                        dialog.dismiss();
+//                    })
+//                    .setNegativeButton("Cancel", (dialog, which) -> {
+//                        dialog.dismiss();
+//                    }).show();
+            Dialog dialog = new Dialog(activity);
+            if (dialog.getWindow() != null) {
+                dialog.getWindow().setGravity(Gravity.CENTER);
+                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                dialog.setCancelable(false);
+            }
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            dialog.setContentView(R.layout.permission_denied_first_dialog);
+            dialog.setCancelable(false);
+            dialog.show();
+
+            Button cancel = dialog.findViewById(R.id.canceldialog);
+            Button ok = dialog.findViewById(R.id.okdialog);
+            TextView textView = dialog.findViewById(R.id.filename);
+
+            textView.setText(R.string.storage_permission);
+            ok.setText(R.string.enable_from_settings);
+
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
+                    intent.setData(uri);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                    activity.startActivity(intent);
+                    dialog.dismiss();
+                }
+            });
         }
     }
 }

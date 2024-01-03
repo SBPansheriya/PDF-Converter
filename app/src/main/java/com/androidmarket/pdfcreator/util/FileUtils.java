@@ -32,6 +32,7 @@ import java.util.List;
 
 import androidmarket.R;
 
+import com.androidmarket.pdfcreator.activities.SplashActivity;
 import com.androidmarket.pdfcreator.db.DatabaseHelper;
 import com.androidmarket.pdfcreator.util.lambda.Consumer;
 
@@ -39,6 +40,9 @@ import static com.androidmarket.pdfcreator.Constants.AUTHORITY_APP;
 import static com.androidmarket.pdfcreator.Constants.PATH_SEPERATOR;
 import static com.androidmarket.pdfcreator.Constants.STORAGE_LOCATION;
 import static com.androidmarket.pdfcreator.Constants.pdfExtension;
+import static com.androidmarket.pdfcreator.activities.SplashActivity.SORT_PREFERENCE_KEY;
+import static com.androidmarket.pdfcreator.activities.SplashActivity.editorSortBy;
+import static com.androidmarket.pdfcreator.activities.SplashActivity.sharedPreferencesSortBy;
 
 public class FileUtils {
 
@@ -431,6 +435,9 @@ public class FileUtils {
                 } else {
                     if (!isFileExist(filename + ext)) {
                         saveMethod.accept(filename);
+                        editorSortBy = sharedPreferencesSortBy.edit();
+                        editorSortBy.putInt(SORT_PREFERENCE_KEY,-1);
+                        editorSortBy.commit();
                     } else {
                         Dialog dialog = new Dialog(mContext);
                         if (dialog.getWindow() != null) {
@@ -458,6 +465,9 @@ public class FileUtils {
                             @Override
                             public void onClick(View view) {
                                 saveMethod.accept(filename);
+                                editorSortBy = sharedPreferencesSortBy.edit();
+                                editorSortBy.putInt(SORT_PREFERENCE_KEY,-1);
+                                editorSortBy.commit();
                                 dialog.dismiss();
                             }
                         });

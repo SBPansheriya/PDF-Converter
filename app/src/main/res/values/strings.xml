@@ -247,13 +247,13 @@
     <string name="set_page_size_text">Set Page Size</string>
     <string name="b0_to_b10">B0 to B10</string>
     <string name="a0_to_a10">A0 to A10</string>
-    <string name="tabloid" translatable="false">TABLOID</string>
-    <string name="executive" translatable="false">EXECUTIVE</string>
-    <string name="ledger" translatable="false">LEDGER</string>
-    <string name="letter" translatable="false">LETTER</string>
-    <string name="legal" translatable="false">LEGAL</string>
+    <string name="tabloid" translatable="false">Tabloid</string>
+    <string name="executive" translatable="false">Executive</string>
+    <string name="ledger" translatable="false">Ledger</string>
+    <string name="letter" translatable="false">Letter</string>
+    <string name="legal" translatable="false">Legal</string>
     <string name="a4" translatable="false">A4</string>
-    <string name="default_page_size">DEFAULT ( %s )</string>
+    <string name="default_page_size">Default ( %s )</string>
     <string name="master_password_changed">The password seems to be incorrect. May be, you have changed the master password.</string>
 
 
@@ -537,13 +537,13 @@
     <string name="create_pdf_from_selected_images">Create PDF from selected images</string>
     <string name="open_pdf">Open PDF</string>
     <string name="open_pdf_files">Open PDF files</string>
-    <string name="create_pdf_from_images">Create PDF from Images</string>
-    <string name="create_pdf_from_text_file">Create PDF from Text File</string>
+    <string name="create_pdf_from_images">Create PDF from images</string>
+    <string name="create_pdf_from_text_file">Create PDF from text file</string>
     <string name="choose_text_file_to_create_pdf">Choose text file to create PDF</string>
     <string name="create_pdf_from_selected_text_file">Create PDF from selected text file</string>
     <string name="qr_to_pdf">QR to PDF</string>
-    <string name="create_pdf_from_qr_codes">Create PDF from QR Codes</string>
-    <string name="create_pdf_from_excel_file">Create PDF from Excel File</string>
+    <string name="create_pdf_from_qr_codes">Create PDF from QR codes</string>
+    <string name="create_pdf_from_excel_file">Create PDF from excel file</string>
     <string name="choose_excel_file_to_create_pdf">Choose excel file to create PDF</string>
     <string name="create_pdf_from_selected_excel_file">Create PDF from selected excel file</string>
     <string name="file_name">File Name</string>
@@ -569,6 +569,12 @@
     <string name="date_modified">Date Modified</string>
     <string name="change_master_password">Change master password</string>
     <string name="the_current_master_password_is_pdf_preview_for_every_encrypted_pdf_you_can_change_it_here">The current master password is “PDF Preview” for every encrypted PDF. you can change it here.</string>
+    <string name="set_pdf_settings">Set PDF settings</string>
+    <string name="settings">Settings</string>
+    <string name="view_pdf_history">View PDF history</string>
+    <string name="no_files_found">No Files Found</string>
+    <string name="enable_from_settings">Enable from settings</string>
+    <string name="storage_permission">You have chosen to never ask the permission again, but storage permission is needed for proper functioning of app.</string>
     <string-array name="faq_question_answers">
         <item>What image file formats are supported?#####The app supports jpeg, jpg, tiff, gif, psd, bmp, eps, png, etc.</item>
         <item>Can I create a new text file using the app?#####You can only create a new text file by extracting texts from an existing PDFs. To create a text file, \n1) Click the <strong>Extract Text</strong> option on the homepage. \n2) Select the PDF using <strong>SELECT PDF FILE</strong> button. \n3) Then, click <strong>EXTRACT TEXT</strong>. \n4) Once done, a text file with the texts from the PDF file will be created.</item>

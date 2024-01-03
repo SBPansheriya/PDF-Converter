@@ -101,8 +101,6 @@ public class HistoryFragment extends Fragment implements AdapterHistory.OnClickL
                 getActivity().finish();
             }
         });
-
-
         return root;
     }
 

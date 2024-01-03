@@ -44,10 +44,9 @@ import com.google.android.material.tabs.TabLayout;
 import static com.androidmarket.pdfcreator.Constants.IMAGE_SCALE_TYPE_ASPECT_RATIO;
 import static com.androidmarket.pdfcreator.Constants.IMAGE_SCALE_TYPE_STRETCH;
 import static com.androidmarket.pdfcreator.Constants.PREVIEW_IMAGES;
+import static com.androidmarket.pdfcreator.activities.SplashActivity.SORT_PREFERENCE_KEY;
 
 public class ActivityPreview extends AppCompatActivity implements AdapterPreviewImageOptions.OnItemClickListener {
-
-    private static final String SORT_PREFERENCE_KEY = "sort_preference";
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -60,7 +59,6 @@ public class ActivityPreview extends AppCompatActivity implements AdapterPreview
     AdapterPreviewImageOptions adapter;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    int checkedPosition;
 
     @SuppressLint("StringFormatInvalid")
     @Override
@@ -71,11 +69,6 @@ public class ActivityPreview extends AppCompatActivity implements AdapterPreview
         setContentView(R.layout.activity_preview);
 
         back = findViewById(R.id.back);
-
-//        sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-//        editor = sharedPreferences.edit();
-//
-//        checkedPosition = sharedPreferences.getInt(SORT_PREFERENCE_KEY, -1);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,23 +182,28 @@ public class ActivityPreview extends AppCompatActivity implements AdapterPreview
         Button cancel = dialog1.findViewById(R.id.canceldialog);
         RadioGroup radioGroup = dialog1.findViewById(R.id.scale_type);
 
-//        switch (checkedPosition) {
-//            case 0:
-//                radioGroup.check(R.id.newest_name_list);
-//                break;
-//            case 1:
-//                radioGroup.check(R.id.oldest_name_list);
-//                break;
-//            case 2:
-//                radioGroup.check(R.id.newest_date_list);
-//                break;
-//            case 3:
-//                radioGroup.check(R.id.oldest_date_list);
-//                break;
-//            default:
-//                radioGroup.clearCheck();
-//                break;
-//        }
+        sharedPreferences = getSharedPreferences(SplashActivity.PREFS_NAME, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        int checkedPosition = sharedPreferences.getInt(SORT_PREFERENCE_KEY, -1);
+
+        switch (checkedPosition) {
+            case 0:
+                radioGroup.check(R.id.newest_name_list);
+                break;
+            case 1:
+                radioGroup.check(R.id.oldest_name_list);
+                break;
+            case 2:
+                radioGroup.check(R.id.newest_date_list);
+                break;
+            case 3:
+                radioGroup.check(R.id.oldest_date_list);
+                break;
+            default:
+                radioGroup.clearCheck();
+                break;
+        }
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @SuppressLint("NonConstantResourceId")
@@ -230,7 +228,7 @@ public class ActivityPreview extends AppCompatActivity implements AdapterPreview
                         return;
                 }
 
-//                editor.putInt(SORT_PREFERENCE_KEY, position).apply();
+                editor.putInt(SORT_PREFERENCE_KEY, position).apply();
 
                 ImageSortUtils.getInstance().performSortOperation(position, mImagesArrayList);
                 mAdapterPreview.setData(new ArrayList<>(mImagesArrayList));

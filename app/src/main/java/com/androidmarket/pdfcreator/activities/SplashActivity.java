@@ -2,7 +2,9 @@ package com.androidmarket.pdfcreator.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -16,6 +18,11 @@ import androidmarket.R;
 public class SplashActivity extends AppCompatActivity {
 
     ImageView continueBtn;
+    public static SharedPreferences sharedPreferencesSortBy;
+    public static SharedPreferences.Editor editorSortBy;
+    public static String PREFS_NAME = "MyPrefsFile";
+    public static String SORT_PREFERENCE_KEY = "sort_preference";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +32,12 @@ public class SplashActivity extends AppCompatActivity {
         AdsUtility.loadInterstitialAd(this);
 
         init();
+
+        sharedPreferencesSortBy = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        editorSortBy = sharedPreferencesSortBy.edit();
+
+        editorSortBy.putInt(SORT_PREFERENCE_KEY,-1);
+        editorSortBy.commit();
 
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override

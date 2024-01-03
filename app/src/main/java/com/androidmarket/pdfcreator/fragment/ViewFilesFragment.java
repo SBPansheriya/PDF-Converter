@@ -1,6 +1,7 @@
 package com.androidmarket.pdfcreator.fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -94,6 +95,7 @@ public class ViewFilesFragment extends Fragment
 
     private MergeHelper mMergeHelper;
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -137,7 +139,7 @@ public class ViewFilesFragment extends Fragment
             titleTwo.setText("Add watermark to your PDF files.");
         } catch (Exception e){
             title.setText("View Files");
-            titleTwo.setText("Preview your PDF Files");
+            titleTwo.setText("Preview your PDF files");
         }
 
         int dialogId;

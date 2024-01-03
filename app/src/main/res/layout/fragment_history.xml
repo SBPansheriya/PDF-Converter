@@ -46,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/metropolis_extrabold"
-                    android:text="History"
+                    android:text="@string/history"
                     android:textAllCaps="false"
                     android:textColor="#FFF"
                     android:textSize="27.0sp" />
@@ -58,7 +58,7 @@
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/metropolis_medium"
                     android:letterSpacing="0.050"
-                    android:text="View PDF History"
+                    android:text="@string/view_pdf_history"
                     android:textColor="#FFF"
                     android:textSize="14.0sp" />
 
@@ -111,7 +111,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_b"
-                            android:text="No Files Found"
+                            android:text="@string/no_files_found"
                             android:layout_centerHorizontal="true"
                             android:textAllCaps="false"
                             android:textColor="#000"

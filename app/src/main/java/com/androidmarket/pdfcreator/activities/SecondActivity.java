@@ -2,6 +2,9 @@ package com.androidmarket.pdfcreator.activities;
 
 import static com.androidmarket.pdfcreator.Constants.ADD_WATERMARK;
 import static com.androidmarket.pdfcreator.Constants.BUNDLE_DATA;
+import static com.androidmarket.pdfcreator.activities.SplashActivity.SORT_PREFERENCE_KEY;
+import static com.androidmarket.pdfcreator.activities.SplashActivity.editorSortBy;
+import static com.androidmarket.pdfcreator.activities.SplashActivity.sharedPreferencesSortBy;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,6 +41,9 @@ public class SecondActivity extends AppCompatActivity {
 
         if (fragment.equals("imgToPdf")) {
             ImageToPdfFragment recentFragment = new ImageToPdfFragment();
+            editorSortBy = sharedPreferencesSortBy.edit();
+            editorSortBy.putInt(SORT_PREFERENCE_KEY,-1);
+            editorSortBy.commit();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.frameLayout, recentFragment);
             transaction.addToBackStack(null);

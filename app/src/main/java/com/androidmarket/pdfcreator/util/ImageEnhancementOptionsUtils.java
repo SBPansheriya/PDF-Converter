@@ -65,12 +65,6 @@ public class ImageEnhancementOptionsUtils {
         options.add(new EnhancementOptionsEntity(
                 context, R.drawable.rearrange_image, R.string.rearrange_images));
 
-//        Drawable iconGrayScale = context.getResources().getDrawable(R.drawable.create_grayscale_pdf);
-//        iconGrayScale.setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.SRC_IN);
-
-        options.add(new EnhancementOptionsEntity(
-                context, R.drawable.create_grayscale_pdf, R.string.grayscale_images));
-
         options.add(new EnhancementOptionsEntity(
                 context, R.drawable.add_margin, R.string.add_margins));
 
@@ -82,6 +76,12 @@ public class ImageEnhancementOptionsUtils {
 
         options.add(new EnhancementOptionsEntity(
                 context, R.drawable.page_color, R.string.page_color));
+
+//        Drawable iconGrayScale = context.getResources().getDrawable(R.drawable.create_grayscale_pdf);
+//        iconGrayScale.setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.SRC_IN);
+
+        options.add(new EnhancementOptionsEntity(
+                context, R.drawable.create_grayscale_pdf, R.string.grayscale_images));
 
         return options;
     }

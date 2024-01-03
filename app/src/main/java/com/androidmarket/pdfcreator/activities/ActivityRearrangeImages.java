@@ -46,6 +46,7 @@ import com.androidmarket.pdfcreator.util.ThemeUtils;
 import static com.androidmarket.pdfcreator.Constants.CHOICE_REMOVE_IMAGE;
 import static com.androidmarket.pdfcreator.Constants.DEFAULT_IMAGE_BORDER_TEXT;
 import static com.androidmarket.pdfcreator.Constants.PREVIEW_IMAGES;
+import static com.androidmarket.pdfcreator.activities.SplashActivity.SORT_PREFERENCE_KEY;
 
 public class ActivityRearrangeImages extends AppCompatActivity implements AdapterRearrangeImages.OnClickListener {
 
@@ -55,6 +56,8 @@ public class ActivityRearrangeImages extends AppCompatActivity implements Adapte
     private ArrayList<String> mImages;
     private AdapterRearrangeImages mAdapterRearrangeImages;
     private SharedPreferences mSharedPreferences;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
     ImageView back;
 
     @Override
@@ -215,32 +218,31 @@ public class ActivityRearrangeImages extends AppCompatActivity implements Adapte
         dialog1.setCancelable(false);
         dialog1.show();
 
-//        SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-
         Button cancel = dialog1.findViewById(R.id.canceldialog);
         RadioGroup radioGroup = dialog1.findViewById(R.id.scale_type);
-//        RadioButton button = dialog1.findViewById(R.id.newest_name_list);
-//        RadioButton button1 = dialog1.findViewById(R.id.oldest_name_list);
-//        RadioButton button2 = dialog1.findViewById(R.id.newest_date_list);
-//        RadioButton button3 = dialog1.findViewById(R.id.oldest_date_list);
 
-//        int checkedPosition = sharedPreferences.getInt("checked_position", (-1));
-//
-//        switch (checkedPosition) {
-//            case 0:
-//                button.setChecked(true);
-//                break;
-//            case 1:
-//                button1.setChecked(true);
-//                break;
-//            case 2:
-//                button2.setChecked(true);
-//                break;
-//            case 3:
-//                button3.setChecked(true);
-//                break;
-//        }
+        sharedPreferences = getSharedPreferences(SplashActivity.PREFS_NAME, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        int checkedPosition = sharedPreferences.getInt(SORT_PREFERENCE_KEY, -1);
+
+        switch (checkedPosition) {
+            case 0:
+                radioGroup.check(R.id.newest_name_list);
+                break;
+            case 1:
+                radioGroup.check(R.id.oldest_name_list);
+                break;
+            case 2:
+                radioGroup.check(R.id.newest_date_list);
+                break;
+            case 3:
+                radioGroup.check(R.id.oldest_date_list);
+                break;
+            default:
+                radioGroup.clearCheck();
+                break;
+        }
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @SuppressLint("NonConstantResourceId")
@@ -264,8 +266,8 @@ public class ActivityRearrangeImages extends AppCompatActivity implements Adapte
                         Toast.makeText(getApplicationContext(), "Invalid sort option", Toast.LENGTH_SHORT).show();
                         return;
                 }
-//                editor.putInt("checked_position", position);
-//                editor.apply();
+
+                editor.putInt(SORT_PREFERENCE_KEY, position).apply();
 
                 // Perform sort operation based on the selected position
                 ImageSortUtils.getInstance().performSortOperation(position, mImages);

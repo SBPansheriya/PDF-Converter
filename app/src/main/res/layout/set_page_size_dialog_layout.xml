@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:id="@+id/dialog_linear"
-    android:layout_width="330dp"
+    android:layout_width="320dp"
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp">
+        app:cardCornerRadius="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,73 +57,81 @@
                         android:id="@+id/page_size_default"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
                         android:checked="true"
                         android:fontFamily="@font/metropolis_semibold"
                         android:buttonTint="@color/dark_blue"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                     <RadioButton
                         android:id="@+id/page_size_letter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="LATTER"
+                        android:paddingStart="10dp"
+                        android:text="Letter"
                         android:fontFamily="@font/metropolis_semibold"
                         android:buttonTint="@color/dark_blue"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                     <RadioButton
                         android:id="@+id/page_size_legal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
                         android:text="@string/legal"
                         android:fontFamily="@font/metropolis_semibold"
                         android:buttonTint="@color/dark_blue"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                     <RadioButton
                         android:id="@+id/page_size_executive"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
                         android:text="@string/executive"
                         android:fontFamily="@font/metropolis_semibold"
                         android:buttonTint="@color/dark_blue"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                     <RadioButton
                         android:id="@+id/page_size_ledger"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
                         android:text="@string/ledger"
                         android:fontFamily="@font/metropolis_semibold"
                         android:buttonTint="@color/dark_blue"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                     <RadioButton
                         android:id="@+id/page_size_tabloid"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
                         android:text="@string/tabloid"
                         android:fontFamily="@font/metropolis_semibold"
                         android:buttonTint="@color/dark_blue"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                     <RadioButton
                         android:id="@+id/page_size_a0_a10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
                         android:text="@string/a0_to_a10"
                         android:fontFamily="@font/metropolis_semibold"
                         android:buttonTint="@color/dark_blue"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                     <RadioButton
                         android:id="@+id/page_size_b0_b10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
                         android:text="@string/b0_to_b10"
                         android:fontFamily="@font/metropolis_semibold"
                         android:buttonTint="@color/dark_blue"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </RadioGroup>
 
@@ -135,7 +143,7 @@
                     android:orientation="vertical">
                     <Spinner
                         android:id="@+id/spinner_page_size_a0_a10"
-                        android:layout_width="170dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
                         android:backgroundTint="@color/black"
@@ -147,7 +155,7 @@
 
                     <Spinner
                         android:id="@+id/spinner_page_size_b0_b10"
-                        android:layout_width="170dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
                         android:backgroundTint="@color/black"

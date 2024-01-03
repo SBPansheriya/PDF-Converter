@@ -55,7 +55,7 @@
                         android:fontFamily="@font/metropolis_extrabold"
                         android:textAllCaps="false"
                         android:textColor="#FFF"
-                        android:text="Settings"
+                        android:text="@string/settings"
                         android:textSize="27.0sp" />
 
                     <TextView
@@ -65,7 +65,7 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/metropolis_medium"
                         android:letterSpacing="0.050"
-                        android:text="Set PDF Settings"
+                        android:text="@string/set_pdf_settings"
                         android:textColor="#FFF"
                         android:textSize="14.0sp" />
 
@@ -90,8 +90,7 @@
                     android:layout_gravity="top"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingHorizontal="10dp"
-                    tools:targetApi="lollipop">
+                    android:paddingHorizontal="10dp">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/settings_list"

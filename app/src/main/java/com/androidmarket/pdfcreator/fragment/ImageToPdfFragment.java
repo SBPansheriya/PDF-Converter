@@ -20,6 +20,7 @@ import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -114,8 +115,7 @@ import static com.androidmarket.pdfcreator.util.WatermarkUtils.getStyleValueFrom
 /**
  * ImageToPdfFragment fragment to start with creating PDF
  */
-public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
-        OnPDFCreatedInterface {
+public class ImageToPdfFragment extends Fragment implements OnItemClickListener, OnPDFCreatedInterface {
 
     private static final int INTENT_REQUEST_APPLY_FILTER = 10;
     private static final int INTENT_REQUEST_PREVIEW_IMAGE = 11;
@@ -150,6 +150,8 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     private int mMarginRight = 38;
     private String mPageNumStyle;
     private int mChoseId;
+    String[] permissions;
+    PermissionsUtils permissionsUtils;
 
     @Override
     public void onAttach(Context context) {
@@ -169,10 +171,8 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         mMorphButtonUtility = new MorphButtonUtility(mActivity);
         mFileUtils = new FileUtils(mActivity);
         mPageSizeUtils = new PageSizeUtils(mActivity);
-        mPageColor = mSharedPreferences.getInt(Constants.DEFAULT_PAGE_COLOR_ITP,
-                DEFAULT_PAGE_COLOR);
-        mHomePath = mSharedPreferences.getString(STORAGE_LOCATION,
-                StringUtils.getInstance().getDefaultStorageLocation());
+        mPageColor = mSharedPreferences.getInt(Constants.DEFAULT_PAGE_COLOR_ITP, DEFAULT_PAGE_COLOR);
+        mHomePath = mSharedPreferences.getString(STORAGE_LOCATION, StringUtils.getInstance().getDefaultStorageLocation());
 
         // Get default values & show enhancement options
         resetValues();
@@ -186,8 +186,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         checkForImagesInBundle();
 
         if (mImagesUri.size() > 0) {
-            mNoOfImages.setText(String.format(mActivity.getResources()
-                    .getString(R.string.images_selected), mImagesUri.size()));
+            mNoOfImages.setText(String.format(mActivity.getResources().getString(R.string.images_selected), mImagesUri.size()));
             mNoOfImages.setVisibility(View.VISIBLE);
 //            mMorphButtonUtility.morphToSquare(mCreatePdf, mMorphButtonUtility.integer());
             mCreatePdf.setEnabled(true);
@@ -212,13 +211,10 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
      */
     private void checkForImagesInBundle() {
         Bundle bundle = getArguments();
-        if (bundle == null)
-            return;
-        if (bundle.getBoolean(OPEN_SELECT_IMAGES))
-            startAddingImages();
+        if (bundle == null) return;
+        if (bundle.getBoolean(OPEN_SELECT_IMAGES)) startAddingImages();
         ArrayList<Parcelable> uris = bundle.getParcelableArrayList(getString(R.string.bundleKey));
-        if (uris == null)
-            return;
+        if (uris == null) return;
         for (Parcelable p : uris) {
             String uriRealPath = mFileUtils.getUriRealPath((Uri) p);
             if (uriRealPath == null) {
@@ -236,10 +232,8 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         GridLayoutManager mGridLayoutManager = new GridLayoutManager(mActivity, 1);
         mEnhancementOptionsRecycleView.setLayoutManager(mGridLayoutManager);
         ImageEnhancementOptionsUtils imageEnhancementOptionsUtilsInstance = ImageEnhancementOptionsUtils.getInstance();
-        ArrayList<EnhancementOptionsEntity> list = imageEnhancementOptionsUtilsInstance.getEnhancementOptions(mActivity,
-                mPdfOptions);
-        AdapterEnhancementOptions adapter =
-                new AdapterEnhancementOptions(this, list);
+        ArrayList<EnhancementOptionsEntity> list = imageEnhancementOptionsUtilsInstance.getEnhancementOptions(mActivity, mPdfOptions);
+        AdapterEnhancementOptions adapter = new AdapterEnhancementOptions(this, list);
         mEnhancementOptionsRecycleView.setAdapter(adapter);
     }
 
@@ -289,8 +283,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         mPdfOptions.setMasterPwd(mSharedPreferences.getString(MASTER_PWD_STRING, appName));
         mPdfOptions.setPageColor(mPageColor);
         mPdfOptions.setOutFileName(filename);
-        if (isGrayScale)
-            saveImagesInGrayScale();
+        if (isGrayScale) saveImagesInGrayScale();
         new CreatePdf(mPdfOptions, mHomePath, ImageToPdfFragment.this).execute();
     }
 
@@ -301,13 +294,28 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
 
     private boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 29) {
-            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
-                    ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         } else if (Build.VERSION.SDK_INT >= 29) {
-            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
-                    ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
-        } else
-            return true;
+            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        } else return true;
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private boolean checkPermissions() {
+        if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            selectImages();
+        } else {
+            permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+            if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED && ContextCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
+                permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+            else if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+                permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
+            else if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
+                permissions = new String[]{Manifest.permission.CAMERA};
+            else return true;
+            ActivityCompat.requestPermissions(mActivity, permissions, 123);
+        }
+        return true;
     }
 
     /**
@@ -318,15 +326,11 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
      * @param grantResults bool array indicating if permission is granted
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (Build.VERSION.SDK_INT >= 29) {
-            PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults,
-                    requestCode, REQUEST_CODE_FOR_READ_PERMISSION, this::selectImages);
+            PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults, requestCode, REQUEST_CODE_FOR_READ_PERMISSION, this::selectImages);
         } else {
-            PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults,
-                    requestCode, REQUEST_CODE_FOR_WRITE_PERMISSION, this::selectImages);
+            PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults, requestCode, REQUEST_CODE_FOR_WRITE_PERMISSION, this::selectImages);
         }
     }
 
@@ -341,8 +345,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mIsButtonAlreadyClicked = false;
-        if (resultCode != Activity.RESULT_OK || data == null)
-            return;
+        if (resultCode != Activity.RESULT_OK || data == null) return;
 
         switch (requestCode) {
             case INTENT_REQUEST_GET_IMAGES:
@@ -351,8 +354,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                 mImagesUri.addAll(Matisse.obtainPathResult(data));
                 mUnarrangedImagesUri.addAll(mImagesUri);
                 if (mImagesUri.size() > 0) {
-                    mNoOfImages.setText(String.format(mActivity.getResources()
-                            .getString(R.string.images_selected), mImagesUri.size()));
+                    mNoOfImages.setText(String.format(mActivity.getResources().getString(R.string.images_selected), mImagesUri.size()));
                     mNoOfImages.setVisibility(View.VISIBLE);
                     Toast.makeText(getActivity(), R.string.snackbar_images_added, Toast.LENGTH_SHORT).show();
 
@@ -364,8 +366,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                 break;
 
             case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
-                HashMap<Integer, Uri> croppedImageUris =
-                        (HashMap) data.getSerializableExtra(CropImage.CROP_IMAGE_EXTRA_RESULT);
+                HashMap<Integer, Uri> croppedImageUris = (HashMap) data.getSerializableExtra(CropImage.CROP_IMAGE_EXTRA_RESULT);
 
                 for (int i = 0; i < mImagesUri.size(); i++) {
                     if (croppedImageUris.get(i) != null) {
@@ -386,8 +387,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
             case INTENT_REQUEST_PREVIEW_IMAGE:
                 mImagesUri = data.getStringArrayListExtra(RESULT);
                 if (mImagesUri.size() > 0) {
-                    mNoOfImages.setText(String.format(mActivity.getResources()
-                            .getString(R.string.images_selected), mImagesUri.size()));
+                    mNoOfImages.setText(String.format(mActivity.getResources().getString(R.string.images_selected), mImagesUri.size()));
                 } else {
                     mNoOfImages.setVisibility(View.GONE);
 //                    mMorphButtonUtility.morphToGrey(mCreatePdf, mMorphButtonUtility.integer());
@@ -398,8 +398,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
             case INTENT_REQUEST_REARRANGE_IMAGE:
                 mImagesUri = data.getStringArrayListExtra(RESULT);
                 if (!mUnarrangedImagesUri.equals(mImagesUri) && mImagesUri.size() > 0) {
-                    mNoOfImages.setText(String.format(mActivity.getResources()
-                            .getString(R.string.images_selected), mImagesUri.size()));
+                    mNoOfImages.setText(String.format(mActivity.getResources().getString(R.string.images_selected), mImagesUri.size()));
                     Toast.makeText(getActivity(), R.string.images_rearranged, Toast.LENGTH_SHORT).show();
 
                     mUnarrangedImagesUri.clear();
@@ -432,8 +431,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                 compressImage();
                 break;
             case 3:
-                startActivityForResult(ActivityImageEditor.getStartIntent(mActivity, mImagesUri),
-                        INTENT_REQUEST_APPLY_FILTER);
+                startActivityForResult(ActivityImageEditor.getStartIntent(mActivity, mImagesUri), INTENT_REQUEST_APPLY_FILTER);
                 break;
             case 4:
                 mPageSizeUtils.showPageSizeDialog(false);
@@ -442,15 +440,13 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                 ImageUtils.getInstance().showImageScaleTypeDialog(mActivity, false);
                 break;
             case 6:
-                startActivityForResult(ActivityPreview.getStartIntent(mActivity, mImagesUri),
-                        INTENT_REQUEST_PREVIEW_IMAGE);
+                startActivityForResult(ActivityPreview.getStartIntent(mActivity, mImagesUri), INTENT_REQUEST_PREVIEW_IMAGE);
                 break;
             case 7:
                 addBorder();
                 break;
             case 8:
-                startActivityForResult(ActivityRearrangeImages.getStartIntent(mActivity, mImagesUri),
-                        INTENT_REQUEST_REARRANGE_IMAGE);
+                startActivityForResult(ActivityRearrangeImages.getStartIntent(mActivity, mImagesUri), INTENT_REQUEST_REARRANGE_IMAGE);
                 break;
             case 9:
                 addMargins();
@@ -482,8 +478,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
 
             int size = mImagesUri.size();
             for (int i = 0; i < size; i++) {
-                String fileName = String.format(getString(R.string.filter_file_name),
-                        String.valueOf(System.currentTimeMillis()), i + "_grayscale");
+                String fileName = String.format(getString(R.string.filter_file_name), String.valueOf(System.currentTimeMillis()), i + "_grayscale");
                 File outFile = new File(dir, fileName);
 
                 File f = new File(mImagesUri.get(i));
@@ -713,13 +708,12 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         EditText passwordinput = dialog.findViewById(R.id.password);
 
         passwordinput.setText(mPdfOptions.getPassword());
-        passwordinput.addTextChangedListener(
-                new DefaultTextWatcher() {
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        ok.setEnabled(s.toString().trim().length() > 0);
-                    }
-                });
+        passwordinput.addTextChangedListener(new DefaultTextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ok.setEnabled(s.toString().trim().length() > 0);
+            }
+        });
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -879,13 +873,11 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         final Watermark watermark = new Watermark();
 
         colorPickerInput.setAlphaSliderVisible(true);
-        ArrayAdapter<Font.FontFamily> fontFamilyAdapter = new ArrayAdapter<>(mActivity,
-                R.layout.simple_spinner_item, Font.FontFamily.values());
+        ArrayAdapter<Font.FontFamily> fontFamilyAdapter = new ArrayAdapter<>(mActivity, R.layout.simple_spinner_item, Font.FontFamily.values());
         fontFamilyAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         fontFamilyInput.setAdapter(fontFamilyAdapter);
 
-        ArrayAdapter<String> styleAdapter = new ArrayAdapter<>(mActivity, R.layout.simple_spinner_item,
-                mActivity.getResources().getStringArray(R.array.fontStyles));
+        ArrayAdapter<String> styleAdapter = new ArrayAdapter<>(mActivity, R.layout.simple_spinner_item, mActivity.getResources().getStringArray(R.array.fontStyles));
         styleAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         styleInput.setAdapter(styleAdapter);
 
@@ -904,24 +896,23 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
             fontSizeInput.setText("50");
         }
 
-        watermarkTextInput.addTextChangedListener(
-                new DefaultTextWatcher() {
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        ok.setEnabled(s.toString().trim().length() > 0);
-                    }
+        watermarkTextInput.addTextChangedListener(new DefaultTextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ok.setEnabled(s.toString().trim().length() > 0);
+            }
 
-                    @Override
-                    public void afterTextChanged(Editable input) {
-                        if (StringUtils.getInstance().isEmpty(input)) {
-                            Toast.makeText(getActivity(), R.string.snackbar_watermark_cannot_be_blank, Toast.LENGTH_SHORT).show();
+            @Override
+            public void afterTextChanged(Editable input) {
+                if (StringUtils.getInstance().isEmpty(input)) {
+                    Toast.makeText(getActivity(), R.string.snackbar_watermark_cannot_be_blank, Toast.LENGTH_SHORT).show();
 
-                        } else {
-                            watermark.setWatermarkText(input.toString());
-                            showEnhancementOptions();
-                        }
-                    }
-                });
+                } else {
+                    watermark.setWatermarkText(input.toString());
+                    showEnhancementOptions();
+                }
+            }
+        });
 
         remove.setEnabled(this.mPdfOptions.isWatermarkAdded());
         ok.setEnabled(this.mPdfOptions.isWatermarkAdded());
@@ -954,12 +945,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
 
                 watermark.setTextSize(StringUtils.getInstance().parseIntOrDefault(fontSizeInput.getText(), 50));
 
-                watermark.setTextColor((new BaseColor(
-                        Color.red(colorPickerInput.getColor()),
-                        Color.green(colorPickerInput.getColor()),
-                        Color.blue(colorPickerInput.getColor()),
-                        Color.alpha(colorPickerInput.getColor())
-                )));
+                watermark.setTextColor((new BaseColor(Color.red(colorPickerInput.getColor()), Color.green(colorPickerInput.getColor()), Color.blue(colorPickerInput.getColor()), Color.alpha(colorPickerInput.getColor()))));
                 mPdfOptions.setWatermark(watermark);
                 mPdfOptions.setWatermarkAdded(true);
                 showEnhancementOptions();
@@ -1041,8 +1027,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
 
     @Override
     public void onPDFCreated(boolean success, String path) {
-        if (mMaterialDialog != null && mMaterialDialog.isShowing())
-            mMaterialDialog.dismiss();
+        if (mMaterialDialog != null && mMaterialDialog.isShowing()) mMaterialDialog.dismiss();
 
         if (!success) {
             Toast.makeText(getActivity(), R.string.snackbar_folder_not_created, Toast.LENGTH_SHORT).show();
@@ -1066,13 +1051,9 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
 
     private void getRuntimePermissions() {
         if (Build.VERSION.SDK_INT < 29) {
-            PermissionsUtils.getInstance().requestRuntimePermissions(this,
-                    WRITE_PERMISSIONS,
-                    REQUEST_CODE_FOR_WRITE_PERMISSION);
+            PermissionsUtils.getInstance().requestRuntimePermissions(this, WRITE_PERMISSIONS, REQUEST_CODE_FOR_WRITE_PERMISSION);
         } else if (Build.VERSION.SDK_INT >= 29) {
-            PermissionsUtils.getInstance().requestRuntimePermissions(this,
-                    READ_PERMISSIONS,
-                    REQUEST_CODE_FOR_READ_PERMISSION);
+            PermissionsUtils.getInstance().requestRuntimePermissions(this, READ_PERMISSIONS, REQUEST_CODE_FOR_READ_PERMISSION);
         }
     }
 
@@ -1088,24 +1069,18 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
      */
     private void resetValues() {
         mPdfOptions = new ImageToPDFOptions();
-        mPdfOptions.setBorderWidth(mSharedPreferences.getInt(DEFAULT_IMAGE_BORDER_TEXT,
-                DEFAULT_BORDER_WIDTH));
-        mPdfOptions.setQualityString(
-                Integer.toString(mSharedPreferences.getInt(DEFAULT_COMPRESSION,
-                        DEFAULT_QUALITY_VALUE)));
-        mPdfOptions.setPageSize(mSharedPreferences.getString(DEFAULT_PAGE_SIZE_TEXT,
-                DEFAULT_PAGE_SIZE));
+        mPdfOptions.setBorderWidth(mSharedPreferences.getInt(DEFAULT_IMAGE_BORDER_TEXT, DEFAULT_BORDER_WIDTH));
+        mPdfOptions.setQualityString(Integer.toString(mSharedPreferences.getInt(DEFAULT_COMPRESSION, DEFAULT_QUALITY_VALUE)));
+        mPdfOptions.setPageSize(mSharedPreferences.getString(DEFAULT_PAGE_SIZE_TEXT, DEFAULT_PAGE_SIZE));
         mPdfOptions.setPasswordProtected(false);
         mPdfOptions.setWatermarkAdded(false);
         mImagesUri.clear();
         showEnhancementOptions();
         mNoOfImages.setVisibility(View.GONE);
-        ImageUtils.getInstance().mImageScaleType = mSharedPreferences.getString(DEFAULT_IMAGE_SCALE_TYPE_TEXT,
-                IMAGE_SCALE_TYPE_ASPECT_RATIO);
+        ImageUtils.getInstance().mImageScaleType = mSharedPreferences.getString(DEFAULT_IMAGE_SCALE_TYPE_TEXT, IMAGE_SCALE_TYPE_ASPECT_RATIO);
         mPdfOptions.setMargins(0, 0, 0, 0);
         mPageNumStyle = mSharedPreferences.getString(Constants.PREF_PAGE_STYLE, null);
-        mPageColor = mSharedPreferences.getInt(Constants.DEFAULT_PAGE_COLOR_ITP,
-                DEFAULT_PAGE_COLOR);
+        mPageColor = mSharedPreferences.getInt(Constants.DEFAULT_PAGE_COLOR_ITP, DEFAULT_PAGE_COLOR);
     }
 
     private void addMargins() {

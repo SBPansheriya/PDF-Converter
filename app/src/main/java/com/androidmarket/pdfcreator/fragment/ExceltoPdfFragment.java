@@ -356,9 +356,9 @@ public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.On
     private void convertToPdf(String mFilename) {
         String mStorePath = mSharedPreferences.getString(STORAGE_LOCATION,
                 mStringUtils.getDefaultStorageLocation());
-        mPath = mStorePath + mFilename + mActivity.getString(R.string.pdf_ext);
-        new ExcelToPDFAsync(mRealPath, mPath, ExceltoPdfFragment.this, mPasswordProtected, mPassword).execute();
 
+        mPath = mStorePath + mFilename + mActivity.getString(R.string.pdf_ext);
+        new ExcelToPDFAsync(mRealPath, mPath, ExceltoPdfFragment.this, mPasswordProtected, mPassword);
     }
 
     @Override

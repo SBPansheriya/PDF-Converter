@@ -31,6 +31,20 @@ public class RealPathUtil {
         return getRealPathFromURI_API19(context, fileUri);
     }
 
+//    public String getRealPathFromURI(Context context, Uri uri) {
+//        String realPath = null;
+//        String[] projection = {MediaStore.Images.Media.DATA};
+//        try (Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null)) {
+//            if (cursor != null && cursor.moveToFirst()) {
+//                int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//                realPath = cursor.getString(columnIndex);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return realPath;
+//    }
+
     /**
      * Get a file path from a Uri. This will get the the path for Storage Access
      * Framework Documents, as well as the _data field for the MediaStore and

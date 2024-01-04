@@ -2,6 +2,7 @@ package com.androidmarket.pdfcreator.fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,11 +18,14 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.Settings;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -350,39 +354,117 @@ public class QrBarcodeScanFragment extends Fragment implements View.OnClickListe
             permissionType = "unknown";
         }
         if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-            new AlertDialog.Builder(getContext())
-                    .setTitle("Permission Denied")
-                    .setMessage(permissionType + " permission is needed to scan " + scanType)
-                    .setPositiveButton("Re-try", (dialog, which) -> {
-                        if (requestCode == REQUEST_CODE_FOR_QR_CODE) {
-                            requestCameraPermissionForQrCodeScan();
-                        } else if (requestCode == REQUEST_CODE_FOR_BARCODE) {
-                            requestCameraPermissionForBarCodeScan();
-                        } else if (requestCode == REQUEST_CODE_FOR_WRITE_PERMISSION) {
-                            getRuntimePermissions();
-                        }
-                        dialog.dismiss();
-                    })
-                    .setNegativeButton("Cancel", (dialog, which) -> {
-                        dialog.dismiss();
-                    }).show();
+//            new AlertDialog.Builder(getContext())
+//                    .setTitle("Permission Denied")
+//                    .setMessage(permissionType + " permission is needed to scan " + scanType)
+//                    .setPositiveButton("Re-try", (dialog, which) -> {
+//                        if (requestCode == REQUEST_CODE_FOR_QR_CODE) {
+//                            requestCameraPermissionForQrCodeScan();
+//                        } else if (requestCode == REQUEST_CODE_FOR_BARCODE) {
+//                            requestCameraPermissionForBarCodeScan();
+//                        } else if (requestCode == REQUEST_CODE_FOR_WRITE_PERMISSION) {
+//                            getRuntimePermissions();
+//                        }
+//                        dialog.dismiss();
+//                    })
+//                    .setNegativeButton("Cancel", (dialog, which) -> {
+//                        dialog.dismiss();
+//                    }).show();
+
+            Dialog dialog = new Dialog(mActivity);
+            if (dialog.getWindow() != null) {
+                dialog.getWindow().setGravity(Gravity.CENTER);
+                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                dialog.setCancelable(false);
+            }
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            dialog.setContentView(R.layout.permission_denied_first_dialog);
+            dialog.setCancelable(false);
+            dialog.show();
+
+            Button cancel = dialog.findViewById(R.id.canceldialog);
+            Button ok = dialog.findViewById(R.id.okdialog);
+            TextView textView = dialog.findViewById(R.id.filename);
+
+            textView.setText(permissionType + " permission is needed to scan " + scanType);
+            ok.setText("Re_try");
+
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (requestCode == REQUEST_CODE_FOR_QR_CODE) {
+                        requestCameraPermissionForQrCodeScan();
+                    } else if (requestCode == REQUEST_CODE_FOR_BARCODE) {
+                        requestCameraPermissionForBarCodeScan();
+                    } else if (requestCode == REQUEST_CODE_FOR_WRITE_PERMISSION) {
+                        getRuntimePermissions();
+                    }
+                    dialog.dismiss();
+                }
+            });
         } else if (!shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-            new AlertDialog.Builder(getContext())
-                    .setTitle("Permission Denied")
-                    .setMessage("You have chosen to never ask the permission again, but " + permissionType + " permission is needed to scan " + scanType)
-                    .setPositiveButton("Enable from settings", (dialog, which) -> {
-                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
-                        intent.setData(uri);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-                        startActivity(intent);
-                        dialog.dismiss();
-                    })
-                    .setNegativeButton("Cancel", (dialog, which) -> {
-                        dialog.dismiss();
-                    }).show();
+//            new AlertDialog.Builder(getContext())
+//                    .setTitle("Permission Denied")
+//                    .setMessage("You have chosen to never ask the permission again, but " + permissionType + " permission is needed to scan " + scanType)
+//                    .setPositiveButton("Enable from settings", (dialog, which) -> {
+//                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//                        Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+//                        intent.setData(uri);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+//                        startActivity(intent);
+//                        dialog.dismiss();
+//                    })
+//                    .setNegativeButton("Cancel", (dialog, which) -> {
+//                        dialog.dismiss();
+//                    }).show();
+
+            Dialog dialog = new Dialog(mActivity);
+            if (dialog.getWindow() != null) {
+                dialog.getWindow().setGravity(Gravity.CENTER);
+                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                dialog.setCancelable(false);
+            }
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            dialog.setContentView(R.layout.permission_denied_first_dialog);
+            dialog.setCancelable(false);
+            dialog.show();
+
+            Button cancel = dialog.findViewById(R.id.canceldialog);
+            Button ok = dialog.findViewById(R.id.okdialog);
+            TextView textView = dialog.findViewById(R.id.filename);
+
+            textView.setText("You have chosen to never ask the permission again, but " + permissionType + " permission is needed to scan " + scanType);
+            ok.setText(R.string.enable_from_settings);
+
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+                    intent.setData(uri);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                    startActivity(intent);
+                    dialog.dismiss();
+                }
+            });
         }
     }
 }

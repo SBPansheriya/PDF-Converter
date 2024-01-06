@@ -85,7 +85,6 @@ import java.util.Objects;
 import static android.app.Activity.RESULT_OK;
 //import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_WRITE_PERMISSION;
 import static com.androidmarket.pdfcreator.Constants.STORAGE_LOCATION;
-//import static com.androidmarket.pdfcreator.Constants.WRITE_PERMISSIONS;
 
 public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.OnClickListener,
         OnPDFCreatedInterface, OnItemClickListener, BottomSheetPopulate {
@@ -126,7 +125,6 @@ public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.On
     private AdapterEnhancementOptions mAdapterEnhancementOptions;
     private boolean mPasswordProtected = false;
     private String mPassword;
-    private static final int PICK_FILE_REQUEST_CODE = 123;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -244,7 +242,7 @@ public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.On
         Button ok = dialog.findViewById(R.id.okdialog);
         EditText editText = dialog.findViewById(R.id.add_pdfName);
 
-//        editText.setText(mRealPath);
+        editText.setText(mRealPath);
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -311,9 +309,9 @@ public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.On
         if (requestCode == mFileSelectCode) {
             if (resultCode == RESULT_OK) {
                 mExcelFileUri = data.getData();
-                mRealPath = getFilePathFromUri(mExcelFileUri);
+//                mRealPath = getFilePathFromUri(mExcelFileUri);
 //                mRealPath = RealPathUtil.getInstance().getRealPath(getContext(), mExcelFileUri);
-//                mRealPath =  mFileUtils.getFileName(mExcelFileUri);
+                mRealPath =  mFileUtils.getFileName(mExcelFileUri);
                 processUri();
             }
         }

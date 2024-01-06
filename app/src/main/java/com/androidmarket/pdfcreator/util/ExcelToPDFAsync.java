@@ -1,23 +1,36 @@
 package com.androidmarket.pdfcreator.util;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
+import com.androidmarket.pdfcreator.fragment.ExceltoPdfFragment;
+import com.androidmarket.pdfcreator.interfaces.OnPDFCreatedInterface;
 import com.aspose.cells.FileFormatType;
 import com.aspose.cells.PdfSaveOptions;
 import com.aspose.cells.PdfSecurityOptions;
 import com.aspose.cells.Workbook;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
-import com.androidmarket.pdfcreator.interfaces.OnPDFCreatedInterface;
-
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Iterator;
 
 public class ExcelToPDFAsync {
     private final OnPDFCreatedInterface mOnPDFCreatedInterface;
@@ -53,29 +66,61 @@ public class ExcelToPDFAsync {
 
             @Override
             protected String doInBackground(Void... voids) {
+//                try {
+//                    final Workbook workbook = new Workbook(mDestPath);
+//                    if (mIsPasswordProtected) {
+//                        PdfSaveOptions saveOption = new PdfSaveOptions();
+//                        saveOption.setSecurityOptions(new PdfSecurityOptions());
+//                        saveOption.getSecurityOptions().setUserPassword(mPassword);
+//                        saveOption.getSecurityOptions().setOwnerPassword(mPassword);
+//                        saveOption.getSecurityOptions().setExtractContentPermission(false);
+//                        saveOption.getSecurityOptions().setPrintPermission(false);
+//                        workbook.save(mDestPath, saveOption);
+//                    } else {
+//                        workbook.save(mDestPath, FileFormatType.PDF);
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    mSuccess = false;
+//                }
+//                try {
+//                    FileOutputStream fos = new FileOutputStream(new File(mDestPath));
+//                    com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+//                    com.itextpdf.text.pdf.PdfWriter.getInstance(document, fos);
+//                    document.open();
+//
+//                    Paragraph paragraph = new Paragraph("Hello, this is a sample PDF document.");
+//                    document.add(paragraph);
+//
+//                    PdfPTable table = new PdfPTable(3); // 3 columns
+//                    table.addCell("Column 1");
+//                    table.addCell("Column 2");
+//                    table.addCell("Column 3");
+//                    document.add(table);
+//
+//                    document.close();
+//                    fos.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                } catch (DocumentException e) {
+//                    throw new RuntimeException(e);
+//                }
                 try {
-                    final Workbook workbook = new Workbook(mDestPath);
-                    if (mIsPasswordProtected) {
-                        PdfSaveOptions saveOption = new PdfSaveOptions();
-                        saveOption.setSecurityOptions(new PdfSecurityOptions());
-                        saveOption.getSecurityOptions().setUserPassword(mPassword);
-                        saveOption.getSecurityOptions().setOwnerPassword(mPassword);
-                        saveOption.getSecurityOptions().setExtractContentPermission(false);
-                        saveOption.getSecurityOptions().setPrintPermission(false);
-                        workbook.save(mDestPath, saveOption);
-                    } else {
-                        workbook.save(mDestPath, FileFormatType.PDF);
-                    }
+                    // Create PDF
+                    FileOutputStream pdfFile = new FileOutputStream(new File(mDestPath));
+                    Document document = new Document();
+                    document.open();
+
+                    document.close();
+                    pdfFile.close();
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    mSuccess = false;
+                    throw new RuntimeException(e);
                 }
                 return null;
             }
-
             @Override
             protected void onPostExecute(String result) {
-                mOnPDFCreatedInterface.onPDFCreated(mSuccess, mPath);
+                mOnPDFCreatedInterface.onPDFCreated(mSuccess, mDestPath);
             }
         }.execute();
     }

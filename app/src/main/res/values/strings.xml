@@ -484,7 +484,7 @@
     <string name="watermarked_file">_watermarked.pdf</string>
     <string name="watermark_remove">Watermark Removed</string>
     <string name="snackbar_watermark_cannot_be_blank">Text cannot be blank</string>
-    <string name="cannot_add_watermark">Watermark could not be added to the PDF. Please check the PDF again.</string>
+    <string name="cannot_add_watermark">Watermark could not be added because PDF is password protected.</string>
     <string name="add_watermark">Add Watermark</string>
     <string name="enter_watermark_text">Enter text</string>
     <string name="enter_watermark_angle">Enter angle</string>

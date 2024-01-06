@@ -26,8 +26,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import static com.androidmarket.pdfcreator.Constants.READ_PERMISSIONS;
 import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_READ_PERMISSION;
-import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_WRITE_PERMISSION;
-import static com.androidmarket.pdfcreator.Constants.WRITE_PERMISSIONS;
+//import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_WRITE_PERMISSION;
+//import static com.androidmarket.pdfcreator.Constants.WRITE_PERMISSIONS;
 
 import com.androidmarket.pdfcreator.Constants;
 
@@ -124,12 +124,13 @@ public class PermissionsUtils {
     }
 
     private void showPermissionDenyDialog(Activity activity, int requestCode) {
-        String[] permission;
-        if (requestCode == REQUEST_CODE_FOR_WRITE_PERMISSION) {
-            permission = WRITE_PERMISSIONS;
-        } else {
+        String[] permission = new String[0];
+        if (requestCode == REQUEST_CODE_FOR_READ_PERMISSION) {
             permission = READ_PERMISSIONS;
         }
+//        else {
+//            permission = READ_PERMISSIONS;
+//        }
         if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission[0])) {
 //            new AlertDialog.Builder(activity)
 //                    .setTitle("Permission Denied")
@@ -163,10 +164,11 @@ public class PermissionsUtils {
                 }
             });
 
+            String[] finalPermission = permission;
             ok.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    requestRuntimePermissions(activity, permission, REQUEST_CODE_FOR_WRITE_PERMISSION);
+                    requestRuntimePermissions(activity, finalPermission, REQUEST_CODE_FOR_READ_PERMISSION);
                     dialog.dismiss();
                 }
             });

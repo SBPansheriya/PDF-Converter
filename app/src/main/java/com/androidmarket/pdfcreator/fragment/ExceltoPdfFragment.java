@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,11 +23,15 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.text.Editable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -70,13 +75,17 @@ import com.androidmarket.pdfcreator.util.PermissionsUtils;
 import com.androidmarket.pdfcreator.util.RealPathUtil;
 import com.androidmarket.pdfcreator.util.StringUtils;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
-import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_WRITE_PERMISSION;
+//import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_WRITE_PERMISSION;
 import static com.androidmarket.pdfcreator.Constants.STORAGE_LOCATION;
-import static com.androidmarket.pdfcreator.Constants.WRITE_PERMISSIONS;
+//import static com.androidmarket.pdfcreator.Constants.WRITE_PERMISSIONS;
 
 public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.OnClickListener,
         OnPDFCreatedInterface, OnItemClickListener, BottomSheetPopulate {
@@ -111,19 +120,19 @@ public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.On
     private MorphButtonUtility mMorphButtonUtility;
     private BottomSheetUtils mBottomSheetUtils;
     private boolean mButtonClicked = false;
-    private final int mFileSelectCode = 0;
+    private final int mFileSelectCode = 123;
     private MaterialDialog mMaterialDialog;
     private ArrayList<EnhancementOptionsEntity> mEnhancementOptionsEntityArrayList;
     private AdapterEnhancementOptions mAdapterEnhancementOptions;
     private boolean mPasswordProtected = false;
     private String mPassword;
+    private static final int PICK_FILE_REQUEST_CODE = 123;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_excelto_pdf, container,
                 false);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mActivity);
-
 
         mMorphButtonUtility = new MorphButtonUtility(mActivity);
         ButterKnife.bind(this, rootView);
@@ -191,11 +200,12 @@ public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.On
      */
     @OnClick(R.id.create_excel_to_pdf)
     public void openExcelToPdf() {
-        if (isStoragePermissionGranted()) {
-            openExcelToPdf_();
-        } else {
-            getRuntimePermissions();
-        }
+        openExcelToPdf_();
+//        if (isStoragePermissionGranted()) {
+//            openExcelToPdf_();
+//        } else {
+//            getRuntimePermissions();
+//        }
     }
 
     private void openExcelToPdf_() {
@@ -233,6 +243,8 @@ public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.On
         Button cancel = dialog.findViewById(R.id.canceldialog);
         Button ok = dialog.findViewById(R.id.okdialog);
         EditText editText = dialog.findViewById(R.id.add_pdfName);
+
+//        editText.setText(mRealPath);
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -299,35 +311,100 @@ public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.On
         if (requestCode == mFileSelectCode) {
             if (resultCode == RESULT_OK) {
                 mExcelFileUri = data.getData();
-                mRealPath = RealPathUtil.getInstance().getRealPath(getContext(), mExcelFileUri);
+                mRealPath = getFilePathFromUri(mExcelFileUri);
+//                mRealPath = RealPathUtil.getInstance().getRealPath(getContext(), mExcelFileUri);
+//                mRealPath =  mFileUtils.getFileName(mExcelFileUri);
                 processUri();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == PICK_FILE_REQUEST_CODE && resultCode == RESULT_OK) {
+//            if (data != null) {
+//                Uri uri = data.getData();
+//
+//                if (uri != null) {
+//                    mRealPath = getPathFromUri(uri);
+//                    processUri();
+//                    Toast.makeText(getActivity(), "Selected file: " + mRealPath, Toast.LENGTH_SHORT).show();
+//                    // Now you have the file path, and you can handle it as needed.
+//                }
+//            }
+//        }
     }
 
-    private boolean isStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 29) {
-            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    private String getFilePathFromUri(Uri uri) {
+        String path = null;
+
+        if ("content".equalsIgnoreCase(uri.getScheme())) {
+            String[] projection = {OpenableColumns.DISPLAY_NAME};
+            try (Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    int columnIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    path = cursor.getString(columnIndex);
+                }
+            }
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            path = uri.getPath();
         } else {
-            return true;
+            // For other URIs, attempt to copy the content to a temporary file
+            try {
+                InputStream inputStream = getActivity().getContentResolver().openInputStream(uri);
+                if (inputStream != null) {
+                    File tempFile = createTempFileFromStream(inputStream);
+                    path = tempFile.getAbsolutePath();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return path;
+    }
+
+    private File createTempFileFromStream(InputStream inputStream) {
+        try {
+            File tempFile = new File(getActivity().getCacheDir(), "temp_file.xlsx");
+            OutputStream outputStream = new FileOutputStream(tempFile);
+            byte[] buffer = new byte[4 * 1024]; // Adjust buffer size as needed
+
+            int read;
+            while ((read = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, read);
+            }
+
+            outputStream.flush();
+            outputStream.close();
+            inputStream.close();
+
+            return tempFile;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
-    private void getRuntimePermissions() {
-        if (Build.VERSION.SDK_INT < 29) {
-            PermissionsUtils.getInstance().requestRuntimePermissions(this,
-                    WRITE_PERMISSIONS,
-                    REQUEST_CODE_FOR_WRITE_PERMISSION);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
-        PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults,
-                requestCode, REQUEST_CODE_FOR_WRITE_PERMISSION, this::openExcelToPdf_);
-    }
+//    private boolean isStoragePermissionGranted() {
+//        if (Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 29) {
+//            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+//        } else {
+//            return true;
+//        }
+//    }
+//
+//    private void getRuntimePermissions() {
+//        if (Build.VERSION.SDK_INT < 29) {
+//            PermissionsUtils.getInstance().requestRuntimePermissions(this,
+//                    WRITE_PERMISSIONS,
+//                    REQUEST_CODE_FOR_WRITE_PERMISSION);
+//        }
+//    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode,
+//                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults,
+//                requestCode, REQUEST_CODE_FOR_WRITE_PERMISSION, this::openExcelToPdf_);
+//    }
 
     private void processUri() {
         mStringUtils.showSnackbar(mActivity, getResources().getString(R.string.excel_selected));

@@ -51,8 +51,8 @@ import com.androidmarket.pdfcreator.util.StringUtils;
 
 import static com.androidmarket.pdfcreator.Constants.ADD_IMAGES;
 import static com.androidmarket.pdfcreator.Constants.BUNDLE_DATA;
-import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_WRITE_PERMISSION;
-import static com.androidmarket.pdfcreator.Constants.WRITE_PERMISSIONS;
+//import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_WRITE_PERMISSION;
+//import static com.androidmarket.pdfcreator.Constants.WRITE_PERMISSIONS;
 
 public class AddImagesFragment extends Fragment implements BottomSheetPopulate,
         AdapterMergeFiles.OnClickListener, OnBackPressedInterface {
@@ -165,20 +165,20 @@ public class AddImagesFragment extends Fragment implements BottomSheetPopulate,
             return true;
         }
     }
-    private void getRuntimePermissions() {
-        if (Build.VERSION.SDK_INT < 29) {
-            PermissionsUtils.getInstance().requestRuntimePermissions(this,
-                    WRITE_PERMISSIONS,
-                    REQUEST_CODE_FOR_WRITE_PERMISSION);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
-        PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults,
-                requestCode, REQUEST_CODE_FOR_WRITE_PERMISSION, this::selectImages);
-    }
+//    private void getRuntimePermissions() {
+//        if (Build.VERSION.SDK_INT < 29) {
+//            PermissionsUtils.getInstance().requestRuntimePermissions(this,
+//                    WRITE_PERMISSIONS,
+//                    REQUEST_CODE_FOR_WRITE_PERMISSION);
+//        }
+//    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode,
+//                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults,
+//                requestCode, REQUEST_CODE_FOR_WRITE_PERMISSION, this::selectImages);
+//    }
 
     @OnClick(R.id.pdfCreate)
     public void parse() {
@@ -245,7 +245,7 @@ public class AddImagesFragment extends Fragment implements BottomSheetPopulate,
         if (isStoragePermissionGranted())
             selectImages();
         else {
-            getRuntimePermissions();
+//            getRuntimePermissions();
         }
     }
 

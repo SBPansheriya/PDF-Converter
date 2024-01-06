@@ -58,9 +58,9 @@ import com.androidmarket.pdfcreator.util.StringUtils;
 import com.androidmarket.pdfcreator.util.ViewFilesDividerItemDecoration;
 
 import static com.androidmarket.pdfcreator.Constants.BUNDLE_DATA;
-import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_WRITE_PERMISSION;
+//import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_WRITE_PERMISSION;
 import static com.androidmarket.pdfcreator.Constants.SORTING_INDEX;
-import static com.androidmarket.pdfcreator.Constants.WRITE_PERMISSIONS;
+//import static com.androidmarket.pdfcreator.Constants.WRITE_PERMISSIONS;
 import static com.androidmarket.pdfcreator.Constants.appName;
 
 public class ViewFilesFragment extends Fragment
@@ -332,40 +332,40 @@ public class ViewFilesFragment extends Fragment
 
     @OnClick(R.id.provide_permissions)
     public void providePermissions() {
-        if (!isStoragePermissionGranted()) {
-            getRuntimePermissions();
-        }
+//        if (!isStoragePermissionGranted()) {
+//            getRuntimePermissions();
+//        }
     }
 
-    private boolean isStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 29) {
-            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        } else {
-            return true;
-        }
-    }
-    private void getRuntimePermissions() {
-        if (Build.VERSION.SDK_INT < 29) {
-            PermissionsUtils.getInstance().requestRuntimePermissions(this,
-                    WRITE_PERMISSIONS,
-                    REQUEST_CODE_FOR_WRITE_PERMISSION);
-        }
-    }
+//    private boolean isStoragePermissionGranted() {
+//        if (Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 29) {
+//            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+//        } else {
+//            return true;
+//        }
+//    }
+//    private void getRuntimePermissions() {
+//        if (Build.VERSION.SDK_INT < 29) {
+//            PermissionsUtils.getInstance().requestRuntimePermissions(this,
+//                    WRITE_PERMISSIONS,
+//                    REQUEST_CODE_FOR_WRITE_PERMISSION);
+//        }
+//    }
 
-    /**
-     * Called after user is asked to grant permissions
-     *
-     * @param requestCode  REQUEST Code for opening permissions
-     * @param permissions  permissions asked to user
-     * @param grantResults bool array indicating if permission is granted
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults,
-                requestCode, REQUEST_CODE_FOR_WRITE_PERMISSION, this::onRefresh);
-    }
+//    /**
+//     * Called after user is asked to grant permissions
+//     *
+//     * @param requestCode  REQUEST Code for opening permissions
+//     * @param permissions  permissions asked to user
+//     * @param grantResults bool array indicating if permission is granted
+//     */
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode,
+//                                           @NonNull String[] permissions,
+//                                           @NonNull int[] grantResults) {
+//        PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults,
+//                requestCode, REQUEST_CODE_FOR_WRITE_PERMISSION, this::onRefresh);
+//    }
 
     @Override
     public void onAttach(Context context) {

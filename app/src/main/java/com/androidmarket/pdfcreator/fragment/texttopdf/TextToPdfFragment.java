@@ -60,8 +60,8 @@ import com.androidmarket.pdfcreator.util.TextToPdfAsync;
 import com.github.danielnilsson9.colorpickerview.view.ColorPickerView;
 
 import static android.app.Activity.RESULT_OK;
-import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_WRITE_PERMISSION;
-import static com.androidmarket.pdfcreator.Constants.WRITE_PERMISSIONS;
+//import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_WRITE_PERMISSION;
+//import static com.androidmarket.pdfcreator.Constants.WRITE_PERMISSIONS;
 
 public class TextToPdfFragment extends Fragment implements OnItemClickListener,
         OnTextToPdfInterface, TextToPdfContract.View {
@@ -266,11 +266,11 @@ public class TextToPdfFragment extends Fragment implements OnItemClickListener,
      */
     @OnClick(R.id.selectFile)
     public void selectTextFile() {
-        if (isStoragePermissionGranted()) {
+//        if (isStoragePermissionGranted()) {
             selectFile();
-        } else {
-            getRuntimePermissions();
-        }
+//        } else {
+//            getRuntimePermissions();
+//        }
     }
 
     private void selectFile() {
@@ -333,28 +333,28 @@ public class TextToPdfFragment extends Fragment implements OnItemClickListener,
         mDirectoryUtils = new DirectoryUtils(mActivity);
     }
 
-    private boolean isStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 29) {
-            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        } else {
-            return true;
-        }
-    }
+//    private boolean isStoragePermissionGranted() {
+//        if (Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 29) {
+//            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+//        } else {
+//            return true;
+//        }
+//    }
 
-    private void getRuntimePermissions() {
-        if (Build.VERSION.SDK_INT < 29) {
-            PermissionsUtils.getInstance().requestRuntimePermissions(this,
-                    WRITE_PERMISSIONS,
-                    REQUEST_CODE_FOR_WRITE_PERMISSION);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
-        PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults,
-                requestCode, REQUEST_CODE_FOR_WRITE_PERMISSION, this::selectFile);
-    }
+//    private void getRuntimePermissions() {
+//        if (Build.VERSION.SDK_INT < 29) {
+//            PermissionsUtils.getInstance().requestRuntimePermissions(this,
+//                    WRITE_PERMISSIONS,
+//                    REQUEST_CODE_FOR_WRITE_PERMISSION);
+//        }
+//    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode,
+//                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults,
+//                requestCode, REQUEST_CODE_FOR_WRITE_PERMISSION, this::selectFile);
+//    }
 
     @Override
     public void onPDFCreationStarted() {

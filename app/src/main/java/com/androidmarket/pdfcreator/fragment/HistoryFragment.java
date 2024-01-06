@@ -49,8 +49,8 @@ import com.androidmarket.pdfcreator.util.PermissionsUtils;
 import com.androidmarket.pdfcreator.util.StringUtils;
 import com.androidmarket.pdfcreator.util.ViewFilesDividerItemDecoration;
 
-import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_WRITE_PERMISSION;
-import static com.androidmarket.pdfcreator.Constants.WRITE_PERMISSIONS;
+//import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_WRITE_PERMISSION;
+//import static com.androidmarket.pdfcreator.Constants.WRITE_PERMISSIONS;
 import static com.androidmarket.pdfcreator.Constants.appName;
 
 public class HistoryFragment extends Fragment implements AdapterHistory.OnClickListener {
@@ -87,7 +87,7 @@ public class HistoryFragment extends Fragment implements AdapterHistory.OnClickL
         Arrays.fill(mFilterOptionState, Boolean.TRUE); //by default all options should be selected
         // by default all operations should be shown, so pass empty array
         new LoadHistory(mActivity).execute(new String[0]);
-        getRuntimePermissions();
+//        getRuntimePermissions();
 
         FrameLayout nativeAdFrameOne = root.findViewById(R.id.nativeAdFrameLayout);
         AdsUtility.loadNativeAd(getActivity(), nativeAdFrameOne);
@@ -226,11 +226,11 @@ public class HistoryFragment extends Fragment implements AdapterHistory.OnClickL
     /***
      * check runtime permissions for storage and camera
      ***/
-    private void getRuntimePermissions() {
-        if (Build.VERSION.SDK_INT < 29) {
-            PermissionsUtils.getInstance().requestRuntimePermissions(this,
-                    WRITE_PERMISSIONS,
-                    REQUEST_CODE_FOR_WRITE_PERMISSION);
-        }
-    }
+//    private void getRuntimePermissions() {
+//        if (Build.VERSION.SDK_INT < 29) {
+//            PermissionsUtils.getInstance().requestRuntimePermissions(this,
+//                    WRITE_PERMISSIONS,
+//                    REQUEST_CODE_FOR_WRITE_PERMISSION);
+//        }
+//    }
 }

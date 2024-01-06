@@ -104,10 +104,10 @@ import static com.androidmarket.pdfcreator.Constants.MASTER_PWD_STRING;
 import static com.androidmarket.pdfcreator.Constants.OPEN_SELECT_IMAGES;
 import static com.androidmarket.pdfcreator.Constants.READ_PERMISSIONS;
 import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_READ_PERMISSION;
-import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_WRITE_PERMISSION;
+//import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_WRITE_PERMISSION;
 import static com.androidmarket.pdfcreator.Constants.RESULT;
 import static com.androidmarket.pdfcreator.Constants.STORAGE_LOCATION;
-import static com.androidmarket.pdfcreator.Constants.WRITE_PERMISSIONS;
+//import static com.androidmarket.pdfcreator.Constants.WRITE_PERMISSIONS;
 import static com.androidmarket.pdfcreator.Constants.appName;
 import static com.androidmarket.pdfcreator.util.WatermarkUtils.getStyleNameFromFont;
 import static com.androidmarket.pdfcreator.util.WatermarkUtils.getStyleValueFromName;
@@ -329,9 +329,10 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (Build.VERSION.SDK_INT >= 29) {
             PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults, requestCode, REQUEST_CODE_FOR_READ_PERMISSION, this::selectImages);
-        } else {
-            PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults, requestCode, REQUEST_CODE_FOR_WRITE_PERMISSION, this::selectImages);
         }
+//        else {
+//            PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults, requestCode, REQUEST_CODE_FOR_WRITE_PERMISSION, this::selectImages);
+//        }
     }
 
     /**
@@ -1050,9 +1051,10 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     }
 
     private void getRuntimePermissions() {
-        if (Build.VERSION.SDK_INT < 29) {
-            PermissionsUtils.getInstance().requestRuntimePermissions(this, WRITE_PERMISSIONS, REQUEST_CODE_FOR_WRITE_PERMISSION);
-        } else if (Build.VERSION.SDK_INT >= 29) {
+//        if (Build.VERSION.SDK_INT < 29) {
+//            PermissionsUtils.getInstance().requestRuntimePermissions(this, WRITE_PERMISSIONS, REQUEST_CODE_FOR_WRITE_PERMISSION);
+//        } else
+            if (Build.VERSION.SDK_INT >= 29) {
             PermissionsUtils.getInstance().requestRuntimePermissions(this, READ_PERMISSIONS, REQUEST_CODE_FOR_READ_PERMISSION);
         }
     }

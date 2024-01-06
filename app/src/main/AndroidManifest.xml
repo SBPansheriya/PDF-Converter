@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="androidmarket">
 
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28"
-        tools:ignore="ScopedStorage" />
+<!--    <uses-permission-->
+<!--        android:name="android.permission.WRITE_EXTERNAL_STORAGE"-->
+<!--        android:maxSdkVersion="28"-->
+<!--        tools:ignore="ScopedStorage" />-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <uses-feature android:name="android.hardware.camera" />
@@ -69,8 +69,6 @@
             android:screenOrientation="portrait">
 
         </activity>
-
-
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/app_id_admob" />

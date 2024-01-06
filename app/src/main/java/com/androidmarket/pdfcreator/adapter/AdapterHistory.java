@@ -73,7 +73,7 @@ public class AdapterHistory extends RecyclerView.Adapter<AdapterHistory.ViewHist
         if (mIconsOperationList != null && mIconsOperationList.containsKey(operationType))
             holder.mOperationImage.setImageResource(mIconsOperationList.get(operationType));
         else
-            holder.mOperationImage.setImageResource(R.drawable.ic_create_black_24dp);
+            holder.mOperationImage.setImageResource(R.drawable.add_watermark_1);
     }
 
     public void deleteHistory() {

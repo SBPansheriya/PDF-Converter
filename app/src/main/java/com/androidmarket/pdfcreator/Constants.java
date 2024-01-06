@@ -110,13 +110,13 @@ public class Constants {
     public static final String PREF_PAGE_STYLE = "pref_page_number_style";
     public static final String PREF_PAGE_STYLE_ID = "pref_page_number_style_rb_id";
 
-    public static final int REQUEST_CODE_FOR_WRITE_PERMISSION = 4;
+//    public static final int REQUEST_CODE_FOR_WRITE_PERMISSION = 4;
     public static final int REQUEST_CODE_FOR_READ_PERMISSION = 5;
 
 
-    public static final String[] WRITE_PERMISSIONS = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
+//    public static final String[] WRITE_PERMISSIONS = {
+//            Manifest.permission.WRITE_EXTERNAL_STORAGE
+//    };
     public static final String[] READ_PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE
     };

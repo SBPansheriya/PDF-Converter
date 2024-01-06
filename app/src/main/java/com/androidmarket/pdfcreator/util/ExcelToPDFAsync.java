@@ -54,7 +54,7 @@ public class ExcelToPDFAsync {
             @Override
             protected String doInBackground(Void... voids) {
                 try {
-                    final Workbook workbook = new Workbook(mPath);
+                    final Workbook workbook = new Workbook(mDestPath);
                     if (mIsPasswordProtected) {
                         PdfSaveOptions saveOption = new PdfSaveOptions();
                         saveOption.setSecurityOptions(new PdfSecurityOptions());

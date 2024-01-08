@@ -3,6 +3,7 @@ package com.androidmarket.pdfcreator.fragment;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,6 +34,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.text.Editable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,6 +86,7 @@ import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 //import static com.androidmarket.pdfcreator.Constants.REQUEST_CODE_FOR_WRITE_PERMISSION;
+import static androidx.core.content.ContextCompat.startActivity;
 import static com.androidmarket.pdfcreator.Constants.STORAGE_LOCATION;
 
 public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.OnClickListener,
@@ -254,7 +257,7 @@ public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.On
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String filename = editText.getText().toString();
+                   final String filename = editText.getText().toString();
                 if (mStringUtils.isEmpty(filename)) {
                     mStringUtils.showSnackbar(mActivity, R.string.snackbar_name_not_blank);
                 } else {
@@ -311,7 +314,7 @@ public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.On
                 mExcelFileUri = data.getData();
 //                mRealPath = getFilePathFromUri(mExcelFileUri);
 //                mRealPath = RealPathUtil.getInstance().getRealPath(getContext(), mExcelFileUri);
-                mRealPath =  mFileUtils.getFileName(mExcelFileUri);
+                mRealPath =  getPathFromUri(mExcelFileUri);
                 processUri();
             }
         }
@@ -330,6 +333,19 @@ public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.On
 //        }
     }
 
+    private String getPathFromUri(Uri uri) {
+        String path = null;
+        try (Cursor cursor = mActivity.getContentResolver().query(uri, null, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                int displayNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                String displayName = cursor.getString(displayNameIndex);
+                path = Environment.getExternalStorageDirectory().toString() + "/" + displayName;
+            }
+        } catch (Exception e) {
+            Log.e("MainActivity", "Error getting file path from URI", e);
+        }
+        return path;
+    }
     private String getFilePathFromUri(Uri uri) {
         String path = null;
 
@@ -433,7 +449,7 @@ public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.On
                 mStringUtils.getDefaultStorageLocation());
 
         mPath = mStorePath + mFilename + mActivity.getString(R.string.pdf_ext);
-        new ExcelToPDFAsync(mRealPath, mPath, ExceltoPdfFragment.this, mPasswordProtected, mPassword);
+        new ExcelToPDFAsync(mRealPath, mPath, ExceltoPdfFragment.this, mPasswordProtected, mPassword,mActivity,mExcelFileUri);
     }
 
     @Override

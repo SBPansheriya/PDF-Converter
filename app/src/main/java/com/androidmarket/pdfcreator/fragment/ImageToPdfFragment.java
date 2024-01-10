@@ -1,5 +1,7 @@
 package com.androidmarket.pdfcreator.fragment;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -19,12 +21,14 @@ import android.os.Parcelable;
 import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 
 import android.text.Editable;
 import android.view.Gravity;
@@ -121,6 +125,8 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     private static final int INTENT_REQUEST_PREVIEW_IMAGE = 11;
     private static final int INTENT_REQUEST_REARRANGE_IMAGE = 12;
     private static final int INTENT_REQUEST_GET_IMAGES = 13;
+    private static final int REQUEST_CODE_SECOND_ACTIVITY = 1;
+
 
     @BindView(R.id.pdfCreate)
     CardView mCreatePdf;
@@ -203,6 +209,15 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                 getActivity().finish();
             }
         });
+
+//        launchSomeActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+//            if (result.getResultCode() == RESULT_OK) {
+//                Intent data = result.getData();
+//                if (data != null) {
+//
+//                }
+//            }
+//        });
         return root;
     }
 
@@ -376,7 +391,18 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                     }
                 }
                 break;
-
+//            case REQUEST_CODE_SECOND_ACTIVITY:
+////                HashMap<Integer, Uri> croppedImage = (HashMap) data.getSerializableExtra(RESULT);
+//                String croppedImagePath = data.getStringExtra(Constants.RESULT);
+//
+//                for (int i = 0; i < mImagesUri.size(); i++) {
+//                    if (croppedImagePath != null) {
+//                        mImagesUri.set(i,croppedImagePath);
+////                        mImagesUri.set(i, croppedImage.get(i).getPath());
+//                        Toast.makeText(getActivity(), R.string.snackbar_imagecropped, Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//                break;
             case INTENT_REQUEST_APPLY_FILTER:
                 mImagesUri.clear();
                 ArrayList<String> mFilterUris = data.getStringArrayListExtra(RESULT);

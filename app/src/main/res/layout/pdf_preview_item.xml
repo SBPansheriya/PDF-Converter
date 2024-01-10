@@ -35,6 +35,7 @@
                 android:src="@drawable/img"
                 android:contentDescription="@string/preview_image_to_pdf"
                 android:fitsSystemWindows="true"
+                android:adjustViewBounds="true"
                 android:scaleType="centerCrop" />
         </androidx.cardview.widget.CardView>
     </LinearLayout>

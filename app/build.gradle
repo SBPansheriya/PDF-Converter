@@ -105,6 +105,7 @@ dependencies {
     implementation 'jp.wasabeef:picasso-transformations:2.2.1'
     implementation 'ja.burhanrashid52:photoeditor:0.2.1'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
+//    implementation("com.vanniktech:android-image-cropper:4.5.0")
 
     // Viewpager transformation
     implementation 'com.eftimoff:android-viewpager-transformers:1.0.1@aar'

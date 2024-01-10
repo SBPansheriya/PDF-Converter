@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -294,45 +295,55 @@ public class PDFEncryptionUtility {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
-                Dialog dialogremove = new Dialog(mContext);
-                if (dialogremove.getWindow() != null) {
-                    dialogremove.getWindow().setGravity(Gravity.CENTER);
-                    dialogremove.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                    dialogremove.setCancelable(false);
+
+                String password = passwordInput.getText().toString();
+                if (password.isEmpty()){
+                    Toast.makeText(mContext, "Old password is not empty", Toast.LENGTH_SHORT).show();
                 }
-                dialogremove.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                dialogremove.setContentView(R.layout.delete_dialog_watermark);
-                dialogremove.setCancelable(false);
-                dialogremove.show();
-
-                Button cancel = dialogremove.findViewById(R.id.canceldialog);
-                Button ok = dialogremove.findViewById(R.id.okdialog);
-                TextView txt = dialogremove.findViewById(R.id.txt);
-
-                txt.setText("Do you want to remove password ?");
-
-                cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        removePassword(file,dataSetChanged);
-                        dialogremove.dismiss();
+                else {
+                    dialog.dismiss();
+                    Dialog dialogremove = new Dialog(mContext);
+                    if (dialogremove.getWindow() != null) {
+                        dialogremove.getWindow().setGravity(Gravity.CENTER);
+                        dialogremove.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        dialogremove.setCancelable(false);
                     }
-                });
+                    dialogremove.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    dialogremove.setContentView(R.layout.delete_dialog_watermark);
+                    dialogremove.setCancelable(false);
+                    dialogremove.show();
 
-                ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (!removePasswordUsingDefMasterPassword(file, dataSetChanged, input_password)) {
-                            if (!removePasswordUsingInputMasterPassword(file, dataSetChanged, input_password)) {
-                                StringUtils.getInstance().showSnackbar(mContext, R.string.master_password_changed);
-                            }
+                    Button cancel = dialogremove.findViewById(R.id.canceldialog);
+                    Button ok = dialogremove.findViewById(R.id.okdialog);
+                    TextView txt = dialogremove.findViewById(R.id.txt);
+
+                    txt.setText("Do you want to remove password ?");
+
+                    ok.setText("Remove");
+
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            removePassword(file, dataSetChanged);
+                            dialogremove.dismiss();
                         }
-                        dialogremove.dismiss();
-                    }
-                });
+                    });
+
+                    ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (!removePasswordUsingDefMasterPassword(file, dataSetChanged, input_password)) {
+                                if (!removePasswordUsingInputMasterPassword(file, dataSetChanged, input_password)) {
+                                    StringUtils.getInstance().showSnackbar(mContext, R.string.master_password_changed);
+                                }
+                            }
+                            dialogremove.dismiss();
+                        }
+                    });
+                }
             }
         });
+
     }
 
     /**

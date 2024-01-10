@@ -181,7 +181,7 @@ public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.On
     public void selectExcelFile() {
         if (!mButtonClicked) {
             Uri uri = Uri.parse(Environment.getRootDirectory() + "/");
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.setDataAndType(uri, "*/*");
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             try {
@@ -312,9 +312,9 @@ public class ExceltoPdfFragment extends Fragment implements AdapterMergeFiles.On
         if (requestCode == mFileSelectCode) {
             if (resultCode == RESULT_OK) {
                 mExcelFileUri = data.getData();
-//                mRealPath = getFilePathFromUri(mExcelFileUri);
+                mRealPath = getFilePathFromUri(mExcelFileUri);
 //                mRealPath = RealPathUtil.getInstance().getRealPath(getContext(), mExcelFileUri);
-                mRealPath =  getPathFromUri(mExcelFileUri);
+//                mRealPath =  getPathFromUri(mExcelFileUri);
                 processUri();
             }
         }

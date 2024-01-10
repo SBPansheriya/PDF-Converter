@@ -104,10 +104,18 @@
                             android:layout_height="0dp" />
 
                         <ImageView
+                            android:id="@+id/cardViewFiles"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/viewfile" />
+
+                        <ImageView
                             android:id="@+id/cardExcelToPdf"
                             android:layout_width="match_parent"
                             android:layout_height="150dp"
                             android:layout_weight="1"
+                            android:visibility="gone"
                             android:src="@drawable/exceltopdf" />
                     </LinearLayout>
                 </LinearLayout>
@@ -354,11 +362,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="150dp"
                             android:layout_weight="1"
+                            android:visibility="gone"
                             android:src="@drawable/addwatermark" />
-
-                        <View
-                            android:layout_width="15dp"
-                            android:layout_height="0dp" />
 
                         <ImageView
                             android:id="@+id/cardHistory"
@@ -366,16 +371,35 @@
                             android:layout_height="150dp"
                             android:layout_weight="1"
                             android:src="@drawable/histroy" />
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="0dp" />
+
+                        <ImageView
+                            android:id="@+id/cardSettings"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/setting" />
+
+<!--                        <ImageView-->
+<!--                            android:id="@+id/cardHistory"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="150dp"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:src="@drawable/histroy" />-->
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         android:weightSum="2">
 
                         <ImageView
-                            android:id="@+id/cardViewFiles"
+                            android:id="@+id/cardViewFiles1"
                             android:layout_width="match_parent"
                             android:layout_height="150dp"
                             android:layout_weight="1"
@@ -386,7 +410,7 @@
                             android:layout_height="0dp" />
 
                         <ImageView
-                            android:id="@+id/cardSettings"
+                            android:id="@+id/cardSettings1"
                             android:layout_width="match_parent"
                             android:layout_height="150dp"
                             android:layout_weight="1"

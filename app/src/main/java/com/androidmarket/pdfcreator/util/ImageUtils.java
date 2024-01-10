@@ -1,9 +1,11 @@
 package com.androidmarket.pdfcreator.util;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -16,6 +18,9 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
@@ -52,6 +57,7 @@ public class ImageUtils {
     private static class SingletonHolder {
         static final ImageUtils INSTANCE = new ImageUtils();
     }
+
 
     public static ImageUtils getInstance() {
         return ImageUtils.SingletonHolder.INSTANCE;
@@ -306,7 +312,7 @@ public class ImageUtils {
         Matisse.from(frag)
                 .choose(MimeType.ofImage(), false)
                 .countable(true)
-                .capture(true)
+                .capture(false)
                 .captureStrategy(new CaptureStrategy(true, AUTHORITY_APP))
                 .maxSelectable(1000)
                 .imageEngine(new PicassoEngine())

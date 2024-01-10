@@ -125,6 +125,8 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     private static final int INTENT_REQUEST_PREVIEW_IMAGE = 11;
     private static final int INTENT_REQUEST_REARRANGE_IMAGE = 12;
     private static final int INTENT_REQUEST_GET_IMAGES = 13;
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
+
     private static final int REQUEST_CODE_SECOND_ACTIVITY = 1;
 
 
@@ -157,7 +159,6 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     private String mPageNumStyle;
     private int mChoseId;
     String[] permissions;
-    PermissionsUtils permissionsUtils;
 
     @Override
     public void onAttach(Context context) {
@@ -257,6 +258,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
      */
     @OnClick(R.id.addImages)
     void startAddingImages() {
+//        checkPermissions();
         if (!mIsButtonAlreadyClicked) {
             if (isStoragePermissionGranted()) {
                 selectImages();
@@ -315,23 +317,37 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         } else return true;
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private boolean checkPermissions() {
-        if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            selectImages();
-        } else {
-            permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-            if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED && ContextCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
-                permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-            else if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
-                permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
-            else if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
-                permissions = new String[]{Manifest.permission.CAMERA};
-            else return true;
-            ActivityCompat.requestPermissions(mActivity, permissions, 123);
-        }
-        return true;
-    }
+//    @SuppressLint("StaticFieldLeak")
+//    private boolean checkPermissions() {
+//        if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+//            selectImages();
+//        } else {
+//            permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+//            if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED && ContextCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
+//                permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+//            else if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+//                permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
+//            else if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
+//                permissions = new String[]{Manifest.permission.CAMERA};
+//            else return true;
+//            ActivityCompat.requestPermissions(mActivity, permissions, 123);
+//        }
+//        return true;
+//    }
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (requestCode == 123 && grantResults.length > 0) {
+//            if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+//                selectImages();
+//            } else {
+//                Toast.makeText(mActivity, "123", Toast.LENGTH_SHORT).show();
+//            }
+//        } else {
+//            Toast.makeText(mActivity, "123", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     /**
      * Called after user is asked to grant permissions
@@ -345,6 +361,13 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         if (Build.VERSION.SDK_INT >= 29) {
             PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults, requestCode, REQUEST_CODE_FOR_READ_PERMISSION, this::selectImages);
         }
+//        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                ImageUtils.selectImages(this, INTENT_REQUEST_GET_IMAGES);
+//            } else {
+//                Toast.makeText(mActivity, "Camera permission denied", Toast.LENGTH_SHORT).show();
+//            }
+//        }
 //        else {
 //            PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults, requestCode, REQUEST_CODE_FOR_WRITE_PERMISSION, this::selectImages);
 //        }
@@ -1080,7 +1103,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
 //        if (Build.VERSION.SDK_INT < 29) {
 //            PermissionsUtils.getInstance().requestRuntimePermissions(this, WRITE_PERMISSIONS, REQUEST_CODE_FOR_WRITE_PERMISSION);
 //        } else
-            if (Build.VERSION.SDK_INT >= 29) {
+        if (Build.VERSION.SDK_INT >= 29) {
             PermissionsUtils.getInstance().requestRuntimePermissions(this, READ_PERMISSIONS, REQUEST_CODE_FOR_READ_PERMISSION);
         }
     }

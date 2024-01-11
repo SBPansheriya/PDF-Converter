@@ -54,7 +54,7 @@
                 android:lineSpacingExtra="3dp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/metropolis_medium"
-                android:text="Storage permission is needed for proper functioning of app."/>
+                android:text="@string/storage_camera_permission_is_needed_for_proper_functioning_of_app"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"

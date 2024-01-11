@@ -1,11 +1,14 @@
 package com.androidmarket.pdfcreator.fragment;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission_group.CAMERA;
 import static android.app.Activity.RESULT_OK;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +23,8 @@ import android.os.Environment;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -30,6 +35,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.provider.Settings;
 import android.text.Editable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -66,6 +72,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -125,10 +132,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     private static final int INTENT_REQUEST_PREVIEW_IMAGE = 11;
     private static final int INTENT_REQUEST_REARRANGE_IMAGE = 12;
     private static final int INTENT_REQUEST_GET_IMAGES = 13;
-    private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
-
-    private static final int REQUEST_CODE_SECOND_ACTIVITY = 1;
-
+    private static final int PERMISSIONS_REQUEST_ID = 123;
 
     @BindView(R.id.pdfCreate)
     CardView mCreatePdf;
@@ -183,7 +187,6 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
 
         // Get default values & show enhancement options
         resetValues();
-
 
         FrameLayout nativeAdFrameOne = root.findViewById(R.id.nativeAdFrameLayout);
         AdsUtility.loadNativeAd(getActivity(), nativeAdFrameOne);
@@ -258,15 +261,15 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
      */
     @OnClick(R.id.addImages)
     void startAddingImages() {
-//        checkPermissions();
-        if (!mIsButtonAlreadyClicked) {
-            if (isStoragePermissionGranted()) {
-                selectImages();
-                mIsButtonAlreadyClicked = true;
-            } else {
-                getRuntimePermissions();
-            }
-        }
+        checkPermissions();
+//        if (!mIsButtonAlreadyClicked) {
+//            if (isStoragePermissionGranted()) {
+//                selectImages();
+//                mIsButtonAlreadyClicked = true;
+//            } else {
+//                getRuntimePermissions();
+//            }
+//        }
     }
 
     /**
@@ -310,44 +313,164 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     }
 
     private boolean isStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 29) {
-            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        } else if (Build.VERSION.SDK_INT >= 29) {
-            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+//        if (Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 29) {
+//            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+//        } else
+        if (Build.VERSION.SDK_INT >= 29) {
+            return ContextCompat.checkSelfPermission(getContext(), READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         } else return true;
     }
 
-//    @SuppressLint("StaticFieldLeak")
-//    private boolean checkPermissions() {
-//        if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-//            selectImages();
-//        } else {
-//            permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-//            if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED && ContextCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
-//                permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-//            else if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
-//                permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
-//            else if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
-//                permissions = new String[]{Manifest.permission.CAMERA};
-//            else return true;
-//            ActivityCompat.requestPermissions(mActivity, permissions, 123);
-//        }
-//        return true;
-//    }
+    private void checkPermissions() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            selectImages();
+        } else {
+            permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
+                permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+            else if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+                permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
+            else if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
+                permissions = new String[]{Manifest.permission.CAMERA};
+//            ActivityCompat.requestPermissions(getActivity(), permissions, PERMISSIONS_REQUEST_ID);
+            requestPermissionLauncher.launch(permissions);
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (requestCode == 123 && grantResults.length > 0) {
-//            if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-//                selectImages();
-//            } else {
-//                Toast.makeText(mActivity, "123", Toast.LENGTH_SHORT).show();
-//            }
-//        } else {
-//            Toast.makeText(mActivity, "123", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+        }
+    }
+
+    private final ActivityResultLauncher<String[]> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    selectImages();
+                } else {
+                    showPermissionDialog();
+//                    showPermissionDenyDialog(getActivity(),123);
+                    Toast.makeText(getContext(), "123", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+    private void showPermissionDialog() {
+        Dialog dialog = new Dialog(getActivity());
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setGravity(Gravity.CENTER);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setCancelable(false);
+        }
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.permission_denied_first_dialog);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Button cancel = dialog.findViewById(R.id.canceldialog);
+        Button ok = dialog.findViewById(R.id.okdialog);
+//        TextView textView = dialog.findViewById(R.id.txt1);
+//
+//        textView.setText("This app needs record audio permissions to use this feature. You can grant them in app settings.");
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        ok.setText("Go to setting");
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE) && shouldShowRequestPermissionRationale(CAMERA)) {
+                    checkPermissions();
+                } else {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+                    intent.setData(uri);
+                    startActivityForResult(intent, 123);
+                    Toast.makeText(getContext(), "Setting", Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void showPermissionDenyDialog(Activity activity, int requestCode) {
+        String[] permission = new String[0];
+        if (requestCode == 123) {
+            permission = READ_PERMISSIONS;
+        }
+        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission[0])) {
+
+            Dialog dialog = new Dialog(activity);
+            if (dialog.getWindow() != null) {
+                dialog.getWindow().setGravity(Gravity.CENTER);
+                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                dialog.setCancelable(false);
+            }
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            dialog.setContentView(R.layout.permission_denied_first_dialog);
+            dialog.setCancelable(false);
+            dialog.show();
+
+            Button cancel = dialog.findViewById(R.id.canceldialog);
+            Button ok = dialog.findViewById(R.id.okdialog);
+
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+
+            String[] finalPermission = permission;
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    checkPermissions();
+                    dialog.dismiss();
+                }
+            });
+        } else if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, permission[0])) {
+
+            Dialog dialog = new Dialog(activity);
+            if (dialog.getWindow() != null) {
+                dialog.getWindow().setGravity(Gravity.CENTER);
+                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                dialog.setCancelable(false);
+            }
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            dialog.setContentView(R.layout.permission_denied_first_dialog);
+            dialog.setCancelable(false);
+            dialog.show();
+
+            Button cancel = dialog.findViewById(R.id.canceldialog);
+            Button ok = dialog.findViewById(R.id.okdialog);
+            TextView textView = dialog.findViewById(R.id.filename);
+
+            textView.setText(R.string.storage_permission);
+            ok.setText(R.string.enable_from_settings);
+
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
+                    intent.setData(uri);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                    activity.startActivity(intent);
+                    dialog.dismiss();
+                }
+            });
+        }
+    }
 
     /**
      * Called after user is asked to grant permissions
@@ -356,22 +479,15 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
      * @param permissions  permissions asked to user
      * @param grantResults bool array indicating if permission is granted
      */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (Build.VERSION.SDK_INT >= 29) {
-            PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults, requestCode, REQUEST_CODE_FOR_READ_PERMISSION, this::selectImages);
-        }
-//        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
-//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                ImageUtils.selectImages(this, INTENT_REQUEST_GET_IMAGES);
-//            } else {
-//                Toast.makeText(mActivity, "Camera permission denied", Toast.LENGTH_SHORT).show();
-//            }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        if (Build.VERSION.SDK_INT >= 29) {
+//            PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults, requestCode, REQUEST_CODE_FOR_READ_PERMISSION, this::selectImages);
 //        }
-//        else {
-//            PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults, requestCode, REQUEST_CODE_FOR_WRITE_PERMISSION, this::selectImages);
-//        }
-    }
+////        else {
+////            PermissionsUtils.getInstance().handleRequestPermissionsResult(mActivity, grantResults, requestCode, REQUEST_CODE_FOR_WRITE_PERMISSION, this::selectImages);
+////        }
+//    }
 
     /**
      * Called after Matisse Activity is called
@@ -387,6 +503,9 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         if (resultCode != Activity.RESULT_OK || data == null) return;
 
         switch (requestCode) {
+            case 123 :
+                checkPermissions();
+
             case INTENT_REQUEST_GET_IMAGES:
                 mImagesUri.clear();
                 mUnarrangedImagesUri.clear();

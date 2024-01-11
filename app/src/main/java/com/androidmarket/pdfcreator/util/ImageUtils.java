@@ -312,7 +312,7 @@ public class ImageUtils {
         Matisse.from(frag)
                 .choose(MimeType.ofImage(), false)
                 .countable(true)
-                .capture(false)
+                .capture(true)
                 .captureStrategy(new CaptureStrategy(true, AUTHORITY_APP))
                 .maxSelectable(1000)
                 .imageEngine(new PicassoEngine())

@@ -133,6 +133,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     private static final int INTENT_REQUEST_REARRANGE_IMAGE = 12;
     private static final int INTENT_REQUEST_GET_IMAGES = 13;
     private static final int PERMISSIONS_REQUEST_ID = 123;
+    public static int lastSelected;
 
     @BindView(R.id.pdfCreate)
     CardView mCreatePdf;
@@ -185,6 +186,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         mPageColor = mSharedPreferences.getInt(Constants.DEFAULT_PAGE_COLOR_ITP, DEFAULT_PAGE_COLOR);
         mHomePath = mSharedPreferences.getString(STORAGE_LOCATION, StringUtils.getInstance().getDefaultStorageLocation());
 
+        lastSelected = -1;
         // Get default values & show enhancement options
         resetValues();
 
@@ -377,7 +379,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                     dialog.dismiss();
                 }
             });
-        } else if (!ActivityCompat.shouldShowRequestPermissionRationale(activity,READ_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(activity,CAMERA)) {
+        } else if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, READ_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(activity, CAMERA)) {
 
             Dialog dialog = new Dialog(activity);
             if (dialog.getWindow() != null) {
@@ -514,8 +516,8 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                     }
                 }
                 break;
+
 //            case REQUEST_CODE_SECOND_ACTIVITY:
-////                HashMap<Integer, Uri> croppedImage = (HashMap) data.getSerializableExtra(RESULT);
 //                String croppedImagePath = data.getStringExtra(Constants.RESULT);
 //
 //                for (int i = 0; i < mImagesUri.size(); i++) {
@@ -587,7 +589,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                 mPageSizeUtils.showPageSizeDialog(false);
                 break;
             case 5:
-                ImageUtils.getInstance().showImageScaleTypeDialog(mActivity, false);
+                ImageUtils.getInstance().showImageScaleTypeDialog(mActivity, false,"ImageToPdf");
                 break;
             case 6:
                 startActivityForResult(ActivityPreview.getStartIntent(mActivity, mImagesUri), INTENT_REQUEST_PREVIEW_IMAGE);
@@ -1065,7 +1067,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         });
 
         remove.setEnabled(this.mPdfOptions.isWatermarkAdded());
-        ok.setEnabled(this.mPdfOptions.isWatermarkAdded());
+//        ok.setEnabled(this.mPdfOptions.isWatermarkAdded());
 
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1087,20 +1089,25 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                watermark.setWatermarkText(watermarkTextInput.getText().toString());
-                watermark.setFontFamily(((Font.FontFamily) fontFamilyInput.getSelectedItem()));
-                watermark.setFontStyle(getStyleValueFromName(((String) styleInput.getSelectedItem())));
+                if (StringUtils.getInstance().isEmpty(watermarkTextInput.getText().toString())){
+                    Toast.makeText(mActivity, "Watermark text is not empty", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    watermark.setWatermarkText(watermarkTextInput.getText().toString());
+                    watermark.setFontFamily(((Font.FontFamily) fontFamilyInput.getSelectedItem()));
+                    watermark.setFontStyle(getStyleValueFromName(((String) styleInput.getSelectedItem())));
 
-                watermark.setRotationAngle(StringUtils.getInstance().parseIntOrDefault(angleInput.getText(), 0));
+                    watermark.setRotationAngle(StringUtils.getInstance().parseIntOrDefault(angleInput.getText(), 0));
 
-                watermark.setTextSize(StringUtils.getInstance().parseIntOrDefault(fontSizeInput.getText(), 50));
+                    watermark.setTextSize(StringUtils.getInstance().parseIntOrDefault(fontSizeInput.getText(), 50));
 
-                watermark.setTextColor((new BaseColor(Color.red(colorPickerInput.getColor()), Color.green(colorPickerInput.getColor()), Color.blue(colorPickerInput.getColor()), Color.alpha(colorPickerInput.getColor()))));
-                mPdfOptions.setWatermark(watermark);
-                mPdfOptions.setWatermarkAdded(true);
-                showEnhancementOptions();
-                Toast.makeText(getActivity(), R.string.watermark_added, Toast.LENGTH_SHORT).show();
-                dialog1.dismiss();
+                    watermark.setTextColor((new BaseColor(Color.red(colorPickerInput.getColor()), Color.green(colorPickerInput.getColor()), Color.blue(colorPickerInput.getColor()), Color.alpha(colorPickerInput.getColor()))));
+                    mPdfOptions.setWatermark(watermark);
+                    mPdfOptions.setWatermarkAdded(true);
+                    showEnhancementOptions();
+                    Toast.makeText(getActivity(), R.string.watermark_added, Toast.LENGTH_SHORT).show();
+                    dialog1.dismiss();
+                }
             }
         });
     }

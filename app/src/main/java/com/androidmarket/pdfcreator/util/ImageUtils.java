@@ -22,6 +22,7 @@ import android.preference.PreferenceManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -29,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -42,6 +44,7 @@ import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.HashMap;
 
 import androidmarket.R;
 
@@ -49,15 +52,18 @@ import static com.androidmarket.pdfcreator.Constants.AUTHORITY_APP;
 import static com.androidmarket.pdfcreator.Constants.IMAGE_SCALE_TYPE_ASPECT_RATIO;
 import static com.androidmarket.pdfcreator.Constants.IMAGE_SCALE_TYPE_STRETCH;
 import static com.androidmarket.pdfcreator.Constants.pdfDirectory;
+import static com.androidmarket.pdfcreator.fragment.ImageToPdfFragment.lastSelected;
 
 public class ImageUtils {
 
     public String mImageScaleType;
+    int position;
+    int position1;
+    String imageScale;
 
     private static class SingletonHolder {
         static final ImageUtils INSTANCE = new ImageUtils();
     }
-
 
     public static ImageUtils getInstance() {
         return ImageUtils.SingletonHolder.INSTANCE;
@@ -171,12 +177,10 @@ public class ImageUtils {
                 inSampleSize *= 2;
             }
         }
-
         return inSampleSize;
     }
 
-
-    public void showImageScaleTypeDialog(Context context, Boolean saveValue) {
+    public void showImageScaleTypeDialog(Context context, Boolean saveValue,String click) {
 
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 //        MaterialDialog.Builder builder = DialogUtils.getInstance().createCustomDialogWithoutContent((Activity) context,
@@ -216,10 +220,41 @@ public class ImageUtils {
         dialog1.setCancelable(false);
         dialog1.show();
 
+        String savedImageScaleType = mSharedPreferences.getString(Constants.DEFAULT_IMAGE_SCALE_TYPE_TEXT,"");
+
+        if (savedImageScaleType.equals("stretch_image")){
+            position = 1;
+        }
+        else if (savedImageScaleType.equals("maintain_aspect_ratio")){
+            position = 0;
+        }
         Button cancel = dialog1.findViewById(R.id.canceldialog);
         Button ok = dialog1.findViewById(R.id.okdialog);
         RadioGroup radioGroup = dialog1.findViewById(R.id.scale_type);
         CheckBox mSetAsDefault = dialog1.findViewById(R.id.cbSetDefault);
+
+        if (click.equals("setting")) {
+            if (savedImageScaleType.equals(IMAGE_SCALE_TYPE_ASPECT_RATIO)) {
+                radioGroup.check(R.id.aspect_ratio);
+            } else if (savedImageScaleType.equals(IMAGE_SCALE_TYPE_STRETCH)) {
+                radioGroup.check(R.id.stretch_image);
+            }
+        }
+
+        if (click.equals("ImageToPdf")) {
+            if (lastSelected != -1) {
+//                if (imageScale.equals("Maintain aspect ratio of images")) {
+//                    RadioButton rb = (RadioButton) radioGroup.getChildAt(0);
+//                    rb.setChecked(true);
+//                } else if (imageScale.equals("Stretch image to fit on page")) {
+//                    RadioButton rb = (RadioButton) radioGroup.getChildAt(1);
+//                    rb.setChecked(true);
+//                }
+                radioGroup.check(radioGroup.getChildAt(lastSelected).getId());
+            } else {
+                radioGroup.check(radioGroup.getChildAt(position).getId());
+            }
+        }
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,10 +267,16 @@ public class ImageUtils {
             @Override
             public void onClick(View view) {
                 int selectedId = radioGroup.getCheckedRadioButtonId();
-                if (selectedId == R.id.aspect_ratio)
+                RadioButton radioButton = dialog1.findViewById(selectedId);
+                imageScale = radioButton.getText().toString();
+                if (selectedId == R.id.aspect_ratio) {
+                    lastSelected = 0;
                     mImageScaleType = IMAGE_SCALE_TYPE_ASPECT_RATIO;
-                else
+                } else if (selectedId == R.id.stretch_image) {
+                    lastSelected = 1;
                     mImageScaleType = IMAGE_SCALE_TYPE_STRETCH;
+                }
+
                 if (saveValue || mSetAsDefault.isChecked()) {
                     SharedPreferences.Editor editor = mSharedPreferences.edit();
                     editor.putString(Constants.DEFAULT_IMAGE_SCALE_TYPE_TEXT, mImageScaleType);
@@ -305,7 +346,8 @@ public class ImageUtils {
 
     /**
      * Open a dialog to select some Images
-     * @param frag the fragment that should receive the Images
+     *
+     * @param frag        the fragment that should receive the Images
      * @param requestCode the internal request code the fragment uses for image selection
      */
     public static void selectImages(Fragment frag, int requestCode) {
@@ -333,6 +375,4 @@ public class ImageUtils {
         canvas.drawColor(Color.WHITE);
         return bitmap.sameAs(whiteBitmap);
     }
-
-
 }

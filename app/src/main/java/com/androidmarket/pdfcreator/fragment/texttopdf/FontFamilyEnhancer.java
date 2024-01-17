@@ -1,5 +1,8 @@
 package com.androidmarket.pdfcreator.fragment.texttopdf;
 
+import static com.androidmarket.pdfcreator.fragment.ImageToPdfFragment.lastSelected;
+import static com.androidmarket.pdfcreator.fragment.texttopdf.TextToPdfFragment.lastSelectedFontFamily;
+
 import android.app.Activity;
 
 import androidx.annotation.NonNull;
@@ -40,6 +43,8 @@ public class FontFamilyEnhancer implements Enhancer {
     private TextToPdfContract.View mView;
     private final TextToPdfPreferences mPreferences;
     private final TextToPDFOptions.Builder mBuilder;
+    String fontFamily1;
+    int lastSelectedID;
 
     FontFamilyEnhancer(@NonNull final Activity activity,
                        @NonNull final TextToPdfContract.View view,
@@ -61,6 +66,7 @@ public class FontFamilyEnhancer implements Enhancer {
     public void enhance() {
         String fontFamily = mPreferences.getFontFamily();
         int ordinal = Font.FontFamily.valueOf(fontFamily).ordinal();
+
 //        MaterialDialog materialDialog = new MaterialDialog.Builder(mActivity)
 //                .title(String.format(mActivity.getString(R.string.default_font_family_text), fontFamily))
 //                .customView(R.layout.dialog_font_family, true)
@@ -110,12 +116,32 @@ public class FontFamilyEnhancer implements Enhancer {
             }
         });
 
+        if (lastSelectedFontFamily != -1){
+            radioGroup.check((radioGroup.getChildAt(lastSelectedFontFamily).getId()));
+        } else {
+            RadioButton rb = (RadioButton) radioGroup.getChildAt(ordinal);
+            rb.setChecked(true);
+        }
+
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int selectedId = radioGroup.getCheckedRadioButtonId();
                 RadioButton radioButton = dialog.findViewById(selectedId);
-                String fontFamily1 = radioButton.getText().toString();
+                fontFamily1 = radioButton.getText().toString();
+                if (fontFamily1.equals("COURIER")) {
+                    lastSelectedFontFamily = 0;
+                } else if (fontFamily1.equals("HELVETICA")) {
+                    lastSelectedFontFamily = 1;
+                } else if (fontFamily1.equals("TIMES_ROMAN")) {
+                    lastSelectedFontFamily = 2;
+                } else if (fontFamily1.equals("SYMBOL")) {
+                    lastSelectedFontFamily = 3;
+                } else if (fontFamily1.equals("ZAPFDINGBATS")) {
+                    lastSelectedFontFamily = 4;
+                } else if (fontFamily1.equals("UNDEFINED")) {
+                    lastSelectedFontFamily = 5;
+                }
                 mBuilder.setFontFamily(Font.FontFamily.valueOf(fontFamily1));
                 if (cbSetDefault.isChecked()) {
                     mPreferences.setFontFamily(fontFamily1);
@@ -124,8 +150,6 @@ public class FontFamilyEnhancer implements Enhancer {
                 dialog.dismiss();
             }
         });
-        RadioButton rb = (RadioButton) radioGroup.getChildAt(ordinal);
-        rb.setChecked(true);
     }
 
 

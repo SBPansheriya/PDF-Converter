@@ -60,6 +60,7 @@
                     android:text="@string/maintain_aspect_ratio"/>
 
                 <RadioButton
+                    android:id="@+id/stretch_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/dark_blue"

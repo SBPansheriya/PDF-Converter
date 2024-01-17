@@ -143,7 +143,7 @@ public class SettingsFragment extends Fragment implements OnItemClickListener {
                 setTheme();
                 break;
             case 5:
-                ImageUtils.getInstance().showImageScaleTypeDialog(mActivity, true);
+                ImageUtils.getInstance().showImageScaleTypeDialog(mActivity, true,"setting");
                 break;
             case 6:
                 changeMasterPassword();

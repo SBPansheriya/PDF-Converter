@@ -69,7 +69,7 @@ public class TextToPdfFragment extends Fragment implements OnItemClickListener,
     private Activity mActivity;
     private FileUtils mFileUtils;
     private DirectoryUtils mDirectoryUtils;
-
+    public static int lastSelectedFontFamily;
     private final int mFileSelectCode = 0;
     private Uri mTextFileUri = null;
     private String mFileExtension;
@@ -98,6 +98,8 @@ public class TextToPdfFragment extends Fragment implements OnItemClickListener,
 
         mMorphButtonUtility = new MorphButtonUtility(mActivity);
         ButterKnife.bind(this, rootView);
+
+        lastSelectedFontFamily = -1;
 
         mBuilder = new TextToPDFOptions.Builder(mActivity);
         addEnhancements();

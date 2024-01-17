@@ -332,9 +332,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                 permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
             else if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
                 permissions = new String[]{Manifest.permission.CAMERA};
-//            ActivityCompat.requestPermissions(getActivity(), permissions, PERMISSIONS_REQUEST_ID);
             requestPermissionLauncher.launch(permissions);
-
         }
     }
 
@@ -343,62 +341,13 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                 if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                     selectImages();
                 } else {
-                    showPermissionDialog();
-//                    showPermissionDenyDialog(getActivity(),123);
-                    Toast.makeText(getContext(), "123", Toast.LENGTH_SHORT).show();
+                    showPermissionDenyDialog(getActivity(), 123);
                 }
             });
 
-    private void showPermissionDialog() {
-        Dialog dialog = new Dialog(getActivity());
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setGravity(Gravity.CENTER);
-            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-            dialog.setCancelable(false);
-        }
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        dialog.setContentView(R.layout.permission_denied_first_dialog);
-        dialog.setCancelable(false);
-        dialog.show();
-
-        Button cancel = dialog.findViewById(R.id.canceldialog);
-        Button ok = dialog.findViewById(R.id.okdialog);
-//        TextView textView = dialog.findViewById(R.id.txt1);
-//
-//        textView.setText("This app needs record audio permissions to use this feature. You can grant them in app settings.");
-
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-
-        ok.setText("Go to setting");
-
-        ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE) && shouldShowRequestPermissionRationale(CAMERA)) {
-                    checkPermissions();
-                } else {
-                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
-                    intent.setData(uri);
-                    startActivityForResult(intent, 123);
-                    Toast.makeText(getContext(), "Setting", Toast.LENGTH_SHORT).show();
-                }
-                dialog.dismiss();
-            }
-        });
-    }
-
     private void showPermissionDenyDialog(Activity activity, int requestCode) {
-        String[] permission = new String[0];
-        if (requestCode == 123) {
-            permission = READ_PERMISSIONS;
-        }
-        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission[0])) {
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, READ_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(activity, CAMERA)) {
 
             Dialog dialog = new Dialog(activity);
             if (dialog.getWindow() != null) {
@@ -421,7 +370,6 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                 }
             });
 
-            String[] finalPermission = permission;
             ok.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -429,7 +377,37 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                     dialog.dismiss();
                 }
             });
-        } else if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, permission[0])) {
+        } else if (!ActivityCompat.shouldShowRequestPermissionRationale(activity,READ_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(activity,CAMERA)) {
+
+            Dialog dialog = new Dialog(activity);
+            if (dialog.getWindow() != null) {
+                dialog.getWindow().setGravity(Gravity.CENTER);
+                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                dialog.setCancelable(false);
+            }
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            dialog.setContentView(R.layout.permission_denied_first_dialog);
+            dialog.setCancelable(false);
+            dialog.show();
+
+            Button cancel = dialog.findViewById(R.id.canceldialog);
+            Button ok = dialog.findViewById(R.id.okdialog);
+
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    checkPermissions();
+                    dialog.dismiss();
+                }
+            });
+        } else if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, READ_EXTERNAL_STORAGE) || !ActivityCompat.shouldShowRequestPermissionRationale(activity, CAMERA)) {
 
             Dialog dialog = new Dialog(activity);
             if (dialog.getWindow() != null) {
@@ -465,7 +443,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-                    activity.startActivity(intent);
+                    startActivityForResult(intent, requestCode);
                     dialog.dismiss();
                 }
             });
@@ -499,12 +477,15 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 123) {
+            checkPermissions();
+        }
+
         mIsButtonAlreadyClicked = false;
         if (resultCode != Activity.RESULT_OK || data == null) return;
 
         switch (requestCode) {
-            case 123 :
-                checkPermissions();
 
             case INTENT_REQUEST_GET_IMAGES:
                 mImagesUri.clear();

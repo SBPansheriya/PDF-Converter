@@ -574,7 +574,7 @@
     <string name="view_pdf_history">View PDF history</string>
     <string name="no_files_found">No Files Found</string>
     <string name="enable_from_settings">Enable from settings</string>
-    <string name="storage_permission">You have chosen to never ask the permission again, but storage permission is needed for proper functioning of app.</string>
+    <string name="storage_permission">You have chosen to never ask the permission again, but storage &amp; camera permission is needed for proper functioning of app.</string>
     <string name="storage_camera_permission_is_needed_for_proper_functioning_of_app"><![CDATA[Storage & Camera permission is needed for proper functioning of app.]]></string>
     <string-array name="faq_question_answers">
         <item>What image file formats are supported?#####The app supports jpeg, jpg, tiff, gif, psd, bmp, eps, png, etc.</item>

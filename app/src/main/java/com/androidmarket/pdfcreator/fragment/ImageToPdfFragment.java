@@ -60,10 +60,11 @@ import com.androidmarket.pdfcreator.activities.ActivityImageEditor;
 import com.androidmarket.pdfcreator.activities.ActivityPreview;
 import com.androidmarket.pdfcreator.activities.HomeActivity;
 import com.androidmarket.pdfcreator.util.AdsUtility;
+import com.canhub.cropper.CropImage;
 import com.github.danielnilsson9.colorpickerview.view.ColorPickerView;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Font;
-import com.theartofdev.edmodo.cropper.CropImage;
+//import com.theartofdev.edmodo.cropper.CropImage;
 import com.zhihu.matisse.Matisse;
 
 import java.io.BufferedOutputStream;
@@ -74,6 +75,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -132,6 +134,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
     private static final int INTENT_REQUEST_PREVIEW_IMAGE = 11;
     private static final int INTENT_REQUEST_REARRANGE_IMAGE = 12;
     private static final int INTENT_REQUEST_GET_IMAGES = 13;
+    private static final int REQUEST_CODE_SECOND_ACTIVITY = 15;
     private static final int PERMISSIONS_REQUEST_ID = 123;
     public static int lastSelected;
 
@@ -506,28 +509,32 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                 mOpenPdf.setVisibility(View.GONE);
                 break;
 
-            case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
-                HashMap<Integer, Uri> croppedImageUris = (HashMap) data.getSerializableExtra(CropImage.CROP_IMAGE_EXTRA_RESULT);
-
-                for (int i = 0; i < mImagesUri.size(); i++) {
-                    if (croppedImageUris.get(i) != null) {
-                        mImagesUri.set(i, croppedImageUris.get(i).getPath());
-                        Toast.makeText(getActivity(), R.string.snackbar_imagecropped, Toast.LENGTH_SHORT).show();
-                    }
-                }
-                break;
-
-//            case REQUEST_CODE_SECOND_ACTIVITY:
-//                String croppedImagePath = data.getStringExtra(Constants.RESULT);
+//            case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
+//                HashMap<Integer, Uri> croppedImageUris = (HashMap) data.getSerializableExtra(CropImage.CROP_IMAGE_EXTRA_RESULT);
 //
 //                for (int i = 0; i < mImagesUri.size(); i++) {
-//                    if (croppedImagePath != null) {
-//                        mImagesUri.set(i,croppedImagePath);
-////                        mImagesUri.set(i, croppedImage.get(i).getPath());
+//                    if (croppedImageUris.get(i) != null) {
+//                        mImagesUri.set(i, croppedImageUris.get(i).getPath());
 //                        Toast.makeText(getActivity(), R.string.snackbar_imagecropped, Toast.LENGTH_SHORT).show();
 //                    }
 //                }
 //                break;
+
+            case REQUEST_CODE_SECOND_ACTIVITY:
+                List<String> uriStrings = data.getStringArrayListExtra(Constants.RESULT);
+
+//                String croppedImagePath = data.getStringExtra(Constants.RESULT);
+
+                for (int i = 0; i < mImagesUri.size(); i++) {
+                    if (uriStrings != null) {
+                        if (uriStrings.size() >= i) {
+                            mImagesUri.set(i, uriStrings.get(i));
+                            Toast.makeText(getActivity(), R.string.snackbar_imagecropped, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+                break;
+
             case INTENT_REQUEST_APPLY_FILTER:
                 mImagesUri.clear();
                 ArrayList<String> mFilterUris = data.getStringArrayListExtra(RESULT);
@@ -1203,7 +1210,8 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
 
     private void cropImage() {
         Intent intent = new Intent(mActivity, ActivityCropImage.class);
-        startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+        startActivityForResult(intent,REQUEST_CODE_SECOND_ACTIVITY);
+//        startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
     }
 
     private void getRuntimePermissions() {

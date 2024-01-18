@@ -136,7 +136,7 @@
             android:textSize="12sp" />
 
         <Button
-            android:id="@+id/rotateButton"
+            android:id="@+id/crop_button"
             android:layout_width="67dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
@@ -146,7 +146,7 @@
             android:fontFamily="@font/metropolis_medium"
             android:paddingStart="2dp"
             android:paddingEnd="2dp"
-            android:text="@string/rotate"
+            android:text="Crop"
             android:textAllCaps="false"
             android:textColor="?attr/bottomSheetTextColor"
             android:textSize="12sp" />
@@ -170,30 +170,38 @@
 <!--            android:elevation="0dp"-->
 <!--            app:cardCornerRadius="40dp">-->
 
-<!--        <Button-->
-<!--            android:id="@+id/btn"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="5dp"-->
-<!--            android:text="crop"/>-->
-<!--        -->
-<!--        <ImageView-->
-<!--            android:id="@+id/crop_image"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="300dp"/>-->
+        <Button
+            android:id="@+id/btn"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="crop"/>
 
-            <com.theartofdev.edmodo.cropper.CropImageView
-                android:id="@+id/cropImageView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                app:cropBorderCornerColor="@color/dark_blue"
-                app:cropBorderCornerLength="30dp"
-                app:cropBorderCornerOffset="2dp"
-                app:cropBorderCornerThickness="5dp"
-                app:cropBorderLineColor="@color/transparent"
-                custom:cropInitialCropWindowPaddingRatio="0" />
+        <ImageView
+            android:id="@+id/crop_image"
+            android:layout_below="@+id/btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+<!--        <com.canhub.cropper.CropImageView-->
+<!--            android:id="@+id/cropImageView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            />-->
+
+<!--            <com.theartofdev.edmodo.cropper.CropImageView-->
+<!--                android:id="@+id/cropImageView"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:adjustViewBounds="true"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                app:cropBorderCornerColor="@color/dark_blue"-->
+<!--                app:cropBorderCornerLength="30dp"-->
+<!--                app:cropBorderCornerOffset="2dp"-->
+<!--                app:cropBorderCornerThickness="5dp"-->
+<!--                app:cropBorderLineColor="@color/transparent"-->
+<!--                custom:cropInitialCropWindowPaddingRatio="0" />-->
 <!--        </androidx.cardview.widget.CardView>-->
     </RelativeLayout>
 

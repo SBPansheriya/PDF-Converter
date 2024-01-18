@@ -67,6 +67,7 @@ public class ActivityPreview extends AppCompatActivity implements AdapterPreview
         ThemeUtils.getInstance().setThemeApp(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview);
+        getSupportActionBar().hide();
 
         back = findViewById(R.id.back);
 

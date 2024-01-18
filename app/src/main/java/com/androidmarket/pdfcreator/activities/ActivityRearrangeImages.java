@@ -65,6 +65,7 @@ public class ActivityRearrangeImages extends AppCompatActivity implements Adapte
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         ThemeUtils.getInstance().setThemeApp(this);
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_rearrange_images);
 
         back = findViewById(R.id.back);

@@ -259,6 +259,10 @@ public class SettingsFragment extends Fragment implements OnItemClickListener {
         CheckBox cbSetDefault = dialog.findViewById(R.id.cbSetDefault);
         final EditText qualityInput = dialog.findViewById(R.id.quality);
 
+        int imageCompression = mSharedPreferences.getInt(DEFAULT_COMPRESSION, 0);
+
+        qualityInput.setText(""+imageCompression);
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -338,6 +342,8 @@ public class SettingsFragment extends Fragment implements OnItemClickListener {
         CheckBox checkBox = dialog.findViewById(R.id.cbSetFontDefault);
 
         title.setText(String.format("Font size (Default: %d)", fontSize));
+
+        fontInput.setText("" + fontSize);
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override

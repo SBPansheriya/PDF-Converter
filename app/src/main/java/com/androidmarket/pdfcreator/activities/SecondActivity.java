@@ -27,6 +27,9 @@ import androidmarket.R;
 
 public class SecondActivity extends AppCompatActivity {
 
+    public static int lastSelectedPageNumber;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +38,7 @@ public class SecondActivity extends AppCompatActivity {
         setContentView(R.layout.activity_second);
         getSupportActionBar().hide();
 
+        lastSelectedPageNumber = -1;
         Intent intent = getIntent();
         String fragment = intent.getStringExtra("fragment");
 

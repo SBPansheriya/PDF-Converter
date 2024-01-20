@@ -103,8 +103,9 @@ public class ViewFilesFragment extends Fragment
         ButterKnife.bind(this, root);
         // Initialize variables
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mActivity);
-        mCurrentSortingIndex = mSharedPreferences.getInt(SORTING_INDEX, FileSortUtils.getInstance().NAME_INDEX);
-        mAdapterViewFiles = new AdapterViewFiles(mActivity, null, this, this);
+        mCurrentSortingIndex = mSharedPreferences.getInt(SORTING_INDEX, FileSortUtils.getInstance().DATE_INDEX);
+
+        mAdapterViewFiles = new AdapterViewFiles(mActivity, null, this, this,mCurrentSortingIndex);
         mAlertDialogBuilder = new AlertDialog.Builder(mActivity)
                 .setCancelable(true)
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss());

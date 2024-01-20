@@ -8,18 +8,15 @@ import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 
 import com.androidmarket.pdfcreator.CustomAdapter;
-import com.androidmarket.pdfcreator.activities.ActivityRearrangeImages;
 import com.google.android.material.snackbar.Snackbar;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -57,7 +54,6 @@ import com.androidmarket.pdfcreator.util.PopulateList;
 import com.androidmarket.pdfcreator.util.StringUtils;
 import com.androidmarket.pdfcreator.util.WatermarkUtils;
 
-import static com.androidmarket.pdfcreator.Constants.CHOICE_REMOVE_IMAGE;
 import static com.androidmarket.pdfcreator.Constants.SORTING_INDEX;
 import static com.androidmarket.pdfcreator.util.FileInfoUtils.getFormattedDate;
 
@@ -83,6 +79,7 @@ public class AdapterViewFiles extends RecyclerView.Adapter<AdapterViewFiles.View
     private final SharedPreferences mSharedPreferences;
 
     private List<PDFFile> mFileList;
+    int mCurrentSortingIndex;
 
     /**
      * Returns adapter instance
@@ -91,11 +88,12 @@ public class AdapterViewFiles extends RecyclerView.Adapter<AdapterViewFiles.View
      * @param feedItems                list containing {@link PDFFile}
      * @param emptyStateChangeListener interface for empty state change
      * @param itemSelectedListener     interface for monitoring the status of file selection
+     * @param
      */
     public AdapterViewFiles(Activity activity,
                             List<PDFFile> feedItems,
                             EmptyStateChangeListener emptyStateChangeListener,
-                            ItemSelectedListener itemSelectedListener) {
+                            ItemSelectedListener itemSelectedListener, int mCurrentSortingIndex ){
         this.mActivity = activity;
         this.mEmptyStateChangeListener = emptyStateChangeListener;
         this.mItemSelectedListener = itemSelectedListener;
@@ -105,6 +103,7 @@ public class AdapterViewFiles extends RecyclerView.Adapter<AdapterViewFiles.View
         mPDFUtils = new PDFUtils(activity);
         mPDFRotationUtils = new PDFRotationUtils(activity);
         mPDFEncryptionUtils = new PDFEncryptionUtility(activity);
+        this.mCurrentSortingIndex = mCurrentSortingIndex;
         mWatermarkUtils = new WatermarkUtils(activity);
         mDatabaseHelper = new DatabaseHelper(mActivity);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mActivity);
@@ -204,6 +203,7 @@ public class AdapterViewFiles extends RecyclerView.Adapter<AdapterViewFiles.View
 
             case 6://Password Set
                 mPDFEncryptionUtils.setPassword(file.getPath(), AdapterViewFiles.this);
+
                 break;
 
             case 7://Password Remove

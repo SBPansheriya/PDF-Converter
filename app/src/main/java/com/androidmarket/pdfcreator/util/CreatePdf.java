@@ -4,13 +4,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
+
 import androidx.annotation.NonNull;
+
 import android.util.Log;
 
 import com.androidmarket.pdfcreator.Constants;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Phrase;
@@ -103,6 +107,7 @@ public class CreatePdf extends AsyncTask<String, String, String> {
         pageSize.setBackgroundColor(getBaseColor(mPageColor));
         Document document = new Document(pageSize,
                 mMarginLeft, mMarginRight, mMarginTop, mMarginBottom);
+
         Log.v("stage 2", "Document Created");
         document.setMargins(mMarginLeft, mMarginRight, mMarginTop, mMarginBottom);
         Rectangle documentRect = document.getPageSize();
@@ -180,32 +185,210 @@ public class CreatePdf extends AsyncTask<String, String, String> {
             e.printStackTrace();
             mSuccess = false;
         }
-
         return null;
     }
 
     private void addPageNumber(Rectangle documentRect, PdfWriter writer) {
         if (mPageNumStyle != null) {
-            ColumnText.showTextAligned(writer.getDirectContent(),
-                    Element.ALIGN_BOTTOM,
-                    getPhrase(writer, mPageNumStyle, mImagesUri.size()),
-                    ((documentRect.getRight() + documentRect.getLeft()) / 2),
-                    documentRect.getBottom() + 25, 0);
+
+            float fixedTextSize = 20f;
+
+            float calculatedTextSize = fixedTextSize * (documentRect.getWidth() / 595f);
+
+            if (mPageSize.equals("Letter")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(110)),
+                        documentRect.getBottom(10), 0);
+            } else if (mPageSize.equals("Legal")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(120)),
+                        documentRect.getBottom(20), 0);
+            } else if (mPageSize.equals("Executive")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(100)),
+                        documentRect.getBottom(10), 0);
+            } else if (mPageSize.equals("Ledger")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(200)),
+                        documentRect.getBottom(20), 0);
+            } else if (mPageSize.equals("Tabloid")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(140)),
+                        documentRect.getBottom(20), 0);
+            } else if (mPageSize.equals("A0")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(440)),
+                        documentRect.getBottom(30), 0);
+            } else if (mPageSize.equals("A1")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(370)),
+                        documentRect.getBottom(20), 0);
+            } else if (mPageSize.equals("A2")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(330)),
+                        documentRect.getBottom(20), 0);
+            } else if (mPageSize.equals("A3") ) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(160)),
+                        documentRect.getBottom(20), 0);
+            } else if (mPageSize.equals("A5")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(80)),
+                        documentRect.getBottom(20), 0);
+            } else if (mPageSize.equals("A6")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                        getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(60)),
+                        documentRect.getBottom(10), 0);
+            } else if (mPageSize.equals("A7")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(40)),
+                        documentRect.getBottom(10), 0);
+            }  else if (mPageSize.equals("A8")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                        getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(25)),
+                        documentRect.getBottom(5), 0);
+            } else if (mPageSize.equals("A9")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                        getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(20)),
+                        documentRect.getBottom(3), 0);
+            } else if (mPageSize.equals("A10")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                        getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(15)),
+                        documentRect.getBottom(2), 0);
+            } else if (mPageSize.equals("B0")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                        getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(580)),
+                        documentRect.getBottom(50), 0);
+            } else if (mPageSize.equals("B1")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                        getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(370)),
+                        documentRect.getBottom(40), 0);
+            } else if (mPageSize.equals("B2")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                        getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(290)),
+                        documentRect.getBottom(30), 0);
+            } else if (mPageSize.equals("B3") ) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                        getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(190)),
+                        documentRect.getBottom(20), 0);
+            } else if (mPageSize.equals("B4") ) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                        getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(135)),
+                        documentRect.getBottom(20), 0);
+            } else if (mPageSize.equals("B5")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                        getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(100)),
+                        documentRect.getBottom(20), 0);
+            } else if (mPageSize.equals("B6")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                        getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(65)),
+                        documentRect.getBottom(10), 0);
+            } else if (mPageSize.equals("B7")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                        getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(50)),
+                        documentRect.getBottom(5), 0);
+            } else if (mPageSize.equals("B8")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                        getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(35)),
+                        documentRect.getBottom(5), 0);
+            } else if (mPageSize.equals("B9")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                        getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(25)),
+                        documentRect.getBottom(5), 0);
+            } else if (mPageSize.equals("B10")) {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                        getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(15)),
+                        documentRect.getBottom(3), 0);
+            } else {
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+                getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+                        (documentRect.getRight(120)),
+                        documentRect.getBottom(20), 0);
+            }
         }
-    }
+//        float fixedTextSize = 20f;  // Set your desired fixed text size here
+//
+//        float calculatedTextSize = fixedTextSize * (documentRect.getWidth() / 595f);
+////            float fixedTextSize = 20f;
+//
+//        ColumnText.showTextAligned(writer.getDirectContent(),
+////                    Element.ALIGN_BOTTOM,
+//                Element.ALIGN_BOTTOM | Element.ALIGN_LEFT,
+//                getPhrase(writer, mPageNumStyle, mImagesUri.size(), calculatedTextSize),
+////                    ((documentRect.getRight() + documentRect.getLeft()) / 2),
+//                (documentRect.getRight(100)),
+//                documentRect.getBottom(10), 0);
+//    }
+}
 
     @NonNull
-    private Phrase getPhrase(PdfWriter writer, String pageNumStyle, int size) {
+    private Phrase getPhrase(PdfWriter writer, String pageNumStyle, int size, float fixedTextSize) {
         Phrase phrase;
+
+        Font fixedFont = new Font(Font.FontFamily.TIMES_ROMAN, fixedTextSize);
+
         switch (pageNumStyle) {
             case Constants.PG_NUM_STYLE_PAGE_X_OF_N:
-                phrase = new Phrase(String.format("Page %d of %d", writer.getPageNumber(), size));
+                phrase = new Phrase(String.format("Page %d of %d", writer.getPageNumber(), size), fixedFont);
                 break;
             case Constants.PG_NUM_STYLE_X_OF_N:
-                phrase = new Phrase(String.format("%d of %d", writer.getPageNumber(), size));
+                phrase = new Phrase(String.format("%d of %d", writer.getPageNumber(), size), fixedFont);
                 break;
             default:
-                phrase = new Phrase(String.format("%d", writer.getPageNumber()));
+                phrase = new Phrase(String.format("%d", writer.getPageNumber()), fixedFont);
                 break;
         }
         return phrase;

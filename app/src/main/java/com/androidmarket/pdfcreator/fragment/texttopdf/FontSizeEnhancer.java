@@ -98,6 +98,10 @@ public class FontSizeEnhancer implements Enhancer {
         EditText fontInput = dialog.findViewById(R.id.fontInput);
         TextView title = dialog.findViewById(R.id.txt);
 
+        int fontSize = mBuilder.getFontSize();
+
+        fontInput.setText(""+fontSize);
+
         title.setText(mBuilder.getFontSizeTitle());
 
         cancel.setOnClickListener(new View.OnClickListener() {

@@ -40,9 +40,11 @@ import static com.androidmarket.pdfcreator.Constants.AUTHORITY_APP;
 import static com.androidmarket.pdfcreator.Constants.PATH_SEPERATOR;
 import static com.androidmarket.pdfcreator.Constants.STORAGE_LOCATION;
 import static com.androidmarket.pdfcreator.Constants.pdfExtension;
+import static com.androidmarket.pdfcreator.activities.SecondActivity.lastSelectedPageNumber;
 import static com.androidmarket.pdfcreator.activities.SplashActivity.SORT_PREFERENCE_KEY;
 import static com.androidmarket.pdfcreator.activities.SplashActivity.editorSortBy;
 import static com.androidmarket.pdfcreator.activities.SplashActivity.sharedPreferencesSortBy;
+import static com.androidmarket.pdfcreator.fragment.ImageToPdfFragment.lastSelected;
 
 public class FileUtils {
 
@@ -476,6 +478,8 @@ public class FileUtils {
 //                                .onNegative((dialog1, which) ->
 //                                        openSaveDialog(preFillName, ext, saveMethod)).show();
                     }
+                    lastSelectedPageNumber = -1;
+                    lastSelected = -1;
                     dialog.dismiss();
                 }
             }

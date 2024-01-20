@@ -162,7 +162,7 @@ public class WatermarkUtils {
                 new DefaultTextWatcher() {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        ok.setEnabled(s.toString().trim().length() > 0);
+//                        ok.setEnabled(s.toString().trim().length() > 0);
                     }
 
                     @Override
@@ -186,27 +186,44 @@ public class WatermarkUtils {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    mWatermark.setWatermarkText(watermarkTextInput.getText().toString());
-                    mWatermark.setFontFamily(((Font.FontFamily) fontFamilyInput.getSelectedItem()));
-                    mWatermark.setFontStyle(getStyleValueFromName(((String) styleInput.getSelectedItem())));
-
-                    mWatermark.setRotationAngle(StringUtils.getInstance().parseIntOrDefault(angleInput.getText(), 0));
-                    mWatermark.setTextSize(StringUtils.getInstance().parseIntOrDefault(fontSizeInput.getText(), 50));
-
-                    //colorPickerInput.getColor() returns ans ARGB Color and BaseColor can use that ARGB as parameter
-                    mWatermark.setTextColor((new BaseColor(colorPickerInput.getColor())));
-
-                    String filePath = createWatermark(path);
-                    dataSetChanged.updateDataset();
-                    StringUtils.getInstance().getSnackbarwithAction(mContext, R.string.watermark_added).setAction(
-                            R.string.snackbar_viewAction, v1 ->
-                                    mFileUtils.openFile(filePath, FileUtils.FileType.e_PDF)).show();
-                } catch (IOException | DocumentException e) {
-                    e.printStackTrace();
-                    StringUtils.getInstance().showSnackbar(mContext, R.string.cannot_add_watermark);
+                if (StringUtils.getInstance().isEmpty(watermarkTextInput.getText().toString())){
+                    Toast.makeText(mContext, "Watermark text is not empty", Toast.LENGTH_SHORT).show();
                 }
-                dialog1.dismiss();
+                else {
+                    try {
+                        mWatermark.setWatermarkText(watermarkTextInput.getText().toString());
+                        mWatermark.setFontFamily(((Font.FontFamily) fontFamilyInput.getSelectedItem()));
+                        mWatermark.setFontStyle(getStyleValueFromName(((String) styleInput.getSelectedItem())));
+
+                        mWatermark.setRotationAngle(StringUtils.getInstance().parseIntOrDefault(angleInput.getText(), 0));
+                        mWatermark.setTextSize(StringUtils.getInstance().parseIntOrDefault(fontSizeInput.getText(), 50));
+
+                        int originalColor = colorPickerInput.getColor();
+
+                        int red = Color.red(originalColor);
+                        int green = Color.green(originalColor);
+                        int blue = Color.blue(originalColor);
+
+                        int alpha = (int) (Color.alpha(originalColor) * 0.2);
+
+                        BaseColor adjustedBaseColor = new BaseColor(red, green, blue, alpha);
+
+                        mWatermark.setTextColor(adjustedBaseColor);
+
+                        //colorPickerInput.getColor() returns ans ARGB Color and BaseColor can use that ARGB as parameter
+//                        mWatermark.setTextColor((new BaseColor(colorPickerInput.getColor())));
+
+                        String filePath = createWatermark(path);
+                        dataSetChanged.updateDataset();
+                        StringUtils.getInstance().getSnackbarwithAction(mContext, R.string.watermark_added).setAction(
+                                R.string.snackbar_viewAction, v1 ->
+                                        mFileUtils.openFile(filePath, FileUtils.FileType.e_PDF)).show();
+                    } catch (IOException | DocumentException e) {
+                        e.printStackTrace();
+                        StringUtils.getInstance().showSnackbar(mContext, R.string.cannot_add_watermark);
+                    }
+                    dialog1.dismiss();
+                }
             }
         });
     }

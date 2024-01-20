@@ -241,6 +241,7 @@ public class TextToPdfFragment extends Fragment implements OnItemClickListener,
                         });
                     }
                 }
+                lastSelectedFontFamily = -1;
                 dialog.dismiss();
             }
         });

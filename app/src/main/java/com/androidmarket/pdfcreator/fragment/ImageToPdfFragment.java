@@ -122,6 +122,7 @@ import static com.androidmarket.pdfcreator.Constants.RESULT;
 import static com.androidmarket.pdfcreator.Constants.STORAGE_LOCATION;
 //import static com.androidmarket.pdfcreator.Constants.WRITE_PERMISSIONS;
 import static com.androidmarket.pdfcreator.Constants.appName;
+import static com.androidmarket.pdfcreator.activities.SecondActivity.lastSelectedPageNumber;
 import static com.androidmarket.pdfcreator.util.WatermarkUtils.getStyleNameFromFont;
 import static com.androidmarket.pdfcreator.util.WatermarkUtils.getStyleValueFromName;
 
@@ -596,7 +597,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                 mPageSizeUtils.showPageSizeDialog(false);
                 break;
             case 5:
-                ImageUtils.getInstance().showImageScaleTypeDialog(mActivity, false,"ImageToPdf");
+                ImageUtils.getInstance().showImageScaleTypeDialog(mActivity, false, "ImageToPdf");
                 break;
             case 6:
                 startActivityForResult(ActivityPreview.getStartIntent(mActivity, mImagesUri), INTENT_REQUEST_PREVIEW_IMAGE);
@@ -699,6 +700,16 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         final EditText input = dialog.findViewById(R.id.number);
         CheckBox cbSetDefault = dialog.findViewById(R.id.cbSetDefault);
 
+        int borderWidth = mPdfOptions.getBorderWidth();
+
+        if (borderWidth == 0) {
+            input.setHint(R.string.enter_border_width_units);
+        }
+        else {
+            input.setText(""+borderWidth);
+        }
+
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -771,6 +782,10 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         Button ok = dialog.findViewById(R.id.okdialog);
         final EditText qualityInput = dialog.findViewById(R.id.quality);
         final CheckBox cbSetDefault = dialog.findViewById(R.id.cbSetDefault);
+
+        String text = mPdfOptions.getQualityString();
+
+        qualityInput.setText(text);
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1058,14 +1073,13 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         watermarkTextInput.addTextChangedListener(new DefaultTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                ok.setEnabled(s.toString().trim().length() > 0);
+//                ok.setEnabled(s.toString().trim().length() > 0);
             }
 
             @Override
             public void afterTextChanged(Editable input) {
                 if (StringUtils.getInstance().isEmpty(input)) {
                     Toast.makeText(getActivity(), R.string.snackbar_watermark_cannot_be_blank, Toast.LENGTH_SHORT).show();
-
                 } else {
                     watermark.setWatermarkText(input.toString());
                     showEnhancementOptions();
@@ -1096,10 +1110,9 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (StringUtils.getInstance().isEmpty(watermarkTextInput.getText().toString())){
+                if (StringUtils.getInstance().isEmpty(watermarkTextInput.getText().toString())) {
                     Toast.makeText(mActivity, "Watermark text is not empty", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     watermark.setWatermarkText(watermarkTextInput.getText().toString());
                     watermark.setFontFamily(((Font.FontFamily) fontFamilyInput.getSelectedItem()));
                     watermark.setFontStyle(getStyleValueFromName(((String) styleInput.getSelectedItem())));
@@ -1108,7 +1121,19 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
 
                     watermark.setTextSize(StringUtils.getInstance().parseIntOrDefault(fontSizeInput.getText(), 50));
 
-                    watermark.setTextColor((new BaseColor(Color.red(colorPickerInput.getColor()), Color.green(colorPickerInput.getColor()), Color.blue(colorPickerInput.getColor()), Color.alpha(colorPickerInput.getColor()))));
+                    int originalColor = colorPickerInput.getColor();
+
+                    int red = Color.red(originalColor);
+                    int green = Color.green(originalColor);
+                    int blue = Color.blue(originalColor);
+
+                    int alpha = (int) (Color.alpha(originalColor) * 0.2);
+
+                    BaseColor adjustedBaseColor = new BaseColor(red, green, blue, alpha);
+
+                    watermark.setTextColor(adjustedBaseColor);
+
+//                    watermark.setTextColor((new BaseColor(Color.red(colorPickerInput.getColor()), Color.green(colorPickerInput.getColor()), Color.blue(colorPickerInput.getColor()), Color.alpha(colorPickerInput.getColor()))));
                     mPdfOptions.setWatermark(watermark);
                     mPdfOptions.setWatermarkAdded(true);
                     showEnhancementOptions();
@@ -1210,7 +1235,7 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
 
     private void cropImage() {
         Intent intent = new Intent(mActivity, ActivityCropImage.class);
-        startActivityForResult(intent,REQUEST_CODE_SECOND_ACTIVITY);
+        startActivityForResult(intent, REQUEST_CODE_SECOND_ACTIVITY);
 //        startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
     }
 
@@ -1289,6 +1314,22 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         EditText right = dialog.findViewById(R.id.rightMarginEditText);
         EditText left = dialog.findViewById(R.id.leftMarginEditText);
 
+        int marginTop = mPdfOptions.getMarginTop();
+        int marginBottom = mPdfOptions.getMarginBottom();
+        int marginRight = mPdfOptions.getMarginRight();
+        int marginLeft = mPdfOptions.getMarginLeft();
+
+        TextView[] textViews = {top, bottom, right, left};
+        int[] margins = {marginTop, marginBottom, marginRight, marginLeft};
+
+        for (int i = 0; i < textViews.length; i++) {
+            if (margins[i] == 0) {
+                textViews[i].setText("");
+            } else {
+                textViews[i].setText(String.valueOf(margins[i]));
+            }
+        }
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1314,6 +1355,10 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         mPageNumStyle = mSharedPreferences.getString(Constants.PREF_PAGE_STYLE, null);
         mChoseId = mSharedPreferences.getInt(Constants.PREF_PAGE_STYLE_ID, -1);
+
+//        if (mPageNumStyle.equals()){
+//
+//        }
 //        RelativeLayout dialogLayout = (RelativeLayout) getLayoutInflater()
 //                .inflate(R.layout.add_pgnum_dialog, null);
 //
@@ -1381,6 +1426,12 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
             rg.check(mChoseId);
         }
 
+        if (lastSelectedPageNumber != -1) {
+            rg.check(rg.getChildAt(lastSelectedPageNumber).getId());
+        } else {
+            rg.check(mChoseId);
+        }
+
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1401,10 +1452,13 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                 int checkedRadioButtonId = rg.getCheckedRadioButtonId();
                 mChoseId = checkedRadioButtonId;
                 if (checkedRadioButtonId == rbOpt1.getId()) {
+                    lastSelectedPageNumber = 0;
                     mPageNumStyle = Constants.PG_NUM_STYLE_PAGE_X_OF_N;
                 } else if (checkedRadioButtonId == rbOpt2.getId()) {
+                    lastSelectedPageNumber = 1;
                     mPageNumStyle = Constants.PG_NUM_STYLE_X_OF_N;
                 } else if (checkedRadioButtonId == rbOpt3.getId()) {
+                    lastSelectedPageNumber = 2;
                     mPageNumStyle = Constants.PG_NUM_STYLE_X;
                 }
                 if (cbDefault.isChecked()) {

@@ -21,6 +21,7 @@ import java.util.HashMap;
 
 import androidmarket.R;
 
+import com.androidmarket.pdfcreator.pdfModel.ImageToPDFOptions;
 import com.androidmarket.pdfcreator.pdfPreferences.TextToPdfPreferences;
 
 public class PageSizeUtils {
@@ -242,7 +243,6 @@ public class PageSizeUtils {
             public void onClick(View view) {
                 int selectedId = radioGroup.getCheckedRadioButtonId();
                 mPageSize = getPageSize(selectedId, spinnerA.getSelectedItem().toString(), spinnerB.getSelectedItem().toString());
-
                 if (saveValue || mSetAsDefault.isChecked()) {
                     mPreferences.setPageSize(mPageSize);
                 }

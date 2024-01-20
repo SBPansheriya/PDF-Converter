@@ -383,37 +383,39 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
                     dialog.dismiss();
                 }
             });
-        } else if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, READ_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(activity, CAMERA)) {
-
-            Dialog dialog = new Dialog(activity);
-            if (dialog.getWindow() != null) {
-                dialog.getWindow().setGravity(Gravity.CENTER);
-                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                dialog.setCancelable(false);
-            }
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            dialog.setContentView(R.layout.permission_denied_first_dialog);
-            dialog.setCancelable(false);
-            dialog.show();
-
-            Button cancel = dialog.findViewById(R.id.canceldialog);
-            Button ok = dialog.findViewById(R.id.okdialog);
-
-            cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-                }
-            });
-
-            ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    checkPermissions();
-                    dialog.dismiss();
-                }
-            });
-        } else if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, READ_EXTERNAL_STORAGE) || !ActivityCompat.shouldShowRequestPermissionRationale(activity, CAMERA)) {
+        }
+//        else if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, CAMERA) && ActivityCompat.shouldShowRequestPermissionRationale(activity,READ_EXTERNAL_STORAGE)) {
+//
+//            Dialog dialog = new Dialog(activity);
+//            if (dialog.getWindow() != null) {
+//                dialog.getWindow().setGravity(Gravity.CENTER);
+//                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+//                dialog.setCancelable(false);
+//            }
+//            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//            dialog.setContentView(R.layout.permission_denied_first_dialog);
+//            dialog.setCancelable(false);
+//            dialog.show();
+//
+//            Button cancel = dialog.findViewById(R.id.canceldialog);
+//            Button ok = dialog.findViewById(R.id.okdialog);
+//
+//            cancel.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    dialog.dismiss();
+//                }
+//            });
+//
+//            ok.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    checkPermissions();
+//                    dialog.dismiss();
+//                }
+//            });
+//        }
+        else if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, READ_EXTERNAL_STORAGE) || !ActivityCompat.shouldShowRequestPermissionRationale(activity, CAMERA)) {
 
             Dialog dialog = new Dialog(activity);
             if (dialog.getWindow() != null) {

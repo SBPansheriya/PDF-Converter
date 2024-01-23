@@ -40,7 +40,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import androidmarket.R;
 import butterknife.ButterKnife;
@@ -75,6 +77,8 @@ public class ActivityCropImage extends AppCompatActivity {
     Uri currentUri;
     int index1;
     Button cropButton;
+    Uri myURI;
+    Button cropImageButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,6 +97,7 @@ public class ActivityCropImage extends AppCompatActivity {
         back = findViewById(R.id.back);
         done = findViewById(R.id.done_cropping);
         skip = findViewById(R.id.skip);
+        cropImageButton = findViewById(R.id.cropButton);
 
         cropButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,16 +123,17 @@ public class ActivityCropImage extends AppCompatActivity {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                String image = saveToInternalStorage(bitmap,fileName);
+                String image = saveToInternalStorage(bitmap, fileName);
 
-                Uri myURI = Uri.parse(image);
+                myURI = Uri.parse(image);
 
                 croppedUris.add(myURI);
 
                 mImages.remove(index1);
-                mImages.add(index1,myURI.toString());
+                mImages.add(index1, myURI.toString());
                 imageView.setImageURI(myURI);
-                currentUri = myURI;
+                mCurrentImageEdited = true;
+
             }
         });
 
@@ -143,6 +149,10 @@ public class ActivityCropImage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mFinishedClicked = true;
+                mCroppedImageUris.remove(index1);
+                mCroppedImageUris.put(index1, myURI);
+                currentUri = myURI;
+                Toast.makeText(ActivityCropImage.this, "Saved", Toast.LENGTH_SHORT).show();
                 cropButtonClicked();
                 setUpCropImageView();
             }
@@ -168,8 +178,19 @@ public class ActivityCropImage extends AppCompatActivity {
             finish();
 
         setImage(0);
-        Button cropImageButton = findViewById(R.id.cropButton);
-        cropImageButton.setOnClickListener(view -> cropButtonClicked());
+
+        cropImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mCroppedImageUris.remove(index1);
+                mCroppedImageUris.put(index1, myURI);
+                currentUri = myURI;
+                Toast.makeText(ActivityCropImage.this, "Saved", Toast.LENGTH_SHORT).show();
+
+                mCurrentImageEdited = false;
+            }
+        });
 
         ImageView nextImageButton = findViewById(R.id.nextimageButton);
         nextImageButton.setOnClickListener(view -> nextImageClicked());
@@ -177,7 +198,7 @@ public class ActivityCropImage extends AppCompatActivity {
         previousImageButton.setOnClickListener(view -> prevImgBtnClicked());
     }
 
-    private String saveToInternalStorage(Bitmap bitmapImage,String name) {
+    private String saveToInternalStorage(Bitmap bitmapImage, String name) {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         File mypath = new File(directory, name);
@@ -248,7 +269,7 @@ public class ActivityCropImage extends AppCompatActivity {
         Uri uri = newUri;
 
         if (uri == null) {
-            StringUtils.getInstance().showSnackbar(this, R.string.error_uri_not_found);
+//            StringUtils.getInstance().showSnackbar(this, R.string.error_uri_not_found);
             return;
         }
 
@@ -324,7 +345,7 @@ public class ActivityCropImage extends AppCompatActivity {
             }
 
             Intent intent = new Intent();
-            intent.putStringArrayListExtra(Constants.RESULT, mImages);
+            intent.putExtra(Constants.RESULT, mCroppedImageUris);
             setResult(Activity.RESULT_OK, intent);
             finish();
         }

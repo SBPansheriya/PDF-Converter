@@ -524,18 +524,26 @@ public class ImageToPdfFragment extends Fragment implements OnItemClickListener,
 //                break;
 
             case REQUEST_CODE_SECOND_ACTIVITY:
-                List<String> uriStrings = data.getStringArrayListExtra(Constants.RESULT);
+//                List<String> uriStrings = data.getStringArrayListExtra(Constants.RESULT);
 
+                HashMap<Integer, Uri> croppedImageUris = (HashMap) data.getSerializableExtra(Constants.RESULT);
 //                String croppedImagePath = data.getStringExtra(Constants.RESULT);
 
                 for (int i = 0; i < mImagesUri.size(); i++) {
-                    if (uriStrings != null) {
-                        if (uriStrings.size() >= i) {
-                            mImagesUri.set(i, uriStrings.get(i));
-                            Toast.makeText(getActivity(), R.string.snackbar_imagecropped, Toast.LENGTH_SHORT).show();
-                        }
+                    if (croppedImageUris.get(i) != null) {
+                        mImagesUri.set(i, croppedImageUris.get(i).getPath());
+                        Toast.makeText(getActivity(), R.string.snackbar_imagecropped, Toast.LENGTH_SHORT).show();
                     }
                 }
+
+//                for (int i = 0; i < mImagesUri.size(); i++) {
+//                    if (uriStrings != null) {
+//                        if (uriStrings.size() >= i) {
+//                            mImagesUri.set(i, uriStrings.get(i));
+//                            Toast.makeText(getActivity(), R.string.snackbar_imagecropped, Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                }
                 break;
 
             case INTENT_REQUEST_APPLY_FILTER:

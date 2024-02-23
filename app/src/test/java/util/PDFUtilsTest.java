@@ -2,7 +2,7 @@ package util;
 
 import org.junit.Test;
 
-import com.androidmarket.pdfcreator.util.SplitPDFUtils;
+import com.utillity.pdfgenerator.util.SplitPDFUtils;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

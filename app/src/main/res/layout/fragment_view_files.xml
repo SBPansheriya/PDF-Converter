@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/dark_blue"
     android:orientation="vertical"
-    tools:context="com.androidmarket.pdfcreator.activities.HomeActivity">
+    tools:context="com.utillity.pdfgenerator.activities.HomeActivity">
 
 
     <LinearLayout
@@ -103,7 +103,6 @@
                             android:textSize="25.0sp" />
 
                         <TextView
-                            android:id="@+id/emptyTitleTwo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/emptyTitle"
@@ -134,7 +133,6 @@
                             android:visibility="visible" />
 
                         <FrameLayout
-                            android:id="@+id/nativeAdFrameLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
@@ -177,7 +175,6 @@
             android:textSize="20sp" />
 
         <Button
-            android:id="@+id/provide_permissions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

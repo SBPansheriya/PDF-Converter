@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.androidmarket.pdfcreator.activities.ActivityPreview">
+    tools:context="com.utillity.pdfgenerator.activities.ActivityPreview">
 
     <RelativeLayout
         android:id="@+id/app_bar"
@@ -22,7 +22,6 @@
             android:src="@drawable/black_back_arrow" />
 
         <TextView
-            android:id="@+id/title_name"
             android:layout_width="wrap_content"
             android:layout_height="28dp"
             android:layout_centerInParent="true"
@@ -62,16 +61,6 @@
         android:layout_marginTop="15dp"
         android:fitsSystemWindows="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <!--        <androidx.viewpager.widget.PagerTitleStrip-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:textAlignment="center"-->
-        <!--            android:layout_gravity="top"-->
-        <!--            android:layout_marginStart="16dp"-->
-        <!--            android:layout_marginEnd="16dp"-->
-        <!--            android:paddingTop="5dp"-->
-        <!--            android:paddingBottom="5dp"/>-->
 
     </androidx.viewpager.widget.ViewPager>
 

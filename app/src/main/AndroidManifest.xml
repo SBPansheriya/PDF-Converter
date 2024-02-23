@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="androidmarket">
+    package="com.utillity.pdfgenerator">
 
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28"
-        tools:ignore="ScopedStorage" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature
-        android:name="android.hardware.camera.autofocus"
-        android:required="false" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -33,11 +24,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/Base.Theme.AppCompat" />
 
-        <activity android:name="com.androidmarket.pdfcreator.activities.ActivityCropImage" />
+        <activity android:name="com.utillity.pdfgenerator.activities.ActivityCropImage" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.com.shareFile"
+            android:authorities="${applicationId}.contentprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -46,40 +37,38 @@
         </provider>
 
         <activity
-            android:name="com.androidmarket.pdfcreator.activities.ActivityImageEditor"
+            android:name="com.utillity.pdfgenerator.activities.ActivityImageEditor"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.androidmarket.pdfcreator.activities.ActivityPreview"
+            android:name="com.utillity.pdfgenerator.activities.ActivityPreview"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.androidmarket.pdfcreator.activities.ActivityRearrangeImages"
+            android:name="com.utillity.pdfgenerator.activities.ActivityRearrangeImages"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.androidmarket.pdfcreator.activities.ActivityImagesPreview"
+            android:name="com.utillity.pdfgenerator.activities.ActivityImagesPreview"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.androidmarket.pdfcreator.activities.ActivityRearrangePdfPages"
+            android:name="com.utillity.pdfgenerator.activities.ActivityRearrangePdfPages"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.androidmarket.pdfcreator.activities.ActivityFavourites"
+            android:name="com.utillity.pdfgenerator.activities.ActivityFavourites"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.androidmarket.pdfcreator.activities.HomeActivity"
+            android:name="com.utillity.pdfgenerator.activities.HomeActivity"
             android:exported="true"
             android:screenOrientation="portrait">
 
         </activity>
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/app_id_admob" />
 
         <activity
-            android:name="com.androidmarket.pdfcreator.activities.SecondActivity"
+            android:name="com.utillity.pdfgenerator.activities.SecondActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name="com.androidmarket.pdfcreator.activities.SplashActivity"
-            android:screenOrientation="portrait">
+        <activity android:name="com.utillity.pdfgenerator.activities.SplashActivity"
+            android:screenOrientation="portrait"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

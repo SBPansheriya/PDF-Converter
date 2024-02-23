@@ -7,13 +7,6 @@
         <item>Größe ▼</item>
     </string-array>
 
-    <string-array name="sort_options_images">
-        <item>Name ▲</item>
-        <item>Name ▼</item>
-        <item>Datum ▲</item>
-        <item>Datum ▼</item>
-    </string-array>
-
     <string-array name="filter_options_history">
         <item>Erstellt</item>
         <item>Gelöscht</item>

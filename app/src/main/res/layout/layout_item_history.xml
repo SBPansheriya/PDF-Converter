@@ -39,7 +39,6 @@
         android:weightSum="3">
 
         <ImageView
-            android:id="@+id/operationImage1"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="10dp"
@@ -81,39 +80,6 @@
 
         </LinearLayout>
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_weight="60"-->
-<!--            android:gravity="center_vertical"-->
-<!--            android:orientation="vertical">-->
-<!--            -->
-<!--            <TextView-->
-<!--                android:id="@+id/fileName"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:layout_marginStart="10dp"-->
-<!--                android:ellipsize="marquee"-->
-<!--                android:padding="8dp"-->
-<!--                android:text="fileName"-->
-<!--                android:textSize="18sp"-->
-<!--                android:singleLine="true" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/fileDate"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:maxLines="1"-->
-<!--                android:padding="4dp"-->
-<!--                android:text="@string/file_date_text"-->
-<!--                android:fontFamily="@font/metropolis_medium"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="12sp" />-->
-
-
-<!--        </LinearLayout>-->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_weight="2"
@@ -151,32 +117,5 @@
 
             </LinearLayout>
         </LinearLayout>
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_weight="40"-->
-<!--            android:orientation="vertical">-->
-
-<!--&lt;!&ndash;            <TextView&ndash;&gt;-->
-<!--&lt;!&ndash;                android:id="@+id/operationDate"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_width="match_parent"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_weight="1"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:textColor="@color/white"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:paddingLeft="8dp"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:paddingRight="8dp"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:paddingTop="8dp"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:textSize="12sp" />&ndash;&gt;-->
-
-<!--&lt;!&ndash;            <TextView&ndash;&gt;-->
-<!--&lt;!&ndash;                android:id="@+id/operationType"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_width="match_parent"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:textColor="@color/white"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_weight="1"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:padding="8dp" />&ndash;&gt;-->
-
-<!--        </LinearLayout>-->
     </LinearLayout>
 </androidx.cardview.widget.CardView>

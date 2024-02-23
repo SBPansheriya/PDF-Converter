@@ -7,13 +7,6 @@
         <item>Размер  ▼</item>
     </string-array>
 
-    <string-array name="sort_options_images">
-        <item>Имя ▲</item>
-        <item>Имя ▼</item>
-        <item>Дата ▲</item>
-        <item>Дата ▼</item>
-    </string-array>
-
     <string-array name="filter_options_history">
         <item>Созданные</item>
         <item>Удалённые</item>

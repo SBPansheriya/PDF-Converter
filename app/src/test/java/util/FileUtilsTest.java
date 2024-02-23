@@ -9,13 +9,13 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.io.File;
 import java.util.TimeZone;
 
-import com.androidmarket.pdfcreator.util.FileInfoUtils;
-import com.androidmarket.pdfcreator.util.FileUtils;
+import com.utillity.pdfgenerator.util.FileInfoUtils;
+import com.utillity.pdfgenerator.util.FileUtils;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
-import static com.androidmarket.pdfcreator.util.FileUtils.getFileName;
+import static com.utillity.pdfgenerator.util.FileUtils.getFileName;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FileUtilsTest {

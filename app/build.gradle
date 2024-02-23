@@ -4,13 +4,13 @@ android {
     compileSdkVersion 33
     buildToolsVersion '30.0.3'
     defaultConfig {
-        applicationId "com.androidmarket.pdfcreator"
+        applicationId "com.utillity.pdfgenerator"
         vectorDrawables.useSupportLibrary = true
-        minSdkVersion 23
+        minSdkVersion 26
         multiDexEnabled true
-        targetSdkVersion 30
-        versionCode 108
-        versionName "8.8.1"
+        targetSdkVersion 33
+        versionCode 1
+        versionName "1.0.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
@@ -33,11 +33,9 @@ android {
         javaMaxHeapSize "4g"
     }
     packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/LICENSE.txt'
+        resources {
+            excludes += ['META-INF/DEPENDENCIES', 'META-INF/NOTICE', 'META-INF/LICENSE', 'META-INF/NOTICE.txt', 'META-INF/LICENSE.txt']
+        }
     }
     lintOptions {
         checkReleaseBuilds false
@@ -121,9 +119,6 @@ dependencies {
 
     // color picker
     implementation 'com.github.danielnilsson9:color-picker-view:1.4.0@aar'
-
-    //admob
-    implementation 'com.google.android.gms:play-services-ads:19.8.0'
 
 
 

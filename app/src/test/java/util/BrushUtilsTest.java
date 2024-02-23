@@ -4,9 +4,9 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import androidmarket.R;
-import com.androidmarket.pdfcreator.pdfModel.BrushItem;
-import com.androidmarket.pdfcreator.util.BrushUtils;
+import com.utillity.pdfgenerator.R;
+import com.utillity.pdfgenerator.pdfModel.BrushItem;
+import com.utillity.pdfgenerator.util.BrushUtils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

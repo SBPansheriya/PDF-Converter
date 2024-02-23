@@ -5,24 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.androidmarket.pdfcreator.activities.ActivityCropImage">
-
-    <!--    <com.google.android.material.appbar.AppBarLayout-->
-    <!--        android:id="@+id/app_bar"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content">-->
-
-    <!--        <com.google.android.material.appbar.MaterialToolbar-->
-    <!--            android:id="@+id/toolbar"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:background="#FFFFFF"-->
-    <!--            app:titleTextColor="@color/black"-->
-    <!--            app:title="Edit Images"-->
-    <!--            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"-->
-    <!--            app:navigationIconTint="@color/black"/>-->
-
-    <!--    </com.google.android.material.appbar.AppBarLayout>-->
+    tools:context="com.utillity.pdfgenerator.activities.ActivityCropImage">
 
     <RelativeLayout
         android:id="@+id/app_bar"
@@ -41,7 +24,6 @@
             android:src="@drawable/black_back_arrow" />
 
         <TextView
-            android:id="@+id/title_name"
             android:layout_width="wrap_content"
             android:layout_height="28dp"
             android:layout_centerInParent="true"
@@ -176,11 +158,6 @@
                 android:text="crop"
                 android:visibility="gone" />
 
-            <!--        <androidx.cardview.widget.CardView-->
-            <!--            android:layout_width="match_parent"-->
-            <!--            android:layout_height="wrap_content"-->
-            <!--            app:cardCornerRadius="10dp">-->
-
             <ImageView
                 android:id="@+id/crop_image"
                 android:layout_width="match_parent"
@@ -189,25 +166,6 @@
                 android:fitsSystemWindows="true"
                 android:layout_below="@+id/btn" />
         </androidx.cardview.widget.CardView>
-        <!--        <com.canhub.cropper.CropImageView-->
-        <!--            android:id="@+id/cropImageView"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            />-->
-
-        <!--            <com.theartofdev.edmodo.cropper.CropImageView-->
-        <!--                android:id="@+id/cropImageView"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="match_parent"-->
-        <!--                android:adjustViewBounds="true"-->
-        <!--                android:scaleType="centerCrop"-->
-        <!--                app:cropBorderCornerColor="@color/dark_blue"-->
-        <!--                app:cropBorderCornerLength="30dp"-->
-        <!--                app:cropBorderCornerOffset="2dp"-->
-        <!--                app:cropBorderCornerThickness="5dp"-->
-        <!--                app:cropBorderLineColor="@color/transparent"-->
-        <!--                custom:cropInitialCropWindowPaddingRatio="0" />-->
-        <!--        </androidx.cardview.widget.CardView>-->
     </RelativeLayout>
 
 </RelativeLayout>

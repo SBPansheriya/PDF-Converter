@@ -7,13 +7,6 @@
         <item>Veličina  ▼</item>
     </string-array>
 
-    <string-array name="sort_options_images">
-        <item>Naziv ▲</item>
-        <item>Naziv ▼</item>
-        <item>Datum ▲</item>
-        <item>Datum ▼</item>
-    </string-array>
-
     <string-array name="filter_options_history">
         <item>Kreirano</item>
         <item>Izbrisano</item>
